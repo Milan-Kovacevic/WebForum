@@ -7,8 +7,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddMediatR(config => config.RegisterServicesFromAssembly(AssemblyReference.Value));
-        services.AddValidatorsFromAssembly(AssemblyReference.Value);
+        services.AddMediatR(config => config.RegisterServicesFromAssembly(ApplicationAssemblyReference.Value));
+        services.AddValidatorsFromAssembly(ApplicationAssemblyReference.Value);
         return services;
     }
 }

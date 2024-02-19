@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <Folder Include="Abstractions\" />
+      <Folder Include="Features\" />
       <Folder Include="PipelineBehaviours\" />
       <Folder Include="Validators\" />
     </ItemGroup>

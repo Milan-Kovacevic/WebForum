@@ -1,19 +1,12 @@
-using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
-using Serilog;
-using WebForum.Application.Extensions;
-using WebForum.Infrastructure.Extensions;
+using WebForum.Api.Configuration.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddFluentValidationRulesToSwagger();
-
-builder.Services.AddControllers();
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure();
-
-builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
+builder.Services.AddSwagger();
+builder.Services.AddRateLimiting();
+builder.Services.AddHttpContextAccessor();
+builder.Host.AddLogging();
+builder.AddModules();
 
 var app = builder.Build();
 
@@ -24,6 +17,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRateLimiter();
 app.MapControllers();
-
 app.Run();

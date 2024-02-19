@@ -1,16 +1,16 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
+EXPOSE 5000
+EXPOSE 5001
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
+WORKDIR /release
 COPY ["src/WebForum.Api/WebForum.Api.csproj", "src/WebForum.Api/"]
 RUN dotnet restore "src/WebForum.Api/WebForum.Api.csproj"
 COPY . .
-WORKDIR "/src/src/WebForum.Api"
+WORKDIR "/release/src/WebForum.Api"
 RUN dotnet build "WebForum.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
