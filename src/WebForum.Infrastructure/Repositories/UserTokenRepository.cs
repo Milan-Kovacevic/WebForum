@@ -1,9 +1,7 @@
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Interfaces;
-using WebForum.Infrastructure.Configuration;
 
 namespace WebForum.Infrastructure.Repositories;
 

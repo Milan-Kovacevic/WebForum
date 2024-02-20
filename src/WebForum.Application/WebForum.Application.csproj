@@ -7,9 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\" />
+      <Folder Include="Features\Topics\Validators\" />
       <Folder Include="PipelineBehaviours\" />
-      <Folder Include="Validators\" />
     </ItemGroup>
 
     <ItemGroup>
