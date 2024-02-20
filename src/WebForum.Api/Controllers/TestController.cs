@@ -1,17 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using WebForum.Api.Configuration;
+using WebForum.Application.Abstractions;
 
 namespace WebForum.Api.Controllers;
 
 [ApiController]
 [Route("/api")]
-public class TestController : ControllerBase
+public class TestController(ITokenService tokenService, IEmailService emailService) : ControllerBase
 {
-    [HttpGet("/test")]
+    [HttpGet("/code/generate")]
     [EnableRateLimiting(Constants.RateLimiter.PolicyName)]
-    public IActionResult HelloWorld()
+    public async Task<IActionResult> GenerateCode(CancellationToken cancellationToken)
     {
-        return Ok("Hello world!");
+        var userId = Guid.NewGuid();
+        var code = await tokenService.Create2FaCode(userId, cancellationToken);
+        await emailService.Send2FaCodeEmail("lauretta.mcdermott61@ethereal.email", code, cancellationToken);
+        return Ok($"{userId}, Check your email for authentication code");
+    }
+
+    [HttpGet("/code/verify")]
+    [EnableRateLimiting(Constants.RateLimiter.PolicyName)]
+    public async Task<IActionResult> VerifyCode([FromQuery] Guid userId, [FromQuery] string code,
+        CancellationToken cancellationToken)
+    {
+        var result = await tokenService.Verify2FaCode(userId, code, cancellationToken);
+        return Ok($"Verification result : {result}");
     }
 }

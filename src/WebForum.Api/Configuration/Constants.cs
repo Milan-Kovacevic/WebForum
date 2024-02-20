@@ -6,7 +6,7 @@ public static class Constants
     {
         public const string PolicyName = "limiter";
         public static readonly TimeSpan Window = TimeSpan.FromSeconds(10);
-        public const int PermitLimit = 2;
+        public const int PermitLimit = 100;
     }
     
 }

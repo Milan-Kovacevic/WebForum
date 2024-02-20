@@ -7,6 +7,7 @@ public static class Database
         public const string Topic = "topic";
         public const string Post = "post";
         public const string User = "user";
+        public const string UserLogin = "user_login";
         public const string MigrationHistory = "ef_migrations";
     }
 
