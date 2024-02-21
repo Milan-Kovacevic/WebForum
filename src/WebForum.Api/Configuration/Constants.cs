@@ -13,7 +13,8 @@ public static class Constants
     {
         public const string DatabaseConnectionString = "DefaultConnection";
         public const string RedisConnectionString = "Redis";
-        public const string EmailOptionsSection = "Email";
+        public const string EmailConfigurationSection = "Email";
+        public const string GithubConfigurationSection = "GitHub";
     }
     
 }

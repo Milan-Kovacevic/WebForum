@@ -1,4 +1,3 @@
-using Serilog;
 using WebForum.Api.Configuration.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

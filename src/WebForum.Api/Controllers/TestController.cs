@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using WebForum.Api.Configuration;
+using WebForum.Application.Abstractions.Messaging;
 using WebForum.Application.Abstractions.Services;
 
 namespace WebForum.Api.Controllers;
 
 [ApiController]
 [Route("/api")]
-public class TestController(ITokenService tokenService, IEmailService emailService) : ControllerBase
+public class TestController(ITokenService tokenService, IEmailService emailService, IGithubClient githubClient) : ControllerBase
 {
     [HttpGet("/code/generate")]
     [EnableRateLimiting(Constants.RateLimiter.PolicyName)]
@@ -26,5 +27,12 @@ public class TestController(ITokenService tokenService, IEmailService emailServi
     {
         var result = await tokenService.Verify2FaCode(userId, code, cancellationToken);
         return Ok($"Verification result : {result}");
+    }
+
+    [HttpGet("/github")]
+    public async Task<IActionResult> GetGithubUser([FromQuery] string username)
+    {
+        var result = await githubClient.GetUserInfo(username);
+        return Ok(result);
     }
 }

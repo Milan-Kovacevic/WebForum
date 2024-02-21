@@ -6,7 +6,10 @@ public static class ConfigureLogging
 {
     public static IHostBuilder AddLogging(this IHostBuilder host)
     {
-        host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
+        host.UseSerilog((context, config) =>
+        {
+            config.ReadFrom.Configuration(context.Configuration);
+        });
         return host;
     }
 }
