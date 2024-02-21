@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using WebForum.Application.Abstractions.Messaging;
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Domain.Options;
 using WebForum.Infrastructure.Configuration;
 using WebForum.Infrastructure.DbContext;
 using WebForum.Infrastructure.Messaging;
+using WebForum.Infrastructure.Options;
 using WebForum.Infrastructure.Repositories;
 
 namespace WebForum.Api.Configuration.Extensions;

@@ -1,15 +1,16 @@
-using MediatR;
+using WebForum.Application.Abstractions.Messaging.MediatR;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Features.Topics.Commands;
 using WebForum.Application.Features.Topics.Responses;
 using WebForum.Domain.Entities;
+using WebForum.Domain.Models.Results;
 
 namespace WebForum.Application.Features.Topics.Handlers;
 
-public class InsertTopicCommandHandler(ITopicRepository topicRepository, IUnitOfWork unitOfWork)
-    : IRequestHandler<InsertTopicCommand, TopicResponse>
+public class InsertTopicCommandHandler(ITopicRepository topicRepository)
+    : ICommandHandler<InsertTopicCommand, TopicResponse>
 {
-    public async Task<TopicResponse> Handle(InsertTopicCommand request, CancellationToken cancellationToken)
+    public async Task<Result<TopicResponse>> Handle(InsertTopicCommand request, CancellationToken cancellationToken)
     {
         var topic = new Topic()
         {
@@ -17,12 +18,6 @@ public class InsertTopicCommandHandler(ITopicRepository topicRepository, IUnitOf
             Description = request.Description
         };
         await topicRepository.InsertAsync(topic, cancellationToken);
-        await unitOfWork.SaveChangesAsync(cancellationToken);
-        return new TopicResponse()
-        {
-            TopicId = topic.TopicId,
-            Name = topic.Name,
-            Description = topic.Description
-        };
+        return Result.Success(new TopicResponse(topic.TopicId, topic.Name, topic.Description));
     }
 }

@@ -6,16 +6,23 @@ using WebForum.Application.Features.Topics.Queries;
 
 namespace WebForum.Api.Controllers;
 
-[ApiController]
 [Route("/api/[controller]")]
-public class TopicsController(IMediator mediator) : ControllerBase
+public class TopicsController(ISender sender) : ApiController(sender)
 {
     [HttpGet]
     public async Task<IActionResult> GetAllTopics(CancellationToken cancellationToken)
     {
         var query = new GetAllTopicsQuery();
-        var result = await mediator.Send(query, cancellationToken);
-        return Ok(result);
+        var result = await Sender.Send(query, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
+    }
+    
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetTopicById(Guid id, CancellationToken cancellationToken)
+    {
+        var query = new GetTopicByIdQuery(id);
+        var result = await Sender.Send(query, cancellationToken);
+        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 
     [HttpPost]
@@ -26,7 +33,7 @@ public class TopicsController(IMediator mediator) : ControllerBase
             Name = request.Name,
             Description = request.Description
         };
-        var result = await mediator.Send(command);
-        return Ok(result);
+        var result = await Sender.Send(command);
+        return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
 }

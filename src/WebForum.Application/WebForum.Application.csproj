@@ -7,13 +7,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Features\Topics\Validators\" />
-      <Folder Include="PipelineBehaviours\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
       <PackageReference Include="MediatR" Version="12.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>

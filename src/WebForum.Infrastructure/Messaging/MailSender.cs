@@ -5,7 +5,7 @@ using MimeKit;
 using MimeKit.Text;
 using WebForum.Application.Abstractions.Messaging;
 using WebForum.Domain.Models;
-using WebForum.Domain.Options;
+using WebForum.Infrastructure.Options;
 
 namespace WebForum.Infrastructure.Messaging;
 
