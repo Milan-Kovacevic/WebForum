@@ -1,5 +1,5 @@
+using WebForum.Application.Abstractions.Repositories;
 using WebForum.Domain.Entities;
-using WebForum.Domain.Interfaces;
 using WebForum.Infrastructure.DbContext;
 
 namespace WebForum.Infrastructure.Repositories;

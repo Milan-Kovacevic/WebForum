@@ -1,6 +1,6 @@
 using WebForum.Domain.Models;
 
-namespace WebForum.Domain.Interfaces;
+namespace WebForum.Application.Abstractions.Messaging;
 
 public interface IMailSender
 {

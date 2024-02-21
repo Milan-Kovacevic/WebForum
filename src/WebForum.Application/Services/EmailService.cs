@@ -1,6 +1,6 @@
-using WebForum.Application.Abstractions;
+using WebForum.Application.Abstractions.Messaging;
+using WebForum.Application.Abstractions.Services;
 using WebForum.Domain.Entities;
-using WebForum.Domain.Interfaces;
 using WebForum.Domain.Models;
 
 namespace WebForum.Application.Services;

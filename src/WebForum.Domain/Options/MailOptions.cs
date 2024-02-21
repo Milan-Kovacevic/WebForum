@@ -1,4 +1,4 @@
-namespace WebForum.Infrastructure.Messaging;
+namespace WebForum.Domain.Options;
 
 public class MailOptions
 {

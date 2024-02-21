@@ -1,6 +1,3 @@
-using WebForum.Application.Extensions;
-using WebForum.Infrastructure.Extensions;
-
 namespace WebForum.Api.Configuration.Extensions;
 
 public static class ConfigureModules

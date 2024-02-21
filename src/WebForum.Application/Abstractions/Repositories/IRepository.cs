@@ -1,4 +1,4 @@
-namespace WebForum.Domain.Interfaces;
+namespace WebForum.Application.Abstractions.Repositories;
 
 public interface IRepository<TEntity, in TEntityId> where TEntity : class
 {

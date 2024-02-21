@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
-using WebForum.Application.Abstractions;
+using WebForum.Application.Abstractions.Repositories;
+using WebForum.Application.Abstractions.Services;
 using WebForum.Domain.Entities;
-using WebForum.Domain.Interfaces;
 
 namespace WebForum.Application.Services;
 

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using WebForum.Api.Configuration;
-using WebForum.Application.Abstractions;
+using WebForum.Application.Abstractions.Services;
 
 namespace WebForum.Api.Controllers;
 
@@ -15,7 +15,7 @@ public class TestController(ITokenService tokenService, IEmailService emailServi
     {
         var userId = Guid.NewGuid();
         var code = await tokenService.Create2FaCode(userId, cancellationToken);
-        await emailService.Send2FaCodeEmail("lauretta.mcdermott61@ethereal.email", code, cancellationToken);
+        await emailService.Send2FaCodeEmail("test@test.com", code, cancellationToken);
         return Ok($"{userId}, Check your email for authentication code");
     }
 

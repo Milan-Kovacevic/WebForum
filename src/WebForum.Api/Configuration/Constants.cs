@@ -8,5 +8,12 @@ public static class Constants
         public static readonly TimeSpan Window = TimeSpan.FromSeconds(10);
         public const int PermitLimit = 100;
     }
+
+    public static class Infrastructure
+    {
+        public const string DatabaseConnectionString = "DefaultConnection";
+        public const string RedisConnectionString = "Redis";
+        public const string EmailOptionsSection = "Email";
+    }
     
 }

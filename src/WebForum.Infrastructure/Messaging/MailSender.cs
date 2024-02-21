@@ -3,8 +3,9 @@ using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
-using WebForum.Domain.Interfaces;
+using WebForum.Application.Abstractions.Messaging;
 using WebForum.Domain.Models;
+using WebForum.Domain.Options;
 
 namespace WebForum.Infrastructure.Messaging;
 

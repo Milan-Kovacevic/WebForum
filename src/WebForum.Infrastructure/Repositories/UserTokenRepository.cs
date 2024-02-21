@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using WebForum.Application.Abstractions.Repositories;
 using WebForum.Domain.Entities;
-using WebForum.Domain.Interfaces;
 
 namespace WebForum.Infrastructure.Repositories;
 

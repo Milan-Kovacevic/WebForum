@@ -1,6 +1,6 @@
 using WebForum.Domain.Entities;
 
-namespace WebForum.Domain.Interfaces;
+namespace WebForum.Application.Abstractions.Repositories;
 
 public interface IUserTokenRepository
 {

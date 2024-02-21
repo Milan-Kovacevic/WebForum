@@ -1,8 +1,8 @@
 using MediatR;
+using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Features.Topics.Commands;
 using WebForum.Application.Features.Topics.Responses;
 using WebForum.Domain.Entities;
-using WebForum.Domain.Interfaces;
 
 namespace WebForum.Application.Features.Topics.Handlers;
 

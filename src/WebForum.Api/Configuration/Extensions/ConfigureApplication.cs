@@ -1,11 +1,11 @@
 using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
-using WebForum.Application.Abstractions;
+using WebForum.Application;
+using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Services;
 
-namespace WebForum.Application.Extensions;
+namespace WebForum.Api.Configuration.Extensions;
 
-public static class DependencyInjection
+public static class ConfigureApplication
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {

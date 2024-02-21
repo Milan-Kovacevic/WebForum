@@ -1,35 +1,33 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using WebForum.Domain.Interfaces;
+using WebForum.Application.Abstractions.Messaging;
+using WebForum.Application.Abstractions.Repositories;
+using WebForum.Domain.Options;
 using WebForum.Infrastructure.Configuration;
 using WebForum.Infrastructure.DbContext;
 using WebForum.Infrastructure.Messaging;
 using WebForum.Infrastructure.Repositories;
 
-namespace WebForum.Infrastructure.Extensions;
+namespace WebForum.Api.Configuration.Extensions;
 
-public static class DependencyInjection
+public static class ConfigureInfrastructure
 {
-    private const string DatabaseConnectionString = "DefaultConnection";
-    private const string RedisConnectionString = "Redis";
-    private const string EmailOptionsSection = "Email";
-
     public static IServiceCollection AddInfrastructure(this IServiceCollection services,
         IConfigurationManager configuration)
     {
         services.AddDbContext<ApplicationDbContext>(
             options =>
             {
-                options.UseMySQL(configuration.GetConnectionString(DatabaseConnectionString)!,
+                options.UseMySQL(configuration.GetConnectionString(Constants.Infrastructure.DatabaseConnectionString)!,
                     o => o.MigrationsHistoryTable(Database.Tables.MigrationHistory));
             });
         services.AddStackExchangeRedisCache(options =>
         {
-            var connection = configuration.GetConnectionString(RedisConnectionString)!;
+            var connection = configuration.GetConnectionString(Constants.Infrastructure.RedisConnectionString)!;
             options.Configuration = connection;
         });
-        services.Configure<MailOptions>(options => configuration.GetSection(EmailOptionsSection).Bind(options));
+        services.AddOptions<MailOptions>().BindConfiguration(Constants.Infrastructure.EmailOptionsSection)
+            .ValidateDataAnnotations().ValidateOnStart();
+
         services.AddScoped<IMailSender, MailSender>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ITopicRepository, TopicRepository>();

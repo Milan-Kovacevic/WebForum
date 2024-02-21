@@ -20,4 +20,10 @@
       <ProjectReference Include="..\WebForum.Domain\WebForum.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Diagnostics">
+        <HintPath>..\..\..\..\..\..\PROGRAM FILES\DOTNET\shared\Microsoft.AspNetCore.App\8.0.1\Microsoft.AspNetCore.Diagnostics.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,6 @@
 using WebForum.Domain.Entities;
 
-namespace WebForum.Application.Abstractions;
+namespace WebForum.Application.Abstractions.Services;
 
 public interface ITokenService
 {

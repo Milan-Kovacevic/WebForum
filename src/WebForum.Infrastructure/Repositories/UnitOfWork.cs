@@ -1,4 +1,4 @@
-using WebForum.Domain.Interfaces;
+using WebForum.Application.Abstractions.Repositories;
 using WebForum.Infrastructure.DbContext;
 
 namespace WebForum.Infrastructure.Repositories;
