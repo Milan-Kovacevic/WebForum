@@ -2,6 +2,7 @@ using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Features.Topics.Responses;
 using WebForum.Domain.Entities;
+using WebForum.Domain.Models.Errors;
 using WebForum.Domain.Models.Results;
 
 namespace WebForum.Application.Features.Topics.Create;
@@ -11,6 +12,9 @@ public class CreateTopicCommandHandler(ITopicRepository topicRepository)
 {
     public async Task<Result<TopicResponse>> Handle(CreateTopicCommand request, CancellationToken cancellationToken)
     {
+        if (await topicRepository.ExistsByName(request.Name))
+            return Result.Failure<TopicResponse>(DomainErrors.Topic.ConflictName(request.Name));
+
         var topic = new Topic()
         {
             Name = request.Name,

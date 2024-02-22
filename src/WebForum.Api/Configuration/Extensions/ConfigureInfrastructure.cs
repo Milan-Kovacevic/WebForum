@@ -28,11 +28,11 @@ public static class ConfigureInfrastructure
         });
         services.AddOptions<MailSettings>().BindConfiguration(Constants.Infrastructure.EmailConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
-        services.AddOptions<GithubSettings>().BindConfiguration(Constants.Infrastructure.GithubConfigurationSection)
+        services.AddOptions<GitHubSettings>().BindConfiguration(Constants.Infrastructure.GitHubConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
-        services.AddHttpClient<IGithubClient, GithubClient>((serviceProvider, httpClient) =>
+        services.AddHttpClient<IGitHubClient, GitHubClient>((serviceProvider, httpClient) =>
         {
-            var githubSettings = serviceProvider.GetRequiredService<IOptions<GithubSettings>>().Value;
+            var githubSettings = serviceProvider.GetRequiredService<IOptions<GitHubSettings>>().Value;
             httpClient.DefaultRequestHeaders.Add("Authorization", githubSettings.AccessToken);
             httpClient.DefaultRequestHeaders.Add("User-Agent", githubSettings.UserAgent);
             httpClient.BaseAddress = new Uri(githubSettings.BaseAddress);

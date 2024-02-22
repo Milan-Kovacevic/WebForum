@@ -14,7 +14,7 @@ public static class Constants
         public const string DatabaseConnectionString = "DefaultConnection";
         public const string RedisConnectionString = "Redis";
         public const string EmailConfigurationSection = "Email";
-        public const string GithubConfigurationSection = "GitHub";
+        public const string GitHubConfigurationSection = "GitHub";
     }
     
 }

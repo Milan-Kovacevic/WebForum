@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebForum.Infrastructure.Settings;
 
-public class GithubSettings
+public class GitHubSettings
 {
     [Required]
     public required string AccessToken { get; init; }

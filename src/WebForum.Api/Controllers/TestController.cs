@@ -8,7 +8,7 @@ namespace WebForum.Api.Controllers;
 
 [ApiController]
 [Route("/api")]
-public class TestController(ITokenService tokenService, IEmailService emailService, IGithubClient githubClient) : ControllerBase
+public class TestController(ITokenService tokenService, IEmailService emailService, IGitHubClient gitHubClient) : ControllerBase
 {
     [HttpGet("/code/generate")]
     [EnableRateLimiting(Constants.RateLimiter.PolicyName)]
@@ -32,7 +32,7 @@ public class TestController(ITokenService tokenService, IEmailService emailServi
     [HttpGet("/github")]
     public async Task<IActionResult> GetGithubUser([FromQuery] string username)
     {
-        var result = await githubClient.GetUserInfo(username);
+        var result = await gitHubClient.GetUserInfo(username);
         return Ok(result);
     }
 }
