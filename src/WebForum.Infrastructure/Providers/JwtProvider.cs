@@ -18,10 +18,10 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+            new Claim(JwtRegisteredClaimNames.Name, user.DisplayName),
             new Claim("role", user.Role.ToString())
         };
-        var data = Encoding.UTF8.GetBytes(_options.SecretKey);
-        var signingKey = new SymmetricSecurityKey(data);
+        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
         var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(_options.Issuer, _options.Audience, claims, null,
             DateTime.UtcNow.AddHours(_options.ExpirationTime), credentials);

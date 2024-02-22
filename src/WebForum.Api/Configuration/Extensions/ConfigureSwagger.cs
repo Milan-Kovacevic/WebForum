@@ -1,4 +1,5 @@
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
 namespace WebForum.Api.Configuration.Extensions;
@@ -15,6 +16,8 @@ public static class ConfigureSwagger
                 In = ParameterLocation.Header,
                 Description = "Please enter or paste your Json Web Token (Jwt)",
                 Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey,
+                Scheme = JwtBearerDefaults.AuthenticationScheme
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement

@@ -20,10 +20,9 @@ public class AuthController(ISender sender, IJwtProvider jwtProvider) : ApiContr
     [HttpPost("/login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        await Task.CompletedTask;
-        return Ok(
-            jwtProvider.GenerateUserToken(new User()
+        return Ok(await jwtProvider.GenerateUserToken(new User()
             {
+                UserId = Guid.NewGuid(),
                 Role = UserRole.Regular, 
                 DisplayName = "Milan Kovacevic", 
                 IsEnabled = true, 
