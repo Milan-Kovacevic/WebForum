@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WebForum.Infrastructure.Settings;
+namespace WebForum.Infrastructure.Options;
 
-public class GitHubSettings
+public class GitHubOptions
 {
     [Required]
     public required string AccessToken { get; init; }

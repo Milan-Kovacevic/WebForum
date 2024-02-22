@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Requests;
 using WebForum.Application.Features.Topics.Create;
@@ -19,7 +20,7 @@ public class TopicsController(ISender sender) : ApiController(sender)
         var result = await Sender.Send(query, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
-    
+
     [HttpGet("{topicId:guid}")]
     public async Task<IActionResult> GetTopicById(Guid topicId, CancellationToken cancellationToken)
     {
@@ -29,26 +30,30 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddTopic([FromBody] TopicRequest request)
+    [Authorize]
+    public async Task<IActionResult> AddTopic([FromBody] TopicRequest request, CancellationToken cancellationToken)
     {
         var command = new CreateTopicCommand(request.Name, request.Description);
-        var result = await Sender.Send(command);
+        var result = await Sender.Send(command, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
-    
+
     [HttpPut("{topicId:guid}")]
-    public async Task<IActionResult> UpdateTopic(Guid topicId, [FromBody] TopicRequest request)
+    [Authorize]
+    public async Task<IActionResult> UpdateTopic(Guid topicId, [FromBody] TopicRequest request,
+        CancellationToken cancellationToken)
     {
         var command = new UpdateTopicCommand(topicId, request.Name, request.Description);
-        var result = await Sender.Send(command);
+        var result = await Sender.Send(command, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
     }
-    
+
     [HttpDelete("{topicId:guid}")]
-    public async Task<IActionResult> DeleteTopic(Guid topicId)
+    [Authorize]
+    public async Task<IActionResult> DeleteTopic(Guid topicId, CancellationToken cancellationToken)
     {
         var command = new DeleteTopicCommand(topicId);
-        var result = await Sender.Send(command);
+        var result = await Sender.Send(command, cancellationToken);
         return result.IsSuccess ? NoContent() : HandleFailure(result);
     }
 }

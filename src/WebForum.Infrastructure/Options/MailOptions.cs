@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebForum.Infrastructure.Settings;
 
-public class MailSettings
+public class MailOptions
 {
     [Required]
     public required string SmtpHost { get; init; }

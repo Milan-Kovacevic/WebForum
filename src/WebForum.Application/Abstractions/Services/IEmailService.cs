@@ -1,5 +1,4 @@
 using WebForum.Domain.Entities;
-using WebForum.Domain.Models;
 
 namespace WebForum.Application.Abstractions.Services;
 
