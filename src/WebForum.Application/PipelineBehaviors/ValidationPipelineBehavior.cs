@@ -1,6 +1,6 @@
 using FluentValidation;
 using MediatR;
-using WebForum.Application.Abstractions.Messaging.MediatR;
+using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Domain.Models.Errors;
 using WebForum.Domain.Models.Results;
 

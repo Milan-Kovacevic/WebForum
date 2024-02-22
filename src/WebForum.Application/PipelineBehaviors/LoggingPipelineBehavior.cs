@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
-using WebForum.Application.Abstractions.Messaging.MediatR;
+using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Domain.Models.Results;
 
 namespace WebForum.Application.PipelineBehaviors;
@@ -21,21 +21,21 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(ILogger<LoggingPipelin
         else
         {
             logger.LogDebug("Starting request {@RequestName}, at {@DateTimeUtc}", typeof(TRequest).Name,
-                DateTime.UtcNow); 
+                DateTime.UtcNow);
         }
-        
+
         var result = await next();
-        
+
         if (result.IsFailure)
         {
-            logger.LogError("Request failure {@RequestName}, {@Error}, {@DateTimeUtc}", typeof(TRequest).Name,
-                result.Error, DateTime.UtcNow);
+            LogFailure(result);
             return result;
         }
 
         if (request.Type.HasFlag(RequestFlag.Sensitive))
         {
-            logger.LogInformation("Completed sensitive request {@RequestName}, at {@DateTimeUtc}", typeof(TRequest).Name,
+            logger.LogInformation("Completed sensitive request {@RequestName}, at {@DateTimeUtc}",
+                typeof(TRequest).Name,
                 DateTime.UtcNow);
         }
         else
@@ -45,5 +45,24 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(ILogger<LoggingPipelin
         }
 
         return result;
+    }
+
+    private void LogFailure(TResponse result)
+    {
+        if (!result.IsFailure)
+            return;
+
+        if (result is IValidationResult validationResult)
+        {
+            logger.LogError(
+                "Request failure {@RequestName}, {@Error}, {@DateTimeUtc}. Validation errors {@ValidationErrors}",
+                typeof(TRequest).Name,
+                validationResult.Errors, DateTime.UtcNow, validationResult.Errors);
+        }
+        else
+        {
+            logger.LogError("Request failure {@RequestName}, {@Error}, {@DateTimeUtc}", typeof(TRequest).Name,
+                result.Error, DateTime.UtcNow);
+        }
     }
 }

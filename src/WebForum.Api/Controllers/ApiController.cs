@@ -14,18 +14,21 @@ public class ApiController(ISender sender) : ControllerBase
         => result switch
         {
             { IsSuccess: true } => throw new InvalidOperationException(),
-            IValidationResult validationResult => BadRequest(GetProblemDetails(StatusCodes.Status400BadRequest,
-                result.Error.Name, result.Error, validationResult.Errors)),
+            IValidationResult validationResult => BadRequest(GetProblemDetails(result.Error, validationResult.Errors)),
+            { Error.Status: StatusCodes.Status404NotFound } => NotFound(GetProblemDetails(result.Error)),
+            { Error.Status: StatusCodes.Status401Unauthorized } => Unauthorized(GetProblemDetails(result.Error)),
+            { Error.Status: StatusCodes.Status403Forbidden } => Forbid(),
+            { Error.Status: StatusCodes.Status409Conflict } => Conflict(GetProblemDetails(result.Error)),
             _ => throw new ArgumentOutOfRangeException(nameof(result), result, null)
         };
 
-    private static ProblemDetails GetProblemDetails(int status, string title, Error error, Error[]? validationErrors)
+    private static ProblemDetails GetProblemDetails(Error error, Error[]? validationErrors = null)
     {
         var problemDetails = new ProblemDetails()
         {
-            Status = status,
-            Title = title,
-            Type = error.Name,
+            Status = error.Status,
+            Title = error.Code,
+            Type = error.Code,
             Detail = error.Message
         };
         if (validationErrors is not null)

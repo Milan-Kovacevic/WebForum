@@ -10,12 +10,13 @@ public class TopicEntityConfiguration : IEntityTypeConfiguration<Topic>
     {
         builder.ToTable(Database.Tables.Topic);
         builder.HasKey(x => x.TopicId);
-        builder.HasIndex(x => x.TopicId).IsUnique(true);
+        builder.HasIndex(x => x.TopicId).IsUnique();
 
         builder.Property(x => x.Name)
-            .IsRequired(true)
+            .IsRequired()
             .HasMaxLength(Database.Constants.MaxNameLength);
-
+        builder.HasIndex(x => x.Name).IsUnique();
+        
         builder.Property(x => x.Description)
             .IsRequired(false)
             .HasMaxLength(Database.Constants.MaxLongTextLength);

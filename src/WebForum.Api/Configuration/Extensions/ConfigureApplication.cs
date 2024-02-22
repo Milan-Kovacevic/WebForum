@@ -13,9 +13,9 @@ public static class ConfigureApplication
         services.AddMediatR(config =>
         {
             config.RegisterServicesFromAssembly(ApplicationAssemblyReference.Value);
+            config.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>));
             config.AddOpenBehavior(typeof(ValidationPipelineBehavior<,>));
             config.AddOpenBehavior(typeof(TransactionPipelineBehavior<,>));
-            config.AddOpenBehavior(typeof(LoggingPipelineBehavior<,>));
         });
         services.AddValidatorsFromAssembly(ApplicationAssemblyReference.Value);
         services.AddScoped<ITokenService, TokenService>();

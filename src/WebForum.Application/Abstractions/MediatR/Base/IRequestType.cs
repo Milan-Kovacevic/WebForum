@@ -1,13 +1,11 @@
 using MediatR;
 
-namespace WebForum.Application.Abstractions.Messaging.MediatR;
+namespace WebForum.Application.Abstractions.MediatR.Base;
 
 public interface IRequestType
 {
     public RequestFlag Type { get; }
 }
-
-public interface IRequestBase : IRequest, IRequestType;
 
 public interface IRequestBase<out TResponse> : IRequest<TResponse>, IRequestType;
 

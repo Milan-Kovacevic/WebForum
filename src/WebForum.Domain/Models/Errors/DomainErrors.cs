@@ -6,7 +6,7 @@ public static class DomainErrors
 {
     public static class Topic
     {
-        public static Error NotFound(Guid id) => new Error($"Topic.NotFound", $"The topic with Id {id} was not found.");
+        public static Error NotFound(Guid id) => new($"Topic.NotFound", $"The topic with Id {id} was not found.",
+            (int)HttpStatusCode.NotFound);
     }
-    
 }

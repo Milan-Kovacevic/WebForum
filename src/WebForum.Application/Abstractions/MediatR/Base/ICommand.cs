@@ -1,8 +1,7 @@
 using MediatR;
 using WebForum.Domain.Models.Results;
 
-namespace WebForum.Application.Abstractions.Messaging.MediatR;
-
+namespace WebForum.Application.Abstractions.MediatR.Base;
 
 // Marker interfaces
 public interface ICommand : IRequestBase<Result>;

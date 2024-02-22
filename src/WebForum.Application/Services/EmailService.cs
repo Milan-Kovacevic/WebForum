@@ -13,7 +13,7 @@ public class EmailService(IMailSender mailSender) : IEmailService
         {
             SendTo = sendTo,
             Subject = "Your Two-Factor verification code",
-            Body = $"Hi, here's your authentication code {code.Value}. This code expires in {code.Duration}"
+            Body = $"Hi, here's your authentication code {code.Value}. This code expires in {code.Duration.TotalMinutes} minutes."
         };
         await mailSender.SendEmail(email, cancellationToken);
     }

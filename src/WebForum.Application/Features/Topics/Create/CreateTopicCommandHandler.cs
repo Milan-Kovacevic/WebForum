@@ -1,16 +1,15 @@
-using WebForum.Application.Abstractions.Messaging.MediatR;
+using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Application.Features.Topics.Commands;
 using WebForum.Application.Features.Topics.Responses;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Models.Results;
 
-namespace WebForum.Application.Features.Topics.Handlers;
+namespace WebForum.Application.Features.Topics.Create;
 
-public class InsertTopicCommandHandler(ITopicRepository topicRepository)
-    : ICommandHandler<InsertTopicCommand, TopicResponse>
+public class CreateTopicCommandHandler(ITopicRepository topicRepository)
+    : ICommandHandler<CreateTopicCommand, TopicResponse>
 {
-    public async Task<Result<TopicResponse>> Handle(InsertTopicCommand request, CancellationToken cancellationToken)
+    public async Task<Result<TopicResponse>> Handle(CreateTopicCommand request, CancellationToken cancellationToken)
     {
         var topic = new Topic()
         {

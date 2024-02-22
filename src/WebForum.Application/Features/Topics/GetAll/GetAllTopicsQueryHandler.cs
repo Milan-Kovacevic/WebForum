@@ -1,10 +1,9 @@
-using WebForum.Application.Abstractions.Messaging.MediatR;
+using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Application.Features.Topics.Queries;
 using WebForum.Application.Features.Topics.Responses;
 using WebForum.Domain.Models.Results;
 
-namespace WebForum.Application.Features.Topics.Handlers;
+namespace WebForum.Application.Features.Topics.GetAll;
 
 public class GetAllTopicsQueryHandler(ITopicRepository topicRepository)
     : IQueryHandler<GetAllTopicsQuery, IEnumerable<TopicResponse>>
