@@ -22,29 +22,34 @@ public class ValidationPipelineBehavior<TRequest, TResponse>(IEnumerable<IValida
         var context = new ValidationContext<TRequest>(request);
         var validationFailures =
             await Task.WhenAll(validators.Select(validator => validator.ValidateAsync(context, cancellationToken)));
-        var validationErrors = validationFailures.Where(result => !result.IsValid)
+        var propertyErrors = validationFailures.Where(result => !result.IsValid)
             .SelectMany(result => result.Errors).Select(validationFailure =>
-                new Error(validationFailure.PropertyName, validationFailure.ErrorMessage)).ToArray();
+                new PropertyError(validationFailure.PropertyName, validationFailure.ErrorMessage)).ToArray();
 
-        if (!validationErrors.Any())
+        if (!propertyErrors.Any())
             return await next();
 
-        return CreateValidationResult<TResponse>(validationErrors);
+        return CreateValidationResult<TResponse>(propertyErrors);
     }
 
-    private static TResult CreateValidationResult<TResult>(Error[] errors) where TResult : Result
+    private static TResult CreateValidationResult<TResult>(PropertyError[] errors) where TResult : Result
     {
         // Result with no response (non generic result object)
         if (typeof(TResult) == typeof(Result))
         {
-            return (ValidationResult.WithErrors(errors) as TResult)!;
+            return (Result.Failure(new ValidationError(errors)) as TResult)!;
         }
 
+        var type = typeof(TResult).GenericTypeArguments[0];
+        
+        Result.Failure(new ValidationError(errors)).ToGeneric<TResult>();
+        var response = typeof(Result<TResult>).GetMethod(nameof(Result.Failure))!.Invoke(null, [new ValidationError(errors)]);
+        
         // Result with response type (generic result object)
-        var validationResult = typeof(ValidationResult<>).GetGenericTypeDefinition()
-            .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
-            .GetMethod(nameof(ValidationResult.WithErrors))!.Invoke(null, [errors])!;
+        //var validationResult = typeof(ValidationResult<>).GetGenericTypeDefinition()
+        //    .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
+        //    .GetMethod(nameof(ValidationResult.WithErrors))!.Invoke(null, [errors])!;
 
-        return (TResult)validationResult;
+        return (TResult)response;
     }
 }

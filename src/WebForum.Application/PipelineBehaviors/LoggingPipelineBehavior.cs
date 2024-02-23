@@ -52,17 +52,7 @@ public class LoggingPipelineBehavior<TRequest, TResponse>(ILogger<LoggingPipelin
         if (!result.IsFailure)
             return;
 
-        if (result is IValidationResult validationResult)
-        {
-            logger.LogError(
-                "Request failure {@RequestName}, {@Error}, {@DateTimeUtc}. Validation errors {@ValidationErrors}",
-                typeof(TRequest).Name,
-                validationResult.Errors, DateTime.UtcNow, validationResult.Errors);
-        }
-        else
-        {
-            logger.LogError("Request failure {@RequestName}, {@Error}, {@DateTimeUtc}", typeof(TRequest).Name,
-                result.Error, DateTime.UtcNow);
-        }
+        logger.LogError("Request failure {@RequestName}, {@Error}, {@DateTimeUtc}", typeof(TRequest).Name,
+            result.Error, DateTime.UtcNow);
     }
 }

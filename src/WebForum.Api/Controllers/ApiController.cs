@@ -9,20 +9,21 @@ namespace WebForum.Api.Controllers;
 public class ApiController(ISender sender) : ControllerBase
 {
     protected ISender Sender { get; } = sender;
-    
+
     protected IActionResult HandleFailure(Result result)
         => result switch
         {
             { IsSuccess: true } => throw new InvalidOperationException(),
-            IValidationResult validationResult => BadRequest(GetProblemDetails(result.Error, validationResult.Errors)),
-            { Error.Status: StatusCodes.Status404NotFound } => NotFound(GetProblemDetails(result.Error)),
             { Error.Status: StatusCodes.Status401Unauthorized } => Unauthorized(GetProblemDetails(result.Error)),
             { Error.Status: StatusCodes.Status403Forbidden } => Forbid(),
+            { Error.Status: StatusCodes.Status404NotFound } => NotFound(GetProblemDetails(result.Error)),
             { Error.Status: StatusCodes.Status409Conflict } => Conflict(GetProblemDetails(result.Error)),
+            { Error: { Status: StatusCodes.Status400BadRequest } and ValidationError validationError } =>
+                BadRequest(GetProblemDetails(result.Error, validationError.Errors)),
             _ => throw new ArgumentOutOfRangeException(nameof(result), result, null)
         };
 
-    private static ProblemDetails GetProblemDetails(Error error, Error[]? validationErrors = null)
+    private static ProblemDetails GetProblemDetails(Error error, PropertyError[]? propertyErrors = null)
     {
         var problemDetails = new ProblemDetails()
         {
@@ -31,9 +32,9 @@ public class ApiController(ISender sender) : ControllerBase
             Type = error.Code,
             Detail = error.Message
         };
-        if (validationErrors is not null)
+        if (propertyErrors is not null)
         {
-            problemDetails.Extensions["errors"] = validationErrors;
+            problemDetails.Extensions["errors"] = propertyErrors;
         }
 
         return problemDetails;

@@ -7,6 +7,7 @@ using WebForum.Application.Features.Topics.Delete;
 using WebForum.Application.Features.Topics.GetAll;
 using WebForum.Application.Features.Topics.GetById;
 using WebForum.Application.Features.Topics.Update;
+using WebForum.Domain.Models.Results;
 
 namespace WebForum.Api.Controllers;
 
@@ -33,6 +34,8 @@ public class TopicsController(ISender sender) : ApiController(sender)
     [Authorize]
     public async Task<IActionResult> AddTopic([FromBody] TopicRequest request, CancellationToken cancellationToken)
     {
+        Result.Create(new CreateTopicCommand(request.Name, request.Description));
+        
         var command = new CreateTopicCommand(request.Name, request.Description);
         var result = await Sender.Send(command, cancellationToken);
         return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);

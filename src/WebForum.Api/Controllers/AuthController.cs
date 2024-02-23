@@ -1,14 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Requests;
-using WebForum.Application.Abstractions.Providers;
-using WebForum.Domain.Entities;
-using WebForum.Domain.Enums;
+using WebForum.Application.Features.Auth.Login;
 
 namespace WebForum.Api.Controllers;
 
 [Route("/api")]
-public class AuthController(ISender sender, IJwtProvider jwtProvider) : ApiController(sender)
+public class AuthController(ISender sender) : ApiController(sender)
 {
     [HttpPost("/register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
@@ -20,15 +18,18 @@ public class AuthController(ISender sender, IJwtProvider jwtProvider) : ApiContr
     [HttpPost("/login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        return Ok(await jwtProvider.GenerateUserToken(new User()
-            {
-                UserId = Guid.NewGuid(),
-                Role = UserRole.Regular, 
-                DisplayName = "Milan Kovacevic", 
-                IsEnabled = true, 
-                AccessFailedCount = 0,
-                ConcurrencyStamp = Guid.NewGuid()
-            }));
+        if (request.TwoFactorCode is not null)
+        {
+            var command = new TwoFactorLoginCommand(request.Username, request.Password, request.TwoFactorCode);
+            var result = await Sender.Send(command);
+            return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
+        }
+        else
+        {
+            var command = new LoginCommand(request.Username, request.Password);
+            var result = await Sender.Send(command);
+            return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
+        }
     }
 
     [HttpPost("/externalLogin")]
