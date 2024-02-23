@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace WebForum.Application.Features.Auth.Login;
 
-public class LoginCommandValidator<T> : AbstractValidator<T> where T: LoginCommand
+public class LoginCommandValidator<T> : AbstractValidator<T> where T : LoginCommand
 {
     public LoginCommandValidator()
     {
@@ -16,6 +16,7 @@ public class LoginCommandValidator<T> : AbstractValidator<T> where T: LoginComma
             .Must(password => password.Any(char.IsUpper) && password.Any(char.IsLower))
             .WithMessage("Password must contain at least one uppercase and lowercase letter.")
             .Must(password => password.Any(char.IsDigit)).WithMessage("Password must contain at least one digit")
-            .Must(password => password.Any(c => !char.IsLetterOrDigit(c)));
+            .Must(password => password.Any(c => !char.IsLetterOrDigit(c)))
+            .WithMessage("Password must contain at least one special character");
     }
 }

@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentValidation;
 using MediatR;
 using WebForum.Application.Abstractions.MediatR.Base;
@@ -39,17 +40,11 @@ public class ValidationPipelineBehavior<TRequest, TResponse>(IEnumerable<IValida
         {
             return (Result.Failure(new ValidationError(errors)) as TResult)!;
         }
-
-        var type = typeof(TResult).GenericTypeArguments[0];
         
-        Result.Failure(new ValidationError(errors)).ToGeneric<TResult>();
-        var response = typeof(Result<TResult>).GetMethod(nameof(Result.Failure))!.Invoke(null, [new ValidationError(errors)]);
-        
-        // Result with response type (generic result object)
-        //var validationResult = typeof(ValidationResult<>).GetGenericTypeDefinition()
-        //    .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
-        //    .GetMethod(nameof(ValidationResult.WithErrors))!.Invoke(null, [errors])!;
-
-        return (TResult)response;
+        // Result with a response (generic result object)
+        var validationResult = typeof(Result<>).GetGenericTypeDefinition()
+            .MakeGenericType(typeof(TResult).GenericTypeArguments[0])
+            .GetMethod(nameof(Result<TResult>.FromError))!.Invoke(null, [new ValidationError(errors)])!;
+        return (TResult)validationResult;
     }
 }
