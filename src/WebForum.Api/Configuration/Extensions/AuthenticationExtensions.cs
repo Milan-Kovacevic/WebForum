@@ -1,3 +1,9 @@
+using System.Buffers;
+using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebForum.Api.Configuration.Options;
 
@@ -16,8 +22,35 @@ public static class AuthenticationExtensions
                 o.AuthorizationEndpoint = "https://github.com/login/oauth/authorize";
                 o.TokenEndpoint = "https://github.com/login/oauth/access_token";
                 o.UserInformationEndpoint = "https://api.github.com/user";
-                o.CallbackPath = "/api/oauth/github";
+                o.CallbackPath = "/signin-github";
+                o.SaveTokens = false;
+                o.ClaimActions.MapJsonKey("sub", "id");
+                o.ClaimActions.MapJsonKey(ClaimTypes.Name, "login");
+
+                o.Events.OnCreatingTicket = async context =>
+                {
+                    using var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", context.AccessToken);
+                    using var result = await context.Backchannel.SendAsync(request);
+                    var user = await result.Content.ReadFromJsonAsync<JsonElement>();
+                    context.RunClaimActions(user);
+                };
+                o.Events.OnTicketReceived = context =>
+                {
+                    var identity = context.Principal?.Identities.FirstOrDefault(identity =>
+                        identity.AuthenticationType == "github");
+                    if (identity is null)
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        return Task.CompletedTask;
+                    }
+
+                    context.HttpContext.SignInAsync(context.Principal);
+                    context.Success();
+                    return Task.CompletedTask;
+                };
             });
+            
         services.ConfigureOptions<JwtBearerOptionsConfiguration>();
         services.AddAuthorization();
         return services;

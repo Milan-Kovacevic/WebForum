@@ -31,18 +31,12 @@ public static class ConfigureInfrastructure
         });
         services.AddOptions<MailOptions>().BindConfiguration(Constants.Infrastructure.EmailConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
-        services.AddOptions<GitHubOptions>().BindConfiguration(Constants.Infrastructure.GitHubConfigurationSection)
+        services.AddOptions<GitHubOptions>().BindConfiguration(Constants.Infrastructure.OAuthGitHubConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
         services.AddOptions<JwtOptions>().BindConfiguration(Constants.Infrastructure.JwtConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
         
-        services.AddHttpClient<IGitHubClient, GitHubClient>((serviceProvider, httpClient) =>
-        {
-            var gitHubOptions = serviceProvider.GetRequiredService<IOptions<GitHubOptions>>().Value;
-            httpClient.DefaultRequestHeaders.Add("Authorization", gitHubOptions.AccessToken);
-            httpClient.DefaultRequestHeaders.Add("User-Agent", gitHubOptions.UserAgent);
-            httpClient.BaseAddress = new Uri(gitHubOptions.BaseAddress);
-        });
+        services.AddHttpClient<IGitHubClient, GitHubClient>();
         services.AddScoped<IMailSender, MailSender>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<ITwoFactorCodeProvider, TwoFactorCodeProvider>();

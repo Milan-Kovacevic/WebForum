@@ -8,8 +8,8 @@ builder.Services.AddGlobalExceptionHandler();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Host.AddLogging();
-builder.AddModules();
 builder.Services.AddAuthenticationAndAuthorization();
+builder.AddModules();
 
 var app = builder.Build();
 

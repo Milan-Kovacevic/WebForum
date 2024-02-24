@@ -26,4 +26,11 @@ public static class DomainErrors
             $"The user with the username {username} is already registered.",
             (int)HttpStatusCode.Conflict);
     }
+
+    public static class Auth
+    {
+        public static readonly Error InvalidExternalProvider = new($"Auth.InvalidExternalProvider",
+            $"Unable to authenticate user with given provider.",
+            (int)HttpStatusCode.NotFound);
+    }
 }
