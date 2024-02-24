@@ -11,7 +11,7 @@ public class UserTokenRepository(IDistributedCache distributedCache) : IUserToke
     {
         var key = Resolve2FaCodeCacheKey(code.UserId);
         var value = JsonConvert.SerializeObject(code);
-        
+
         var options = new DistributedCacheEntryOptions()
         {
             AbsoluteExpirationRelativeToNow = code.Duration
@@ -24,6 +24,12 @@ public class UserTokenRepository(IDistributedCache distributedCache) : IUserToke
         var key = Resolve2FaCodeCacheKey(userId);
         var value = await distributedCache.GetStringAsync(key, cancellationToken);
         return value is null ? null : JsonConvert.DeserializeObject<TwoFactorCode>(value);
+    }
+
+    public async Task Remove2FaCode(TwoFactorCode code, CancellationToken cancellationToken = default)
+    {
+        var key = Resolve2FaCodeCacheKey(code.UserId);
+        await distributedCache.RemoveAsync(key, cancellationToken);
     }
 
     private static string Resolve2FaCodeCacheKey(Guid userId)

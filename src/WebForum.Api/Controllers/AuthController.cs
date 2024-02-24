@@ -1,7 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using WebForum.Api.Configuration.Extensions;
 using WebForum.Api.Requests;
 using WebForum.Application.Features.Auth.Login;
+using WebForum.Application.Features.Auth.Register;
+using WebForum.Domain.Models.Extensions;
+using WebForum.Domain.Models.Results;
 
 namespace WebForum.Api.Controllers;
 
@@ -11,8 +15,10 @@ public class AuthController(ISender sender) : ApiController(sender)
     [HttpPost("/register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
-        await Task.CompletedTask;
-        return Ok();
+        return await Result
+            .CreateFrom(new RegisterCommand(request.DisplayName, request.Username, request.Email, request.Password))
+            .Process(command => Sender.Send(command))
+            .Respond(Ok, HandleFailure);
     }
 
     [HttpPost("/login")]
@@ -26,9 +32,9 @@ public class AuthController(ISender sender) : ApiController(sender)
         }
         else
         {
-            var command = new LoginCommand(request.Username, request.Password);
-            var result = await Sender.Send(command);
-            return result.IsSuccess ? Ok(result.Value) : HandleFailure(result);
+            return await Result.CreateFrom(new LoginCommand(request.Username, request.Password))
+                .Process(command => Sender.Send(command))
+                .Respond(Ok, HandleFailure);
         }
     }
 

@@ -45,9 +45,12 @@ public static class ConfigureInfrastructure
         });
         services.AddScoped<IMailSender, MailSender>();
         services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<ITwoFactorCodeProvider, TwoFactorCodeProvider>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ITopicRepository, TopicRepository>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRegistrationRequestRepository, RegistrationRequestRepository>();
         return services;
     }
 }

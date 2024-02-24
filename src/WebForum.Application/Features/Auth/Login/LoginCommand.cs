@@ -6,5 +6,5 @@ namespace WebForum.Application.Features.Auth.Login;
 public record LoginCommand(string Username, string Password) : ICommand<LoginResponse>
 {
     public virtual RequestFlag Type =>
-        RequestFlag.Command | RequestFlag.Transaction | RequestFlag.Validate | RequestFlag.Sensitive;
+        RequestFlag.Command | RequestFlag.Validate | RequestFlag.Sensitive;
 }

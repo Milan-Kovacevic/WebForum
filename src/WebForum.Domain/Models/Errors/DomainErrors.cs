@@ -13,4 +13,17 @@ public static class DomainErrors
             $"The topic with the name {name} is already created.",
             (int)HttpStatusCode.Conflict);
     }
+
+    public static class User
+    {
+        public static Error NotFound(Guid id) => new($"User.NotFound", $"The user with the Id {id} was not found.",
+            (int)HttpStatusCode.NotFound);
+
+        public static readonly Error InvalidLogin = new($"User.InvalidLogin", $"Username or password is invalid.",
+            (int)HttpStatusCode.NotFound);
+
+        public static Error ConflictUsername(string username) => new($"User.ConflictUsername",
+            $"The user with the username {username} is already registered.",
+            (int)HttpStatusCode.Conflict);
+    }
 }

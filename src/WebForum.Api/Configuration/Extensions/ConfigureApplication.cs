@@ -18,7 +18,6 @@ public static class ConfigureApplication
             config.AddOpenBehavior(typeof(TransactionPipelineBehavior<,>));
         });
         services.AddValidatorsFromAssembly(ApplicationAssemblyReference.Value);
-        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IEmailService, EmailService>();
         return services;
     }

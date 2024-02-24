@@ -1,6 +1,6 @@
 namespace WebForum.Api.Configuration.Extensions;
 
-public static class ConfigureModules
+public static class ModulesExtensions
 {
     public static IHostApplicationBuilder AddModules(this IHostApplicationBuilder builder)
     {

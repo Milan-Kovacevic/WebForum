@@ -17,6 +17,7 @@ public class UpdateTopicCommandHandler(ITopicRepository topicRepository)
 
         topic.Name = request.Name;
         topic.Description = request.Description;
+        topicRepository.Update(topic);
         return Result.Success(new TopicResponse(topic.TopicId, topic.Name, topic.Description));
     }
 }

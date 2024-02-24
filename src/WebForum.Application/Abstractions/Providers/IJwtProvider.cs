@@ -1,8 +1,9 @@
 using WebForum.Domain.Entities;
+using WebForum.Domain.Models;
 
 namespace WebForum.Application.Abstractions.Providers;
 
 public interface IJwtProvider
 {
-    Task<string> GenerateUserToken(User user);
+    Task<AuthTokens> GenerateUserToken(User user);
 }

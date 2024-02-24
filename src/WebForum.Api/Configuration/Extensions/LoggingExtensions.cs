@@ -2,7 +2,7 @@ using Serilog;
 
 namespace WebForum.Api.Configuration.Extensions;
 
-public static class ConfigureLogging
+public static class LoggingExtensions
 {
     public static IHostBuilder AddLogging(this IHostBuilder host)
     {

@@ -2,7 +2,7 @@ using System.Threading.RateLimiting;
 
 namespace WebForum.Api.Configuration.Extensions;
 
-public static class ConfigureRateLimiting
+public static class RateLimitingExtensions
 {
     public static IServiceCollection AddRateLimiting(this IServiceCollection services)
     {

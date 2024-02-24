@@ -8,7 +8,6 @@ public class ApplicationDbContext(DbContextOptions options) : Microsoft.EntityFr
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        base.OnModelCreating(modelBuilder);
     }
     
     public DbSet<Topic> Topics { get; set; }

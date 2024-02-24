@@ -2,7 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using WebForum.Infrastructure.Settings;
+using WebForum.Infrastructure.Options;
 
 namespace WebForum.Api.Configuration.Options;
 
@@ -14,6 +14,12 @@ public class JwtBearerOptionsConfiguration(IOptions<JwtOptions> options) : IConf
 
     public void Configure(JwtBearerOptions options)
     {
+        IEnumerable<SymmetricSecurityKey> signingKeys =
+        [
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.AccessTokenSigningKey)),
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.RefreshTokenSigningKey))
+        ];
+
         options.TokenValidationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,
@@ -22,7 +28,7 @@ public class JwtBearerOptionsConfiguration(IOptions<JwtOptions> options) : IConf
             ValidateIssuerSigningKey = true,
             ValidIssuer = _options.Issuer,
             ValidAudience = _options.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
+            IssuerSigningKeys = signingKeys,
             ClockSkew = TimeSpan.Zero
         };
     }
