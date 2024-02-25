@@ -1,4 +1,4 @@
-namespace WebForum.Domain.Models.Errors;
+namespace WebForum.Domain.Shared.Errors;
 
 public record ValidationError(PropertyError[] Errors) 
     : Error("Error.Validation", "A validation problem occured.", 400);

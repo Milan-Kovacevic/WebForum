@@ -1,11 +1,13 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebForum.Domain.Models.Errors;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Errors;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Api.Controllers;
 
 [ApiController]
+[Authorize]
 public class ApiController(ISender sender) : ControllerBase
 {
     protected ISender Sender { get; } = sender;

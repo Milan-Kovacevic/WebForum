@@ -3,17 +3,30 @@ using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
-using WebForum.Application.Abstractions.Messaging;
-using WebForum.Domain.Models;
+using WebForum.Application.Abstractions.Services;
+using WebForum.Application.Models;
+using WebForum.Domain.Entities;
 using WebForum.Infrastructure.Settings;
 
-namespace WebForum.Infrastructure.Messaging;
+namespace WebForum.Infrastructure.Services;
 
-public class MailSender(IOptions<MailOptions> options) : IMailSender
+public class EmailService(IOptions<MailOptions> options) : IEmailService
 {
     private readonly MailOptions _options = options.Value;
 
-    public async Task SendEmail(SimpleEmail email, CancellationToken cancellationToken = default)
+    public Task Send2FaCodeEmail(string sendTo, TwoFactorCode code, CancellationToken cancellationToken = default)
+    {
+        var email = new SimpleEmail()
+        {
+            SendTo = sendTo,
+            Subject = "Your Two-Factor verification code",
+            Body =
+                $"Hi, here's your authentication code {code.Value}. This code expires in {code.Duration.TotalMinutes} minutes."
+        };
+        return SendSimpleEmail(email, cancellationToken);
+    }
+    
+    public async Task SendSimpleEmail(SimpleEmail email, CancellationToken cancellationToken = default)
     {
         var message = new MimeMessage();
         message.From.Add(MailboxAddress.Parse(_options.Username));
@@ -23,7 +36,7 @@ public class MailSender(IOptions<MailOptions> options) : IMailSender
 
         using var smtpClient = new SmtpClient();
         // Only in development, when client antivirus software is enabled...
-        smtpClient.ServerCertificateValidationCallback = (s,c,h,e) => true;
+        smtpClient.ServerCertificateValidationCallback = (s, c, h, e) => true;
         await smtpClient.ConnectAsync(_options.SmtpHost, _options.SmtpPort, SecureSocketOptions.StartTls,
             cancellationToken);
         await smtpClient.AuthenticateAsync(_options.Username, _options.Secret, cancellationToken);

@@ -3,10 +3,10 @@ using WebForum.Domain.Enums;
 
 namespace WebForum.Infrastructure.Authentication.Attributes;
 
-public class HasPermissionAttribute(params CommentPermission[] permissions)
+public class HasRoleAttribute(params UserRole[] roles)
     : AuthorizeAttribute, IAuthorizationRequirement, IAuthorizationRequirementData
 {
-    public IEnumerable<CommentPermission> Permissions { get; } = permissions;
+    public IEnumerable<UserRole> UserRoles { get; } = roles;
 
     public IEnumerable<IAuthorizationRequirement> GetRequirements()
     {

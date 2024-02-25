@@ -3,14 +3,14 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using WebForum.Application.Abstractions.Providers;
+using WebForum.Application.Abstractions.Services;
+using WebForum.Application.Models;
 using WebForum.Domain.Entities;
-using WebForum.Domain.Models;
 using WebForum.Infrastructure.Options;
 
-namespace WebForum.Infrastructure.Providers;
+namespace WebForum.Infrastructure.Services;
 
-public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
+public class JwtService(IOptions<JwtOptions> options) : IJwtService
 {
     private readonly JwtOptions _options = options.Value;
     
@@ -47,8 +47,6 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-            new Claim(JwtRegisteredClaimNames.Name, user.DisplayName),
-            new Claim("role", user.Role.ToString())
         };
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.AccessTokenSigningKey));
         var credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha384);

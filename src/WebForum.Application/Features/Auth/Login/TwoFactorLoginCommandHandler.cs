@@ -1,15 +1,15 @@
 using WebForum.Application.Abstractions.MediatR.Base;
-using WebForum.Application.Abstractions.Providers;
 using WebForum.Application.Abstractions.Repositories;
+using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Features.Auth.Responses;
 using WebForum.Application.Utils;
-using WebForum.Domain.Models.Errors;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Errors;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Application.Features.Auth.Login;
 
 public class TwoFactorLoginCommandHandler(
-    IJwtProvider jwtProvider,
+    IJwtService jwtService,
     IUserRepository userRepository,
     IUserTokenRepository userTokenRepository,
     IUnitOfWork unitOfWork)
@@ -51,7 +51,7 @@ public class TwoFactorLoginCommandHandler(
         //    return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
         //await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
 
-        var authTokens = await jwtProvider.GenerateUserToken(user);
+        var authTokens = await jwtService.GenerateUserToken(user);
         var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken, authTokens.ExpiresIn);
         return Result.Success(response);
     }

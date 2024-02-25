@@ -1,3 +1,6 @@
+using WebForum.Domain.Entities;
+using WebForum.Domain.Enums;
+
 namespace WebForum.Persistence.Configuration;
 
 public static class Database
@@ -5,7 +8,7 @@ public static class Database
     public static class Tables
     {
         public const string Topic = "topic";
-        public const string Post = "post";
+        public const string Comment = "comment";
         public const string User = "user";
         public const string UserLogin = "user_login";
         public const string RegistrationRequest = "registration_request";
@@ -21,7 +24,8 @@ public static class Database
     
     public static class Defaults
     {
+        public const UserRole UserRole = Domain.Enums.UserRole.Regular;
         public const bool IsUserEnabled = false;
-        public const int UserAccessFailCount = 0;
+        public const int UserAccessFailedCount = 0;
     }
 }

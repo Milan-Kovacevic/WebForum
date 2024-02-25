@@ -1,14 +1,14 @@
 using WebForum.Application.Abstractions.MediatR.Base;
-using WebForum.Application.Abstractions.Providers;
+using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Features.Auth.Responses;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
-using WebForum.Domain.Models.Errors;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Errors;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Application.Features.Auth.ExternalLogin;
 
-public class ExternalLoginCommandHandler(IJwtProvider jwtProvider) : ICommandHandler<ExternalLoginCommand, LoginResponse>
+public class ExternalLoginCommandHandler(IJwtService jwtService) : ICommandHandler<ExternalLoginCommand, LoginResponse>
 {
     public async Task<Result<LoginResponse>> Handle(ExternalLoginCommand request, CancellationToken cancellationToken)
     {
@@ -24,7 +24,7 @@ public class ExternalLoginCommandHandler(IJwtProvider jwtProvider) : ICommandHan
             AccessFailedCount = 0,
             DisplayName = "Test"
         };
-        var authTokens = await jwtProvider.GenerateUserToken(user);
+        var authTokens = await jwtService.GenerateUserToken(user);
         var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken, authTokens.ExpiresIn);
         return Result.Success(response);
     }

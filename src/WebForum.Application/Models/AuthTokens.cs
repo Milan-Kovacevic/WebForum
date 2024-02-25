@@ -1,4 +1,4 @@
-namespace WebForum.Domain.Models;
+namespace WebForum.Application.Models;
 
 public class AuthTokens
 {

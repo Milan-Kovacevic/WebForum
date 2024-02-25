@@ -1,11 +1,11 @@
 using System.Security.Cryptography;
-using WebForum.Application.Abstractions.Providers;
+using WebForum.Application.Abstractions.Services;
 
-namespace WebForum.Infrastructure.Providers;
+namespace WebForum.Infrastructure.Services;
 
-public class TwoFactorCodeProvider : ITwoFactorCodeProvider
+public class TwoFactorCodeService : ITwoFactorCodeService
 {
-    public Task<string> Generate2FaCode(int codeSize)
+    public Task<string> Generate2FaCode(int codeSize, CancellationToken cancellationToken = default)
     {
         if (codeSize is < 0 or > 10)
             throw new InvalidOperationException();

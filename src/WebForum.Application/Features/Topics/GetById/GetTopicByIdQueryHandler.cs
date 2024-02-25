@@ -1,9 +1,8 @@
-
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Features.Topics.Responses;
-using WebForum.Domain.Models.Errors;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Errors;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Application.Features.Topics.GetById;
 

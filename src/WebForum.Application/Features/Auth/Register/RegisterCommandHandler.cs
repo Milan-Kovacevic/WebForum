@@ -3,8 +3,8 @@ using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Utils;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
-using WebForum.Domain.Models.Errors;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Errors;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Application.Features.Auth.Register;
 

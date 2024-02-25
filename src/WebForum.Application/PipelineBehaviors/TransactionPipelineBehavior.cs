@@ -2,7 +2,7 @@ using System.Transactions;
 using MediatR;
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Application.PipelineBehaviors;
 

@@ -1,7 +1,5 @@
-using System.Buffers;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -20,7 +18,7 @@ public static class AuthenticationExtensions
         services.AddAuthorization();
         return services;
     }
-
+    
     // Test for OAuth
     private static AuthenticationBuilder AddOAuthTest(this AuthenticationBuilder auth)
     {

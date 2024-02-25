@@ -8,8 +8,8 @@ using WebForum.Application.Features.Topics.Delete;
 using WebForum.Application.Features.Topics.GetAll;
 using WebForum.Application.Features.Topics.GetById;
 using WebForum.Application.Features.Topics.Update;
-using WebForum.Domain.Models.Extensions;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Enums;
+using WebForum.Domain.Shared.Results;
 using WebForum.Infrastructure.Authentication.Attributes;
 
 namespace WebForum.Api.Controllers;
@@ -18,6 +18,7 @@ namespace WebForum.Api.Controllers;
 public class TopicsController(ISender sender) : ApiController(sender)
 {
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllTopics(CancellationToken cancellationToken)
     {
         return await Result
@@ -27,6 +28,7 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpGet("{topicId:guid}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetTopicById(Guid topicId, CancellationToken cancellationToken)
     {
         return await Result
@@ -36,8 +38,9 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost]
-    [HasPermission("Admin")]
-    [Authorize(Roles = "Admin")]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
+    [HasPermission(CommentPermission.BanComment, CommentPermission.PostComment, CommentPermission.CreateComment,
+        CommentPermission.EditComment)]
     public async Task<IActionResult> AddTopic([FromBody] TopicRequest request, CancellationToken cancellationToken)
     {
         return await Result
@@ -47,7 +50,8 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpPut("{topicId:guid}")]
-    [Authorize(Roles = "Admin")]
+    [HasRole(UserRole.RootAdmin)]
+    [HasPermission(CommentPermission.RemoveComment)]
     public async Task<IActionResult> UpdateTopic(Guid topicId, [FromBody] TopicRequest request,
         CancellationToken cancellationToken)
     {
@@ -58,7 +62,7 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpDelete("{topicId:guid}")]
-    [Authorize(Roles = "Admin")]
+    [HasRole(UserRole.RootAdmin)]
     public async Task<IActionResult> DeleteTopic(Guid topicId, CancellationToken cancellationToken)
     {
         return await Result

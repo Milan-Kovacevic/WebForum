@@ -1,5 +1,5 @@
 using MediatR;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Application.Abstractions.MediatR.Base;
 

@@ -1,10 +1,11 @@
 using WebForum.Application.Abstractions.MediatR.Base;
+using WebForum.Application.Features.Auth.Responses;
 
 namespace WebForum.Application.Features.Auth.Login;
 
 public record TwoFactorLoginCommand(string Username, string Password, string TwoFactorCode)
-    : LoginCommand(Username, Password)
+    : ICommand<LoginResponse>
 {
-    public override RequestFlag Type =>
+    public RequestFlag Type =>
         RequestFlag.Command | RequestFlag.Transaction | RequestFlag.Validate | RequestFlag.Sensitive;
 }

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Api.Configuration.Extensions;
 

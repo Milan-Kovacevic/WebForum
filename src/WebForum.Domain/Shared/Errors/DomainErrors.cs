@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace WebForum.Domain.Models.Errors;
+namespace WebForum.Domain.Shared.Errors;
 
 public static class DomainErrors
 {

@@ -1,7 +1,6 @@
-using System.Net;
-using WebForum.Domain.Models.Errors;
+using WebForum.Domain.Shared.Errors;
 
-namespace WebForum.Domain.Models.Results;
+namespace WebForum.Domain.Shared.Results;
 
 public partial class Result
 {

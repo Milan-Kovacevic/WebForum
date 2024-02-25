@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using WebForum.Application.Abstractions.MediatR.Base;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Application.PipelineBehaviors;
 

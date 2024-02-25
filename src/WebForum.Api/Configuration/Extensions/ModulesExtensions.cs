@@ -1,15 +1,14 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using WebForum.Application;
-using WebForum.Application.Abstractions.Messaging;
-using WebForum.Application.Abstractions.Providers;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.PipelineBehaviors;
-using WebForum.Application.Services;
-using WebForum.Infrastructure.Messaging;
+using WebForum.Infrastructure.Authentication;
+using WebForum.Infrastructure.Authentication.Handlers;
 using WebForum.Infrastructure.Options;
-using WebForum.Infrastructure.Providers;
+using WebForum.Infrastructure.Services;
 using WebForum.Infrastructure.Settings;
 using WebForum.Persistence.Configuration;
 using WebForum.Persistence.DbContext;
@@ -73,10 +72,13 @@ public static class ModulesExtensions
         services.AddOptions<JwtOptions>().BindConfiguration(Constants.Infrastructure.JwtConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
 
-        services.AddHttpClient<IGitHubClient, GitHubClient>();
-        services.AddScoped<IMailSender, MailSender>();
-        services.AddScoped<IJwtProvider, JwtProvider>();
-        services.AddScoped<ITwoFactorCodeProvider, TwoFactorCodeProvider>();
+        services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddHttpClient<IGithubService, GithubService>();
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<ITwoFactorCodeService, TwoFactorCodeService>();
+        services.AddScoped<IUserAuthService, UserAuthService>();
         return services;
     }
 }

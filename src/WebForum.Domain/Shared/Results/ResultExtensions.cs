@@ -1,6 +1,4 @@
-using WebForum.Domain.Models.Results;
-
-namespace WebForum.Domain.Models.Extensions;
+namespace WebForum.Domain.Shared.Results;
 
 public static class ResultExtensions
 {

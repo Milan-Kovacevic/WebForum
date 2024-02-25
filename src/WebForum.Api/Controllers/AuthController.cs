@@ -1,12 +1,12 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Configuration.Extensions;
 using WebForum.Application.Requests;
 using WebForum.Application.Features.Auth.ExternalLogin;
 using WebForum.Application.Features.Auth.Login;
 using WebForum.Application.Features.Auth.Register;
-using WebForum.Domain.Models.Extensions;
-using WebForum.Domain.Models.Results;
+using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Api.Controllers;
 
@@ -14,6 +14,7 @@ namespace WebForum.Api.Controllers;
 public class AuthController(ISender sender) : ApiController(sender)
 {
     [HttpPost, Route("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
         return await Result
@@ -23,6 +24,7 @@ public class AuthController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         if (request.TwoFactorCode is not null)
@@ -39,6 +41,7 @@ public class AuthController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("externalLogin")]
+    [AllowAnonymous]
     public async Task<IActionResult> ExternalLogin([FromBody] OAuthLoginRequest request)
     {
         return await Result
@@ -55,13 +58,16 @@ public class AuthController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("refresh")]
+    [AllowAnonymous]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshRequest request)
     {
         await Task.CompletedTask;
         return Ok();
     }
 
+    // Test
     [HttpGet("/oauth/code")]
+    [AllowAnonymous]
     public IResult GetOAuthCode()
     {
         return Results.Challenge(authenticationSchemes: new List<string>() { "github" });

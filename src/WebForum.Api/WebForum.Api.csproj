@@ -11,6 +11,7 @@
     <ItemGroup>
         <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Metadata" Version="8.0.2" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1"/>
         <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
         <PackageReference Include="Serilog.Sinks.MySQL" Version="5.0.0" />
@@ -25,7 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\WebForum.Persistence\WebForum.Persistence.csproj" />
       <ProjectReference Include="..\WebForum.Application\WebForum.Application.csproj" />
       <ProjectReference Include="..\WebForum.Infrastructure\WebForum.Infrastructure.csproj" />
       <ProjectReference Include="..\WebForum.Persistence\WebForum.Persistence.csproj" />
