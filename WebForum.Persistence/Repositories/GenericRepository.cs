@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Infrastructure.DbContext;
+using WebForum.Persistence.DbContext;
 
-namespace WebForum.Infrastructure.Repositories;
+namespace WebForum.Persistence.Repositories;
 
 public abstract class GenericRepository<TEntity, TEntityId>(ApplicationDbContext context)
     : IRepository<TEntity, TEntityId> where TEntity : class

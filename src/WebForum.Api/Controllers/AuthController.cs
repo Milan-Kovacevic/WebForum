@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Configuration.Extensions;
-using WebForum.Api.Requests;
+using WebForum.Application.Requests;
 using WebForum.Application.Features.Auth.ExternalLogin;
 using WebForum.Application.Features.Auth.Login;
 using WebForum.Application.Features.Auth.Register;
@@ -10,7 +10,7 @@ using WebForum.Domain.Models.Results;
 
 namespace WebForum.Api.Controllers;
 
-[Route("/api/[controller]")]
+[Route("/api")]
 public class AuthController(ISender sender) : ApiController(sender)
 {
     [HttpPost, Route("register")]

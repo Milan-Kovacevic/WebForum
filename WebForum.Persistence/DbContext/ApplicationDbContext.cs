@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebForum.Domain.Entities;
 
-namespace WebForum.Infrastructure.DbContext;
+namespace WebForum.Persistence.DbContext;
 
 public class ApplicationDbContext(DbContextOptions options) : Microsoft.EntityFrameworkCore.DbContext(options)
 {

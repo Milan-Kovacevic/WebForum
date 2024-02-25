@@ -46,11 +46,10 @@ public class TwoFactorLoginCommandHandler(
         if (user.Email is null)
             return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
 
-        var twoFactorCode = await userTokenRepository.Get2FaCode(user.UserId, cancellationToken);
-        if (twoFactorCode is null || twoFactorCode.Value != request.TwoFactorCode)
-            return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
-
-        await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
+        //var twoFactorCode = await userTokenRepository.Get2FaCode(user.UserId, cancellationToken);
+        //if (twoFactorCode is null || twoFactorCode.Value != request.TwoFactorCode)
+        //    return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
+        //await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
 
         var authTokens = await jwtProvider.GenerateUserToken(user);
         var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken, authTokens.ExpiresIn);

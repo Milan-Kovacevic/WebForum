@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
 
-namespace WebForum.Infrastructure.Configuration;
+namespace WebForum.Persistence.Configuration;
 
 public class UserEntityConfiguration : IEntityTypeConfiguration<User>
 {

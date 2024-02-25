@@ -3,12 +3,10 @@ using WebForum.Api.Configuration.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSwagger();
-builder.Services.AddRateLimiting();
-builder.Services.AddGlobalExceptionHandler();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Host.AddLogging();
-builder.Services.AddAuthenticationAndAuthorization();
+builder.Services.AddSecurity();
 builder.AddModules();
 
 var app = builder.Build();

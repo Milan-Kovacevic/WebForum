@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Domain.Entities;
-using WebForum.Infrastructure.DbContext;
+using WebForum.Persistence.DbContext;
 
-namespace WebForum.Infrastructure.Repositories;
+namespace WebForum.Persistence.Repositories;
 
 public class UserRepository(ApplicationDbContext context) : GenericRepository<User, Guid>(context), IUserRepository
 {

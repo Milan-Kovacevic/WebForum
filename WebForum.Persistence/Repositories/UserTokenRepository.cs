@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Domain.Entities;
 
-namespace WebForum.Infrastructure.Repositories;
+namespace WebForum.Persistence.Repositories;
 
 public class UserTokenRepository(IDistributedCache distributedCache) : IUserTokenRepository
 {

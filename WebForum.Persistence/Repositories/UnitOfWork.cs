@@ -1,7 +1,7 @@
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Infrastructure.DbContext;
+using WebForum.Persistence.DbContext;
 
-namespace WebForum.Infrastructure.Repositories;
+namespace WebForum.Persistence.Repositories;
 
 public class UnitOfWork(ApplicationDbContext context) : IUnitOfWork
 {

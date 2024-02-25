@@ -1,4 +1,4 @@
-namespace WebForum.Infrastructure.Configuration;
+namespace WebForum.Persistence.Configuration;
 
 public static class Database
 {

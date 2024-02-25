@@ -25,6 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\WebForum.Persistence\WebForum.Persistence.csproj" />
       <ProjectReference Include="..\WebForum.Application\WebForum.Application.csproj" />
       <ProjectReference Include="..\WebForum.Infrastructure\WebForum.Infrastructure.csproj" />
     </ItemGroup>

@@ -1,8 +1,8 @@
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Domain.Entities;
-using WebForum.Infrastructure.DbContext;
+using WebForum.Persistence.DbContext;
 
-namespace WebForum.Infrastructure.Repositories;
+namespace WebForum.Persistence.Repositories;
 
 public class RegistrationRequestRepository(ApplicationDbContext context)
     : GenericRepository<RegistrationRequest, Guid>(context), IRegistrationRequestRepository

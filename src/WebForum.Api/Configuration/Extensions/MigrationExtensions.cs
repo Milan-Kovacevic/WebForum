@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using WebForum.Infrastructure.DbContext;
+using WebForum.Persistence.DbContext;
 
 namespace WebForum.Api.Configuration.Extensions;
 

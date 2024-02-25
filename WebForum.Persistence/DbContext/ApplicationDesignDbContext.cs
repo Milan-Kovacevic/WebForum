@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using WebForum.Infrastructure.Configuration;
+using WebForum.Persistence.Configuration;
 
-namespace WebForum.Infrastructure.DbContext;
+namespace WebForum.Persistence.DbContext;
 
 public class ApplicationDesignDbContext : IDesignTimeDbContextFactory<ApplicationDbContext>
 {

@@ -11,10 +11,14 @@ public static class Constants
 
     public static class Infrastructure
     {
-        public const string DatabaseConnectionString = "DefaultConnection";
-        public const string RedisConnectionString = "Redis";
         public const string EmailConfigurationSection = "Email";
         public const string OAuthGitHubConfigurationSection = "OAuth:GitHub";
         public const string JwtConfigurationSection = "Jwt";
+    }
+
+    public static class Persistence
+    {
+        public const string DatabaseConnectionString = "DefaultConnection";
+        public const string RedisConnectionString = "Redis";
     }
 }

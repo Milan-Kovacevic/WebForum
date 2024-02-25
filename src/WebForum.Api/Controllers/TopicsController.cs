@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Configuration.Extensions;
-using WebForum.Api.Requests;
+using WebForum.Application.Requests;
 using WebForum.Application.Features.Topics.Create;
 using WebForum.Application.Features.Topics.Delete;
 using WebForum.Application.Features.Topics.GetAll;
@@ -10,6 +10,7 @@ using WebForum.Application.Features.Topics.GetById;
 using WebForum.Application.Features.Topics.Update;
 using WebForum.Domain.Models.Extensions;
 using WebForum.Domain.Models.Results;
+using WebForum.Infrastructure.Authentication.Attributes;
 
 namespace WebForum.Api.Controllers;
 
@@ -35,7 +36,8 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost]
-    [Authorize]
+    [HasPermission("Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddTopic([FromBody] TopicRequest request, CancellationToken cancellationToken)
     {
         return await Result
@@ -45,7 +47,7 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpPut("{topicId:guid}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateTopic(Guid topicId, [FromBody] TopicRequest request,
         CancellationToken cancellationToken)
     {
@@ -56,7 +58,7 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpDelete("{topicId:guid}")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteTopic(Guid topicId, CancellationToken cancellationToken)
     {
         return await Result

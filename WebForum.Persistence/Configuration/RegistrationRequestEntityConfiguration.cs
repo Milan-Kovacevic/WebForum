@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using WebForum.Domain.Entities;
 
-namespace WebForum.Infrastructure.Configuration;
+namespace WebForum.Persistence.Configuration;
 
 public class RegistrationRequestEntityConfiguration : IEntityTypeConfiguration<RegistrationRequest>
 {

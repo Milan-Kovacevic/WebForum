@@ -8,6 +8,6 @@ public class GitHubOptions
     public required string ClientId { get; init; }
     [Required]
     public required string ClientSecret { get; init; }
-    [Required, Url]
+    [Required]
     public required string CallbackPath { get; init; }
 }
