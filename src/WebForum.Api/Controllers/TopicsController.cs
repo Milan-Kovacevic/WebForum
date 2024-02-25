@@ -28,7 +28,7 @@ public class TopicsController(ISender sender) : ApiController(sender)
     }
 
     [HttpGet("{topicId:guid}")]
-    [AllowAnonymous]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> GetTopicById(Guid topicId, CancellationToken cancellationToken)
     {
         return await Result
@@ -39,8 +39,6 @@ public class TopicsController(ISender sender) : ApiController(sender)
 
     [HttpPost]
     [HasRole(UserRole.RootAdmin, UserRole.Admin)]
-    [HasPermission(CommentPermission.BanComment, CommentPermission.PostComment, CommentPermission.CreateComment,
-        CommentPermission.EditComment)]
     public async Task<IActionResult> AddTopic([FromBody] TopicRequest request, CancellationToken cancellationToken)
     {
         return await Result
@@ -51,7 +49,7 @@ public class TopicsController(ISender sender) : ApiController(sender)
 
     [HttpPut("{topicId:guid}")]
     [HasRole(UserRole.RootAdmin)]
-    [HasPermission(CommentPermission.RemoveComment)]
+    [HasPermission(Permission.RemoveComment)]
     public async Task<IActionResult> UpdateTopic(Guid topicId, [FromBody] TopicRequest request,
         CancellationToken cancellationToken)
     {

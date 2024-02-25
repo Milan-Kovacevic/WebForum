@@ -19,10 +19,10 @@ public class TwoFactorLoginCommandHandler(
     {
         var user = await userRepository.GetByUsername(request.Username);
         if (user is null)
-            return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
+            return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
 
         if (user.LockoutEnd > DateTime.UtcNow)
-            return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
+            return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
 
         // TODO: Check if user has social login...
 
@@ -40,11 +40,11 @@ public class TwoFactorLoginCommandHandler(
 
             userRepository.Update(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
+            return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
         }
 
         if (user.Email is null)
-            return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
+            return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
 
         //var twoFactorCode = await userTokenRepository.Get2FaCode(user.UserId, cancellationToken);
         //if (twoFactorCode is null || twoFactorCode.Value != request.TwoFactorCode)

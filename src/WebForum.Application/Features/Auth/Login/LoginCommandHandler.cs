@@ -20,10 +20,10 @@ public class LoginCommandHandler(
     {
         var user = await userRepository.GetByUsername(request.Username);
         if (user is null)
-            return Result.Failure(DomainErrors.User.InvalidLogin);
+            return Result.Failure(DomainErrors.Auth.InvalidLogin);
 
-        if (user.LockoutEnd > DateTime.UtcNow)
-            return Result.Failure(DomainErrors.User.InvalidLogin);
+        if (user.LockoutEnd > DateTime.UtcNow || !user.IsEnabled)
+            return Result.Failure(DomainErrors.Auth.InvalidLogin);
 
         // TODO: Check if user has social login...
 
@@ -41,11 +41,11 @@ public class LoginCommandHandler(
 
             userRepository.Update(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
-            return Result.Failure(DomainErrors.User.InvalidLogin);
+            return Result.Failure(DomainErrors.Auth.InvalidLogin);
         }
 
         if (user.Email is null)
-            return Result.Failure(DomainErrors.User.InvalidLogin);
+            return Result.Failure(DomainErrors.Auth.InvalidLogin);
 
         var authenticationCode =
             await twoFactorCodeService.Generate2FaCode(Constants.UserAuthenticationCodeSize, cancellationToken);

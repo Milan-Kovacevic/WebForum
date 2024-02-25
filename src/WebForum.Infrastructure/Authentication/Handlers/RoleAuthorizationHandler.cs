@@ -14,6 +14,7 @@ public class RoleAuthorizationHandler(
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
         HasRoleAttribute requirement)
     {
+        var resource = context.Resource as string;
         var subject = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         if (subject is null || !Guid.TryParse(subject, out var userId))
         {
@@ -23,7 +24,7 @@ public class RoleAuthorizationHandler(
             context.Fail();
             return;
         }
-
+        
         // Injecting scoped service inside singleton...
         using var scope = serviceScopeFactory.CreateScope();
         var userAuthService = scope.ServiceProvider.GetRequiredService<IUserAuthService>();

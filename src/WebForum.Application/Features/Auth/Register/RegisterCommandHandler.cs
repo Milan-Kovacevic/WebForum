@@ -32,6 +32,7 @@ public class RegisterCommandHandler(
         var registrationRequest = new RegistrationRequest()
         {
             UserId = user.UserId,
+            User = user,
             SubmitDate = DateTime.UtcNow,
         };
         await registrationRequestRepository.InsertAsync(registrationRequest, cancellationToken);
