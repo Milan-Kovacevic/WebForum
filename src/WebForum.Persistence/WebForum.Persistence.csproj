@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\src\WebForum.Application\WebForum.Application.csproj" />
-      <ProjectReference Include="..\src\WebForum.Domain\WebForum.Domain.csproj" />
+      <ProjectReference Include="..\WebForum.Application\WebForum.Application.csproj" />
+      <ProjectReference Include="..\WebForum.Domain\WebForum.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
