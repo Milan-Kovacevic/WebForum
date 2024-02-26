@@ -1,7 +1,7 @@
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
-using WebForum.Application.Features.Auth.Responses;
+using WebForum.Application.Responses;
 using WebForum.Application.Utils;
 using WebForum.Domain.Shared.Errors;
 using WebForum.Domain.Shared.Results;

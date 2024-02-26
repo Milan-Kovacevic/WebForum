@@ -1,6 +1,6 @@
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Application.Features.Topics.Responses;
+using WebForum.Application.Responses;
 using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Application.Features.Rooms.GetAll;

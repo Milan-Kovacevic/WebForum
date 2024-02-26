@@ -13,7 +13,7 @@ namespace WebForum.Api.Controllers;
 [Route("/api")]
 public class AuthController(ISender sender) : ApiController(sender)
 {
-    [HttpPost, Route("register")]
+    [HttpPost, Route("Register")]
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
@@ -23,7 +23,7 @@ public class AuthController(ISender sender) : ApiController(sender)
             .Respond(Ok, HandleFailure);
     }
 
-    [HttpPost("login")]
+    [HttpPost("Login")]
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
@@ -40,7 +40,7 @@ public class AuthController(ISender sender) : ApiController(sender)
             .Respond(Ok, HandleFailure);
     }
 
-    [HttpPost("externalLogin")]
+    [HttpPost("ExternalLogin")]
     [AllowAnonymous]
     public async Task<IActionResult> ExternalLogin([FromBody] OAuthLoginRequest request)
     {
@@ -50,14 +50,14 @@ public class AuthController(ISender sender) : ApiController(sender)
             .Respond(Ok, HandleFailure);
     }
 
-    [HttpPost("logout")]
+    [HttpPost("Logout")]
     public async Task<IActionResult> Logout()
     {
         await Task.CompletedTask;
         return Ok();
     }
 
-    [HttpPost("refresh")]
+    [HttpPost("Refresh")]
     [AllowAnonymous]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshRequest request)
     {

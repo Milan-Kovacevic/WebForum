@@ -1,5 +1,5 @@
 using WebForum.Application.Abstractions.MediatR.Base;
-using WebForum.Application.Features.Auth.Responses;
+using WebForum.Application.Responses;
 
 namespace WebForum.Application.Features.Auth.ExternalLogin;
 

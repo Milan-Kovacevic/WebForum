@@ -19,4 +19,20 @@ public class UserRepository(ApplicationDbContext context) : GenericRepository<Us
         return await _context.Set<User>()
             .FirstOrDefaultAsync(x => x.Username == username);
     }
+
+    public async Task<IEnumerable<User>> GetAllRegisteredAsync(CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<User>()
+            .AsNoTracking()
+            .Where(x => x.RegistrationRequest == null)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<User?> GetByIdWithPermissionsAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<User>()
+            .Include(x => x.Permissions)
+            .ThenInclude(p => p.Permission)
+            .FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
+    }
 }

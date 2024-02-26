@@ -49,7 +49,7 @@ public class RoomsController(ISender sender) : ApiController(sender)
 
     [HttpPut("{roomId:guid}")]
     [HasRole(UserRole.RootAdmin)]
-    [HasPermission(RoomPermission.RemoveComment)]
+    [HasRoomPermission(RoomPermission.RemoveComment)]
     public async Task<IActionResult> UpdateRoom(Guid roomId, [FromBody] RoomRequest request,
         CancellationToken cancellationToken)
     {

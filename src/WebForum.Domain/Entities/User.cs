@@ -13,4 +13,6 @@ public class User
     public DateTime? LockoutEnd { get; set; }
     public required int AccessFailedCount { get; set; }
     public required UserRole Role { get; set; }
+    public RegistrationRequest? RegistrationRequest { get; set; }
+    public IEnumerable<UserPermission> Permissions { get; set; }
 }

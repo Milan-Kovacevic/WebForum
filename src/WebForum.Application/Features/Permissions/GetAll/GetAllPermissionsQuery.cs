@@ -1,9 +1,9 @@
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Responses;
 
-namespace WebForum.Application.Features.Rooms.GetById;
+namespace WebForum.Application.Features.Permissions.GetAll;
 
-public record GetRoomByIdQuery(Guid RoomId) : IQuery<RoomResponse>
+public class GetAllPermissionsQuery : IQuery<IEnumerable<PermissionResponse>>
 {
     public RequestFlag Type => RequestFlag.Query;
 }

@@ -12,6 +12,8 @@ public static class Database
         public const string UserLogin = "user_login";
         public const string Room = "room";
         public const string Comment = "comment";
+        public const string Permission = "permission";
+        public const string UserPermission = "user_permission";
         public const string MigrationHistory = "ef_migrations";
     }
 

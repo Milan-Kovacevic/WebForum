@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace WebForum.Application;
+namespace WebForum.Application.Utils;
 
 public static class ApplicationAssemblyReference
 {

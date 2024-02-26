@@ -22,7 +22,7 @@ public class RegistrationRequestRepository(ApplicationDbContext context)
     public override async Task<RegistrationRequest?> GetByIdAsync(Guid id,
         CancellationToken cancellationToken = default)
     {
-        return await context.Set<RegistrationRequest>()
+        return await _context.Set<RegistrationRequest>()
             .Include(x => x.User)
             .FirstOrDefaultAsync(x => x.RequestId == id, cancellationToken);
     }

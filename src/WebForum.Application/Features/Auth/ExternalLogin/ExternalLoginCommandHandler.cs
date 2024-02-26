@@ -1,6 +1,6 @@
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Services;
-using WebForum.Application.Features.Auth.Responses;
+using WebForum.Application.Responses;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
 using WebForum.Domain.Shared.Errors;

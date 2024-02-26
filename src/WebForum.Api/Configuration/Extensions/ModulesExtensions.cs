@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using WebForum.Application;
+using WebForum.Application.Utils;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.PipelineBehaviors;
@@ -60,6 +60,7 @@ public static class ModulesExtensions
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRegistrationRequestRepository, RegistrationRequestRepository>();
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
         return services;
     }
 
@@ -73,7 +74,7 @@ public static class ModulesExtensions
             .ValidateDataAnnotations().ValidateOnStart();
 
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler>();
-        services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationHandler, RoomPermissionAuthorizationHandler>();
         services.AddHttpClient<IGithubService, GithubService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IJwtService, JwtService>();

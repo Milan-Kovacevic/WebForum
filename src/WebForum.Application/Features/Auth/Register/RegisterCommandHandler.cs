@@ -23,7 +23,7 @@ public class RegisterCommandHandler(
             Username = request.Username,
             Email = request.Email,
             PasswordHash = Utility.ComputeHash(request.Password),
-            AccessFailedCount = Constants.MaximumLoginAccessFailCount,
+            AccessFailedCount = Constants.DefaultLoginAccessFailCount,
             IsEnabled = false,
             Role = UserRole.Regular
         };
