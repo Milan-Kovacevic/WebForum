@@ -4,13 +4,13 @@ namespace WebForum.Domain.Shared.Errors;
 
 public static class DomainErrors
 {
-    public static class Topic
+    public static class Room
     {
-        public static Error NotFound(Guid id) => new($"Topic.NotFound", $"The topic with the Id {id} was not found.",
+        public static Error NotFound(Guid id) => new($"Room.NotFound", $"The room with the Id {id} was not found.",
             (int)HttpStatusCode.NotFound);
 
-        public static Error ConflictName(string name) => new($"Topic.ConflictName",
-            $"The topic with the name {name} is already created.",
+        public static Error ConflictName(string name) => new($"Room.ConflictName",
+            $"The room with the name {name} is already created.",
             (int)HttpStatusCode.Conflict);
     }
 

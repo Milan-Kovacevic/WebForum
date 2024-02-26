@@ -56,7 +56,7 @@ public static class ModulesExtensions
             options.Configuration = connection;
         });
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.AddScoped<ITopicRepository, TopicRepository>();
+        services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRegistrationRequestRepository, RegistrationRequestRepository>();

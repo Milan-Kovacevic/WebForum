@@ -7,11 +7,11 @@ public static class Database
 {
     public static class Tables
     {
-        public const string Topic = "topic";
-        public const string Comment = "comment";
+        public const string RegistrationRequest = "registration_request";
         public const string User = "user";
         public const string UserLogin = "user_login";
-        public const string RegistrationRequest = "registration_request";
+        public const string Room = "room";
+        public const string Comment = "comment";
         public const string MigrationHistory = "ef_migrations";
     }
 

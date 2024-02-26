@@ -3,10 +3,10 @@ using WebForum.Domain.Enums;
 
 namespace WebForum.Infrastructure.Authentication.Attributes;
 
-public class HasPermissionAttribute(Permission permission)
+public class HasPermissionAttribute(RoomPermission roomPermission)
     : AuthorizeAttribute, IAuthorizationRequirement, IAuthorizationRequirementData
 {
-    public Permission Permission { get; } = permission;
+    public RoomPermission RoomPermission { get; } = roomPermission;
     public IEnumerable<IAuthorizationRequirement> GetRequirements()
     {
         yield return this;

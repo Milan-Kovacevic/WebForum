@@ -51,6 +51,7 @@ public class TwoFactorLoginCommandHandler(
         //    return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
         //await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
 
+        user.AccessFailedCount = 0;
         var authTokens = await jwtService.GenerateUserToken(user);
         var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken, authTokens.ExpiresIn);
         return Result.Success(response);

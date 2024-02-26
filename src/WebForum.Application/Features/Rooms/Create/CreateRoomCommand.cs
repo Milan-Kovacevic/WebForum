@@ -1,9 +1,9 @@
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Features.Topics.Responses;
 
-namespace WebForum.Application.Features.Topics.Create;
+namespace WebForum.Application.Features.Rooms.Create;
 
-public record CreateTopicCommand(string Name, string? Description) : ICommand<TopicResponse>
+public record CreateRoomCommand(string Name, string? Description) : ICommand<RoomResponse>
 {
     public RequestFlag Type => RequestFlag.Command | RequestFlag.Transaction | RequestFlag.Validate;
 }

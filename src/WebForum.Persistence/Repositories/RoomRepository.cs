@@ -5,12 +5,12 @@ using WebForum.Persistence.DbContext;
 
 namespace WebForum.Persistence.Repositories;
 
-public class TopicRepository(ApplicationDbContext context) : GenericRepository<Topic, Guid>(context), ITopicRepository
+public class RoomRepository(ApplicationDbContext context) : GenericRepository<Room, Guid>(context), IRoomRepository
 {
     private readonly ApplicationDbContext _context = context;
 
     public async Task<bool> ExistsByName(string name)
     {
-        return await _context.Set<Topic>().FirstOrDefaultAsync(x => x.Name == name) != default;
+        return await _context.Set<Room>().FirstOrDefaultAsync(x => x.Name == name) != default;
     }
 }

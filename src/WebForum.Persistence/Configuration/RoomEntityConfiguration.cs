@@ -4,13 +4,13 @@ using WebForum.Domain.Entities;
 
 namespace WebForum.Persistence.Configuration;
 
-public class TopicEntityConfiguration : IEntityTypeConfiguration<Topic>
+public class RoomEntityConfiguration : IEntityTypeConfiguration<Room>
 {
-    public void Configure(EntityTypeBuilder<Topic> builder)
+    public void Configure(EntityTypeBuilder<Room> builder)
     {
-        builder.ToTable(Database.Tables.Topic);
-        builder.HasKey(x => x.TopicId);
-        builder.HasIndex(x => x.TopicId).IsUnique();
+        builder.ToTable(Database.Tables.Room);
+        builder.HasKey(x => x.RoomId);
+        builder.HasIndex(x => x.RoomId).IsUnique();
 
         builder.Property(x => x.Name)
             .IsRequired()

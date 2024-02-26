@@ -7,7 +7,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<HasPermission
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, HasPermissionAttribute requirement)
     {
-        var permission = requirement.Permission;
+        var permission = requirement.RoomPermission;
         context.Succeed(requirement);
         return Task.CompletedTask;
     }

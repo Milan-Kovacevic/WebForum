@@ -10,6 +10,6 @@ public class Comment
     public DateTime? DateUpdated { get; set; }
     public DateTime? DatePosted { get; set; }
     public required CommentStatus Status { get; set; }
-    public required Guid TopicId { get; set; }
+    public required Guid RoomId { get; set; }
     public required Guid UserId { get; set; }
 }

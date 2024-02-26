@@ -2,7 +2,7 @@ using WebForum.Domain.Entities;
 
 namespace WebForum.Application.Abstractions.Repositories;
 
-public interface ITopicRepository : IRepository<Topic, Guid>
+public interface IRoomRepository : IRepository<Room, Guid>
 {
     Task<bool> ExistsByName(string name);
 }

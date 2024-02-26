@@ -10,5 +10,5 @@ public class ApplicationDbContext(DbContextOptions options) : Microsoft.EntityFr
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
     
-    public DbSet<Topic> Topics { get; set; }
+    public DbSet<Room> Rooms { get; set; }
 }
