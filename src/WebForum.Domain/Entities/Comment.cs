@@ -12,4 +12,5 @@ public class Comment
     public required CommentStatus Status { get; set; }
     public required Guid RoomId { get; set; }
     public required Guid UserId { get; set; }
+    public required User User { get; set; }
 }

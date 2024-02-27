@@ -31,9 +31,4 @@ public abstract class GenericRepository<TEntity, TEntityId>(ApplicationDbContext
     {
         context.Set<TEntity>().Remove(entity);
     }
-
-    public IQueryable<TEntity> GetQueryable()
-    {
-        return context.Set<TEntity>();
-    }
 }

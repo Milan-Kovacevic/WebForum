@@ -21,7 +21,7 @@ public class GetRegisteredUserByIdQueryHandler(IUserRepository userRepository)
             registeredUser.Permissions.Select(x =>
                 new UserPermissionResponse(x.Permission.PermissionId, x.Permission.Name, x.Room.RoomId, x.Room.Name));
         var result = new SingleRegisteredUserResponse(registeredUser.UserId, registeredUser.DisplayName,
-            registeredUser.IsEnabled, registeredUser.Role.RoleId, registeredUser.Role.Name,
+            registeredUser.IsEnabled, registeredUser.Role!.RoleId, registeredUser.Role.Name,
             registeredUser.Username is null, userPermissions);
         return Result.Success(result);
     }

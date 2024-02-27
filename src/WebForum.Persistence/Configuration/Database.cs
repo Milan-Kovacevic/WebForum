@@ -24,6 +24,7 @@ public static class Database
         public const int MaxNameLength = 128;
         public const int MaxEmailLength = 192;
         public const int MaxLongTextLength = 512;
+        public const int MaxLatestPostedComments = 20;
     }
     
     public static class Defaults

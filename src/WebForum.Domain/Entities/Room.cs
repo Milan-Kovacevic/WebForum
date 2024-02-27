@@ -1,4 +1,5 @@
 namespace WebForum.Domain.Entities;
+
 public class Room
 {
     public Guid RoomId { get; init; }

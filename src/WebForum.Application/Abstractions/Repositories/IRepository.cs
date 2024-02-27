@@ -7,5 +7,4 @@ public interface IRepository<TEntity, in TEntityId> where TEntity : class
     Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
     void Update(TEntity entity);
     void Delete(TEntity entity);
-    IQueryable<TEntity> GetQueryable();
 }

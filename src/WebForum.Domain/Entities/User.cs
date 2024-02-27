@@ -1,5 +1,3 @@
-using WebForum.Domain.Enums;
-
 namespace WebForum.Domain.Entities;
 
 public class User
@@ -12,7 +10,7 @@ public class User
     public required bool IsEnabled { get; set; }
     public DateTime? LockoutEnd { get; set; }
     public required int AccessFailedCount { get; set; }
-    public int RoleId { get; set; }
+    public required int RoleId { get; set; }
     public UserRole? Role { get; set; }
     public RegistrationRequest? RegistrationRequest { get; set; }
     public IEnumerable<UserPermission> Permissions { get; set; }

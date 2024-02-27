@@ -65,4 +65,19 @@ public static class DomainErrors
             $"The Permission with the Id {permissionId} was already added for user {userId} on room {roomId}.",
             (int)HttpStatusCode.Conflict);
     }
+
+    public static class Comment
+    {
+        public static Error NotFound(Guid id) => new($"Comment.NotFound",
+            $"The Comment with the Id {id} was not found.",
+            (int)HttpStatusCode.NotFound);
+
+        public static Error NotEditable(Guid id) => new($"Comment.NotEditable",
+            $"The Comment with the Id {id} can not be edited.",
+            (int)HttpStatusCode.NotFound);
+        
+        public static Error InvalidState(Guid id) => new($"Comment.InvalidState",
+            $"The Comment with the Id {id} in not in invalid state.",
+            (int)HttpStatusCode.NotFound);
+    }
 }

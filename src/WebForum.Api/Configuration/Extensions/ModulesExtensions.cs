@@ -43,7 +43,7 @@ public static class ModulesExtensions
     }
 
     private static IServiceCollection AddPersistence(this IServiceCollection services,
-        IConfigurationManager configuration)
+        IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(
             options =>
@@ -64,6 +64,7 @@ public static class ModulesExtensions
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
         services.AddScoped<IUserPermissionRepository, UserPermissionRepository>();
+        services.AddScoped<ICommentRepository, CommentRepository>();
         return services;
     }
 

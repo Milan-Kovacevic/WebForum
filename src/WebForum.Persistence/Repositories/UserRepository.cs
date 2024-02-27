@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Domain.Entities;
+using WebForum.Domain.Shared.Errors;
 using WebForum.Persistence.DbContext;
 
 namespace WebForum.Persistence.Repositories;
@@ -42,6 +43,13 @@ public class UserRepository(ApplicationDbContext context) : GenericRepository<Us
             .Include(x => x.Role)
             .Include(x => x.Permissions).ThenInclude(p => p.Permission)
             .Include(x => x.Permissions).ThenInclude(p => p.Room)
+            .FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
+    }
+
+    public override async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<User>()
+            .Include(x => x.Role)
             .FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
     }
 }
