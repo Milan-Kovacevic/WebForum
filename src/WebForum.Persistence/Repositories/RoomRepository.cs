@@ -9,8 +9,13 @@ public class RoomRepository(ApplicationDbContext context) : GenericRepository<Ro
 {
     private readonly ApplicationDbContext _context = context;
 
-    public async Task<bool> ExistsByName(string name)
+    public async Task<bool> ExistsByNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<Room>().FirstOrDefaultAsync(x => x.Name == name) != default;
+        return await _context.Set<Room>().FirstOrDefaultAsync(x => x.Name == name, cancellationToken) != default;
+    }
+
+    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<Room>().FirstOrDefaultAsync(x => x.RoomId == id, cancellationToken) != default;
     }
 }

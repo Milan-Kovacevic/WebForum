@@ -40,4 +40,29 @@ public static class DomainErrors
             $"The registration request with the Id {id} was not found.",
             (int)HttpStatusCode.NotFound);
     }
+
+    public static class Role
+    {
+        public static Error NotFound(int id) => new($"Role.NotFound",
+            $"The Role with the Id {id} was not found.",
+            (int)HttpStatusCode.NotFound);
+    }
+
+    public static class Permission
+    {
+        public static Error NotFound(int id) => new($"Permission.NotFound",
+            $"The Permission with the Id {id} was not found.",
+            (int)HttpStatusCode.NotFound);
+    }
+
+    public static class UserPermission
+    {
+        public static Error NotFound(Guid userId, Guid roomId, int permissionId) => new($"UserPermission.NotFound",
+            $"The Permission with the Id {permissionId} was not found for user {userId} on room {roomId}.",
+            (int)HttpStatusCode.NotFound);
+
+        public static Error Conflict(Guid userId, Guid roomId, int permissionId) => new("UserPermission.Conflict",
+            $"The Permission with the Id {permissionId} was already added for user {userId} on room {roomId}.",
+            (int)HttpStatusCode.Conflict);
+    }
 }

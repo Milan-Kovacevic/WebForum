@@ -19,9 +19,10 @@ public class GetRegisteredUserByIdQueryHandler(IUserRepository userRepository)
         // TODO: Fix check for external authentication flag
         var userPermissions =
             registeredUser.Permissions.Select(x =>
-                new PermissionResponse(x.Permission!.PermissionId, x.Permission.Name));
+                new UserPermissionResponse(x.Permission.PermissionId, x.Permission.Name, x.Room.RoomId, x.Room.Name));
         var result = new SingleRegisteredUserResponse(registeredUser.UserId, registeredUser.DisplayName,
-            registeredUser.IsEnabled, registeredUser.Role, registeredUser.Username is null, userPermissions);
+            registeredUser.IsEnabled, registeredUser.Role.RoleId, registeredUser.Role.Name,
+            registeredUser.Username is null, userPermissions);
         return Result.Success(result);
     }
 }

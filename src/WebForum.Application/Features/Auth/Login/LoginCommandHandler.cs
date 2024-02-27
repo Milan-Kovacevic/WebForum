@@ -18,7 +18,7 @@ public class LoginCommandHandler(
 {
     public async Task<Result> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByUsername(request.Username);
+        var user = await userRepository.GetByUsernameAsync(request.Username, cancellationToken);
         if (user is null)
             return Result.Failure(DomainErrors.Auth.InvalidLogin);
 

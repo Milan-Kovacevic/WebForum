@@ -14,7 +14,6 @@ public class RoleAuthorizationHandler(
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
         HasRoleAttribute requirement)
     {
-        var resource = context.Resource as string;
         var subject = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         if (subject is null || !Guid.TryParse(subject, out var userId))
         {
@@ -24,13 +23,13 @@ public class RoleAuthorizationHandler(
             context.Fail();
             return;
         }
-        
+
         // Injecting scoped service inside singleton...
         using var scope = serviceScopeFactory.CreateScope();
         var userAuthService = scope.ServiceProvider.GetRequiredService<IUserAuthService>();
         var role = await userAuthService.GetUserRole(userId);
 
-        if (role is null || !requirement.UserRoles.Contains((UserRole)role))
+        if (role is null || !requirement.UserRoles.Contains((UserRole)Enum.ToObject(typeof(UserRole), role.RoleId)))
         {
             logger.LogDebug(
                 "User with claims {@Claims} does not have required roles {@Roles} for accessing resource. Current role {Role}",

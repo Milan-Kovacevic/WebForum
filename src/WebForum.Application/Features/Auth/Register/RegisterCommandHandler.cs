@@ -5,6 +5,7 @@ using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
 using WebForum.Domain.Shared.Errors;
 using WebForum.Domain.Shared.Results;
+using UserRole = WebForum.Domain.Entities.UserRole;
 
 namespace WebForum.Application.Features.Auth.Register;
 
@@ -14,7 +15,7 @@ public class RegisterCommandHandler(
 {
     public async Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        if (await userRepository.ExistsByUsername(request.Username))
+        if (await userRepository.ExistsByUsernameAsync(request.Username, cancellationToken))
             return Result.Failure(DomainErrors.User.ConflictUsername(request.Username));
 
         var user = new User()
@@ -25,7 +26,7 @@ public class RegisterCommandHandler(
             PasswordHash = Utility.ComputeHash(request.Password),
             AccessFailedCount = Constants.DefaultLoginAccessFailCount,
             IsEnabled = false,
-            Role = UserRole.Regular
+            RoleId = UserRole.Regular.RoleId
         };
         await userRepository.InsertAsync(user, cancellationToken);
 

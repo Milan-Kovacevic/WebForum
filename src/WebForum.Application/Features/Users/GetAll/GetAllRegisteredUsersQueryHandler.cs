@@ -13,7 +13,7 @@ public class GetAllRegisteredUsersQueryHandler(IUserRepository userRepository)
     {
         var registeredUsers = await userRepository.GetAllRegisteredAsync(cancellationToken);
         var result =
-            registeredUsers.Select(x => new RegisteredUserResponse(x.UserId, x.DisplayName, x.IsEnabled, x.Role));
+            registeredUsers.Select(x => new RegisteredUserResponse(x.UserId, x.DisplayName, x.IsEnabled, x.Role.RoleId, x.Role.Name));
         return Result.Success(result);
     }
 }

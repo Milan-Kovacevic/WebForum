@@ -12,7 +12,7 @@ public class CreateRoomCommandHandler(IRoomRepository roomRepository)
 {
     public async Task<Result<RoomResponse>> Handle(CreateRoomCommand request, CancellationToken cancellationToken)
     {
-        if (await roomRepository.ExistsByName(request.Name))
+        if (await roomRepository.ExistsByNameAsync(request.Name, cancellationToken))
             return Result.Failure<RoomResponse>(DomainErrors.Room.ConflictName(request.Name));
 
         var room = new Room()

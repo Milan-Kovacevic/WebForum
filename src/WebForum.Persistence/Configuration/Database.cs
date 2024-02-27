@@ -1,5 +1,6 @@
 using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
+using UserRole = WebForum.Domain.Entities.UserRole;
 
 namespace WebForum.Persistence.Configuration;
 
@@ -12,6 +13,7 @@ public static class Database
         public const string UserLogin = "user_login";
         public const string Room = "room";
         public const string Comment = "comment";
+        public const string Role = "role";
         public const string Permission = "permission";
         public const string UserPermission = "user_permission";
         public const string MigrationHistory = "ef_migrations";
@@ -26,7 +28,6 @@ public static class Database
     
     public static class Defaults
     {
-        public const UserRole UserRole = Domain.Enums.UserRole.Regular;
         public const bool IsUserEnabled = false;
         public const int UserAccessFailedCount = 0;
     }

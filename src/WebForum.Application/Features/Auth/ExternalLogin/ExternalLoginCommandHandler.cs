@@ -5,6 +5,7 @@ using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
 using WebForum.Domain.Shared.Errors;
 using WebForum.Domain.Shared.Results;
+using UserRole = WebForum.Domain.Entities.UserRole;
 
 namespace WebForum.Application.Features.Auth.ExternalLogin;
 
@@ -18,7 +19,7 @@ public class ExternalLoginCommandHandler(IJwtService jwtService) : ICommandHandl
 
         var user = new User()
         {
-            Role = UserRole.Regular,
+            RoleId = UserRole.Regular.RoleId,
             UserId = Guid.NewGuid(),
             IsEnabled = true,
             AccessFailedCount = 0,

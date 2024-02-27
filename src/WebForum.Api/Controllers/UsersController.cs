@@ -2,8 +2,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Configuration.Extensions;
+using WebForum.Application.Features.Users.ChangeRole;
 using WebForum.Application.Features.Users.GetAll;
 using WebForum.Application.Features.Users.GetById;
+using WebForum.Application.Requests;
 using WebForum.Domain.Shared.Results;
 
 namespace WebForum.Api.Controllers;
@@ -30,5 +32,16 @@ public class UsersController(ISender sender) : ApiController(sender)
             .CreateFrom(new GetRegisteredUserByIdQuery(userId))
             .Process(query => Sender.Send(query, cancellationToken))
             .Respond(Ok, HandleFailure);
+    }
+
+    [AllowAnonymous]
+    [HttpPut("{userId:guid}/Group")]
+    public async Task<IActionResult> ChangeUserGroup([FromRoute] Guid userId, [FromBody] ChangeUserGroupRequest request,
+        CancellationToken cancellationToken)
+    {
+        return await Result
+            .CreateFrom(new ChangeUserRoleCommand(userId, request.Role))
+            .Process(query => Sender.Send(query, cancellationToken))
+            .Respond(NoContent, HandleFailure);
     }
 }

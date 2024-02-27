@@ -7,6 +7,7 @@ using WebForum.Application.Abstractions.Services;
 using WebForum.Application.PipelineBehaviors;
 using WebForum.Infrastructure.Authentication;
 using WebForum.Infrastructure.Authentication.Handlers;
+using WebForum.Infrastructure.Authentication.Providers;
 using WebForum.Infrastructure.Options;
 using WebForum.Infrastructure.Services;
 using WebForum.Infrastructure.Settings;
@@ -60,7 +61,9 @@ public static class ModulesExtensions
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRegistrationRequestRepository, RegistrationRequestRepository>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
+        services.AddScoped<IUserPermissionRepository, UserPermissionRepository>();
         return services;
     }
 
@@ -75,6 +78,7 @@ public static class ModulesExtensions
 
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, RoomPermissionAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationPolicyProvider, RoomPermissionAuthorizationPolicyProvider>();
         services.AddHttpClient<IGithubService, GithubService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IJwtService, JwtService>();

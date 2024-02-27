@@ -4,12 +4,6 @@ using WebForum.Domain.Enums;
 namespace WebForum.Infrastructure.Authentication.Attributes;
 
 public class HasRoomPermissionAttribute(RoomPermission roomPermission)
-    : AuthorizeAttribute(policy: roomPermission.ToString()), IAuthorizationRequirement, IAuthorizationRequirementData
+    : AuthorizeAttribute(policy: roomPermission.ToString())
 {
-    public RoomPermission RoomPermission { get; } = roomPermission;
-
-    public IEnumerable<IAuthorizationRequirement> GetRequirements()
-    {
-        yield return this;
-    }
 }

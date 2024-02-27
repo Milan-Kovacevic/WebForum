@@ -3,12 +3,12 @@ using WebForum.Infrastructure.Authentication.Attributes;
 
 namespace WebForum.Infrastructure.Authentication.Handlers;
 
-public class RoomPermissionAuthorizationHandler : AuthorizationHandler<HasRoomPermissionAttribute, Guid>
+public class RoomPermissionAuthorizationHandler : AuthorizationHandler<HasRoomPermissionRequirement, Guid>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
-        HasRoomPermissionAttribute requirement, Guid resource)
+        HasRoomPermissionRequirement requirement, Guid resource)
     {
-        var permission = requirement.RoomPermission;
+        var permission = requirement.Permission;
         context.Succeed(requirement);
         return Task.CompletedTask;
     }

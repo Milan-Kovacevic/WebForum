@@ -9,21 +9,29 @@ public class UserRepository(ApplicationDbContext context) : GenericRepository<Us
 {
     private readonly ApplicationDbContext _context = context;
 
-    public async Task<bool> ExistsByUsername(string username)
+    public async Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<User>().FirstOrDefaultAsync(x => x.Username == username) != default;
+        return await _context.Set<User>().FirstOrDefaultAsync(x => x.Username == username, cancellationToken) !=
+               default;
     }
 
-    public async Task<User?> GetByUsername(string username)
+    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Set<User>().FirstOrDefaultAsync(x => x.UserId == id, cancellationToken) != default;
+    }
+
+    public async Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
         return await _context.Set<User>()
-            .FirstOrDefaultAsync(x => x.Username == username);
+            .Include(x => x.Role)
+            .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
     }
 
     public async Task<IEnumerable<User>> GetAllRegisteredAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Set<User>()
             .AsNoTracking()
+            .Include(x => x.Role)
             .Where(x => x.RegistrationRequest == null)
             .ToListAsync(cancellationToken);
     }
@@ -31,8 +39,9 @@ public class UserRepository(ApplicationDbContext context) : GenericRepository<Us
     public async Task<User?> GetByIdWithPermissionsAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Set<User>()
-            .Include(x => x.Permissions)
-            .ThenInclude(p => p.Permission)
+            .Include(x => x.Role)
+            .Include(x => x.Permissions).ThenInclude(p => p.Permission)
+            .Include(x => x.Permissions).ThenInclude(p => p.Room)
             .FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
     }
 }

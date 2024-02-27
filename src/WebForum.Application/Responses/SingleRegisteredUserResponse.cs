@@ -7,7 +7,8 @@ public record SingleRegisteredUserResponse(
     Guid UserId,
     string DisplayName,
     bool IsEnabled,
-    UserRole Role,
+    int RoleId,
+    string GroupName,
     bool IsExternallyAuthenticated,
-    IEnumerable<PermissionResponse> Permissions)
-    : RegisteredUserResponse(UserId, DisplayName, IsEnabled, Role);
+    IEnumerable<UserPermissionResponse> Permissions)
+    : RegisteredUserResponse(UserId, DisplayName, IsEnabled, RoleId, GroupName);

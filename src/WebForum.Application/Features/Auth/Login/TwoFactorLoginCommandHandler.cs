@@ -17,7 +17,7 @@ public class TwoFactorLoginCommandHandler(
 {
     public async Task<Result<LoginResponse>> Handle(TwoFactorLoginCommand request, CancellationToken cancellationToken)
     {
-        var user = await userRepository.GetByUsername(request.Username);
+        var user = await userRepository.GetByUsernameAsync(request.Username, cancellationToken);
         if (user is null)
             return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
 

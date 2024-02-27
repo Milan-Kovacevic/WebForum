@@ -1,6 +1,8 @@
 using WebForum.Application.Abstractions.Repositories;
+using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
 using WebForum.Infrastructure.Authentication;
+using UserRole = WebForum.Domain.Entities.UserRole;
 
 namespace WebForum.Infrastructure.Services;
 

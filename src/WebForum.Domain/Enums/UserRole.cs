@@ -2,5 +2,5 @@ namespace WebForum.Domain.Enums;
 
 public enum UserRole
 {
-    Regular, Moderator, Admin, RootAdmin
+    Regular = 1, Moderator, Admin, RootAdmin
 }
