@@ -6,16 +6,17 @@ using WebForum.Application.Features.Users.ChangeRole;
 using WebForum.Application.Features.Users.GetAll;
 using WebForum.Application.Features.Users.GetById;
 using WebForum.Application.Requests;
+using WebForum.Domain.Enums;
 using WebForum.Domain.Shared.Results;
+using WebForum.Infrastructure.Authentication.Attributes;
 
 namespace WebForum.Api.Controllers;
 
 [Route("/api/[controller]")]
 public class UsersController(ISender sender) : ApiController(sender)
 {
-    // TODO: Role - Admin
-    [AllowAnonymous]
     [HttpGet]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> GetRegisteredUsers(CancellationToken cancellationToken)
     {
         return await Result
@@ -23,9 +24,9 @@ public class UsersController(ISender sender) : ApiController(sender)
             .Process(query => Sender.Send(query, cancellationToken))
             .Respond(Ok, HandleFailure);
     }
-
-    [AllowAnonymous]
+    
     [HttpGet("{userId:guid}")]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> GetRegisteredUserById([FromRoute] Guid userId, CancellationToken cancellationToken)
     {
         return await Result
@@ -33,9 +34,9 @@ public class UsersController(ISender sender) : ApiController(sender)
             .Process(query => Sender.Send(query, cancellationToken))
             .Respond(Ok, HandleFailure);
     }
-
-    [AllowAnonymous]
+    
     [HttpPut("{userId:guid}/Group")]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> ChangeUserGroup([FromRoute] Guid userId, [FromBody] ChangeUserGroupRequest request,
         CancellationToken cancellationToken)
     {

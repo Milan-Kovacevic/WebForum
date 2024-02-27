@@ -7,4 +7,5 @@ namespace WebForum.Infrastructure.Authentication;
 public interface IUserAuthService
 {
     Task<UserRole?> GetUserRole(Guid userId, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Permission>> GetUserRoomPermissions(Guid userId, Guid roomId, CancellationToken cancellationToken = default);
 }

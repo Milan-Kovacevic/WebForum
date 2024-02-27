@@ -29,6 +29,8 @@ public class AddUserRoomPermissionCommandHandler(
             return Result.Failure(
                 DomainErrors.UserPermission.Conflict(request.UserId, request.RoomId, request.PermissionId));
 
+        // TODO: Check if trying to add PostComment and BlockComment permission to regular user
+        
         var userPermission = new UserPermission
         {
             UserId = user.UserId,

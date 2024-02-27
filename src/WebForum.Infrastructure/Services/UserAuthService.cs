@@ -13,4 +13,11 @@ public class UserAuthService(IUserRepository userRepository) : IUserAuthService
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
         return user?.Role;
     }
+
+    public async Task<IEnumerable<Permission>> GetUserRoomPermissions(Guid userId, Guid roomId,
+        CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository.GetByIdWithPermissionsAsync(userId, cancellationToken);
+        return user?.Permissions.Select(x => x.Permission) ?? [];
+    }
 }

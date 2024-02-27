@@ -64,12 +64,4 @@ public class AuthController(ISender sender) : ApiController(sender)
         await Task.CompletedTask;
         return Ok();
     }
-
-    // Test
-    [HttpGet("/oauth/code")]
-    [AllowAnonymous]
-    public IResult GetOAuthCode()
-    {
-        return Results.Challenge(authenticationSchemes: new List<string>() { "github" });
-    }
 }

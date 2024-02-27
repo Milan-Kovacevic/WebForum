@@ -13,9 +13,9 @@ public class RoomPermissionAuthorizationPolicyProvider(IOptions<AuthorizationOpt
         var policy = await base.GetPolicyAsync(policyName);
         if (policy is not null || !Enum.TryParse<RoomPermission>(policyName, out var permission))
             return policy;
-        
+
         return new AuthorizationPolicyBuilder()
-            .AddRequirements(new HasRoomPermissionRequirement(permission))
+            .AddRequirements(new RoomPermissionRequirement(permission))
             .Build();
     }
 }

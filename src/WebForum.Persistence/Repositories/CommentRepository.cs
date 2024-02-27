@@ -40,7 +40,7 @@ public class CommentRepository(ApplicationDbContext context)
 
     public override async Task<Comment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await context.Set<Comment>()
+        return await _context.Set<Comment>()
             .Include(x => x.User)
             .ThenInclude(u => u.Role)
             .FirstOrDefaultAsync(x => x.CommentId == id, cancellationToken: cancellationToken);

@@ -1,5 +1,4 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Configuration.Extensions;
 using WebForum.Application.Features.RegistrationRequests.GetAll;
@@ -11,11 +10,10 @@ using WebForum.Infrastructure.Authentication.Attributes;
 namespace WebForum.Api.Controllers;
 
 [Route("/api/[controller]")]
-[HasRole(UserRole.RootAdmin, UserRole.Admin)]
 public class RequestsController(ISender sender) : ApiController(sender)
 {
     [HttpGet]
-    [AllowAnonymous]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> GetAllRegistrationRequests(CancellationToken cancellationToken)
     {
         return await Result
@@ -25,7 +23,7 @@ public class RequestsController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("{requestId:guid}/Approve")]
-    [AllowAnonymous]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> ApproveRegistrationRequest(Guid requestId, CancellationToken cancellationToken)
     {
         return await Result
@@ -35,7 +33,7 @@ public class RequestsController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost("{requestId:guid}/Reject")]
-    [AllowAnonymous]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> RejectRegistrationRequest(Guid requestId, CancellationToken cancellationToken)
     {
         return await Result

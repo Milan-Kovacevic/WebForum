@@ -32,7 +32,7 @@ public class TransactionPipelineBehavior<TRequest, TResponse>(IUnitOfWork unitOf
         var result = await next();
         if (result.IsFailure)
             return result;
-        
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return result;
     }

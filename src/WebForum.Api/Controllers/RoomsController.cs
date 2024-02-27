@@ -18,7 +18,6 @@ namespace WebForum.Api.Controllers;
 public class RoomsController(ISender sender) : ApiController(sender)
 {
     [HttpGet]
-    [AllowAnonymous]
     public async Task<IActionResult> GetAllRooms(CancellationToken cancellationToken)
     {
         return await Result
@@ -38,7 +37,7 @@ public class RoomsController(ISender sender) : ApiController(sender)
     }
 
     [HttpPost]
-    [HasRole(UserRole.RootAdmin)]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> CreateRoom([FromBody] RoomRequest request, CancellationToken cancellationToken)
     {
         return await Result
@@ -49,7 +48,6 @@ public class RoomsController(ISender sender) : ApiController(sender)
 
     [HttpPut("{roomId:guid}")]
     [HasRole(UserRole.RootAdmin)]
-    [HasRoomPermission(RoomPermission.RemoveComment)]
     public async Task<IActionResult> UpdateRoom(Guid roomId, [FromBody] RoomRequest request,
         CancellationToken cancellationToken)
     {

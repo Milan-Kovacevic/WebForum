@@ -85,6 +85,7 @@ public static class ModulesExtensions
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ITwoFactorCodeService, TwoFactorCodeService>();
         services.AddScoped<IUserAuthService, UserAuthService>();
+        services.AddScoped<IResourceService, ResourceService>();
         return services;
     }
 }

@@ -3,7 +3,7 @@ using WebForum.Domain.Enums;
 
 namespace WebForum.Infrastructure.Authentication.Attributes;
 
-public class HasRoomPermissionRequirement(RoomPermission permission) : IAuthorizationRequirement
+public class RoomPermissionRequirement(RoomPermission permission) : IAuthorizationRequirement
 {
     public RoomPermission Permission { get; } = permission;
 }
