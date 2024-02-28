@@ -38,12 +38,13 @@ public class JwtService(IOptions<JwtOptions> options, IUserAuthService userAuthS
         return authTokens;
     }
 
-    public async Task<TokenClaimValues?> ExtractClaimValuesFromJwt(JsonWebToken jwt,
+    public async Task<TokenClaimValues?> ExtractClaimValues(IEnumerable<Claim> claims,
         CancellationToken cancellationToken = default)
     {
-        var subClaim = jwt.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
-        var tokenClaim = jwt.Claims.FirstOrDefault(x => x.Type == CustomTokenIdClaimName);
-        var tokenTypeClaim = jwt.Claims.FirstOrDefault(x => x.Type == CustomTokenTypeClaimName);
+        var claimList = claims.ToList();
+        var subClaim = claimList.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
+        var tokenClaim = claimList.FirstOrDefault(x => x.Type == CustomTokenIdClaimName);
+        var tokenTypeClaim = claimList.FirstOrDefault(x => x.Type == CustomTokenTypeClaimName);
         if (subClaim is null || tokenClaim is null || tokenTypeClaim is null)
             return null;
 

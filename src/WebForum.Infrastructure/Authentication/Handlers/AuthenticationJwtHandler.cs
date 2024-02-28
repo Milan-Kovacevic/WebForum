@@ -22,7 +22,7 @@ public class AuthenticationJwtHandler(
         var jwtService = scope.ServiceProvider.GetRequiredService<IJwtService>();
         var userAuthService = scope.ServiceProvider.GetRequiredService<IUserAuthService>();
 
-        var claimValues = await jwtService.ExtractClaimValuesFromJwt(jwt);
+        var claimValues = await jwtService.ExtractClaimValues(jwt.Claims);
         if (claimValues is null)
         {
             logger.LogWarning(
