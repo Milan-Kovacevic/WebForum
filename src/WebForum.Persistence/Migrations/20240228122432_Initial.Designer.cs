@@ -11,7 +11,7 @@ using WebForum.Persistence.DbContext;
 namespace WebForum.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240227162837_Initial")]
+    [Migration("20240228122432_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -214,6 +214,27 @@ namespace WebForum.Persistence.Migrations
                     b.ToTable("user", (string)null);
                 });
 
+            modelBuilder.Entity("WebForum.Domain.Entities.UserLogin", b =>
+                {
+                    b.Property<int>("LoginProvider")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("LoginProvider", "ProviderKey")
+                        .IsUnique();
+
+                    b.ToTable("user_login", (string)null);
+                });
+
             modelBuilder.Entity("WebForum.Domain.Entities.UserPermission", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -230,6 +251,9 @@ namespace WebForum.Persistence.Migrations
                     b.HasIndex("PermissionId");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("UserId", "RoomId", "PermissionId")
+                        .IsUnique();
 
                     b.ToTable("user_permission", (string)null);
                 });
@@ -278,6 +302,32 @@ namespace WebForum.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WebForum.Domain.Entities.UserToken", b =>
+                {
+                    b.Property<Guid>("TokenId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("TokenId");
+
+                    b.HasIndex("TokenId")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("user_token", (string)null);
+                });
+
             modelBuilder.Entity("WebForum.Domain.Entities.Comment", b =>
                 {
                     b.HasOne("WebForum.Domain.Entities.Room", null)
@@ -317,6 +367,17 @@ namespace WebForum.Persistence.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("WebForum.Domain.Entities.UserLogin", b =>
+                {
+                    b.HasOne("WebForum.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WebForum.Domain.Entities.UserPermission", b =>
                 {
                     b.HasOne("WebForum.Domain.Entities.Permission", "Permission")
@@ -340,6 +401,17 @@ namespace WebForum.Persistence.Migrations
                     b.Navigation("Permission");
 
                     b.Navigation("Room");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebForum.Domain.Entities.UserToken", b =>
+                {
+                    b.HasOne("WebForum.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

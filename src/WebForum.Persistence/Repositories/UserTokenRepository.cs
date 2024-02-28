@@ -32,6 +32,16 @@ public class UserTokenRepository(IDistributedCache distributedCache) : IUserToke
         await distributedCache.RemoveAsync(key, cancellationToken);
     }
 
+    public Task PutUserToken(UserToken userToken, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<TwoFactorCode?> GetUserToken(Guid userId, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     private static string Resolve2FaCodeCacheKey(Guid userId)
     {
         return $"2fa:{userId}";

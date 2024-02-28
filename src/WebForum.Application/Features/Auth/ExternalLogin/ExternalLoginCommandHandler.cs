@@ -26,7 +26,7 @@ public class ExternalLoginCommandHandler(IJwtService jwtService) : ICommandHandl
             DisplayName = "Test"
         };
         var authTokens = await jwtService.GenerateUserToken(user);
-        var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken, authTokens.ExpiresIn);
+        var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken, authTokens.AccessTokenExpiration);
         return Result.Success(response);
     }
 }

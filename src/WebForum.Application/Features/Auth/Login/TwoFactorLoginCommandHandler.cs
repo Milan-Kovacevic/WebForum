@@ -10,6 +10,7 @@ namespace WebForum.Application.Features.Auth.Login;
 
 public class TwoFactorLoginCommandHandler(
     IJwtService jwtService,
+    IUserAuthService userAuthService,
     IUserRepository userRepository,
     IUserTokenRepository userTokenRepository,
     IUnitOfWork unitOfWork)
@@ -27,7 +28,7 @@ public class TwoFactorLoginCommandHandler(
         // TODO: Check if user has social login...
 
         var isValidPassword =
-            user.PasswordHash is not null && Utility.ValidateHash(request.Password, user.PasswordHash);
+            user.PasswordHash is not null && userAuthService.ValidatePasswordHash(request.Password, user.PasswordHash);
 
         if (!isValidPassword)
         {
@@ -46,14 +47,15 @@ public class TwoFactorLoginCommandHandler(
         if (user.Email is null)
             return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
 
-        //var twoFactorCode = await userTokenRepository.Get2FaCode(user.UserId, cancellationToken);
-        //if (twoFactorCode is null || twoFactorCode.Value != request.TwoFactorCode)
-        //    return Result.Failure<LoginResponse>(DomainErrors.User.InvalidLogin);
-        //await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
+        var twoFactorCode = await userTokenRepository.Get2FaCode(user.UserId, cancellationToken);
+        if (twoFactorCode is null || twoFactorCode.Value != request.TwoFactorCode)
+            return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
+        await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
 
         user.AccessFailedCount = 0;
         var authTokens = await jwtService.GenerateUserToken(user);
-        var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken, authTokens.ExpiresIn);
+        var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken,
+            authTokens.AccessTokenExpiration);
         return Result.Success(response);
     }
 }

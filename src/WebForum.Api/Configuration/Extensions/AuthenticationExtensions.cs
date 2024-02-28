@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using WebForum.Api.Configuration.Options;
 
 namespace WebForum.Api.Configuration.Extensions;
@@ -14,7 +13,10 @@ public static class AuthenticationExtensions
     {
         services.AddRateLimiting();
         services.AddGlobalExceptionHandler();
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+        {
+            
+        });
         services.ConfigureOptions<JwtBearerOptionsConfiguration>();
         return services;
     }

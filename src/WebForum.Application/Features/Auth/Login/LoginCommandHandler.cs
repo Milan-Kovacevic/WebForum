@@ -13,7 +13,8 @@ public class LoginCommandHandler(
     IUnitOfWork unitOfWork,
     IUserTokenRepository userTokenRepository,
     ITwoFactorCodeService twoFactorCodeService,
-    IEmailService emailService)
+    IEmailService emailService,
+    IUserAuthService userAuthService)
     : ICommandHandler<LoginCommand>
 {
     public async Task<Result> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -28,7 +29,7 @@ public class LoginCommandHandler(
         // TODO: Check if user has social login...
 
         var isValidPassword =
-            user.PasswordHash is not null && Utility.ValidateHash(request.Password, user.PasswordHash);
+            user.PasswordHash is not null && userAuthService.ValidatePasswordHash(request.Password, user.PasswordHash);
 
         if (!isValidPassword)
         {

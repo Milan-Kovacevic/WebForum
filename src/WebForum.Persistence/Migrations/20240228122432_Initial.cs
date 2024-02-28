@@ -137,6 +137,26 @@ namespace WebForum.Persistence.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "user_login",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<int>(type: "int", nullable: false),
+                    ProviderKey = table.Column<string>(type: "varchar(255)", nullable: false),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_login", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_user_login_user_UserId",
+                        column: x => x.UserId,
+                        principalTable: "user",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "user_permission",
                 columns: table => new
                 {
@@ -161,6 +181,27 @@ namespace WebForum.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_user_permission_user_UserId",
+                        column: x => x.UserId,
+                        principalTable: "user",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "user_token",
+                columns: table => new
+                {
+                    TokenId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<string>(type: "longtext", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_token", x => x.TokenId);
+                    table.ForeignKey(
+                        name: "FK_user_token_user_UserId",
                         column: x => x.UserId,
                         principalTable: "user",
                         principalColumn: "UserId",
@@ -273,6 +314,17 @@ namespace WebForum.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_user_login_LoginProvider_ProviderKey",
+                table: "user_login",
+                columns: new[] { "LoginProvider", "ProviderKey" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_login_UserId",
+                table: "user_login",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_user_permission_PermissionId",
                 table: "user_permission",
                 column: "PermissionId");
@@ -281,6 +333,23 @@ namespace WebForum.Persistence.Migrations
                 name: "IX_user_permission_RoomId",
                 table: "user_permission",
                 column: "RoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_permission_UserId_RoomId_PermissionId",
+                table: "user_permission",
+                columns: new[] { "UserId", "RoomId", "PermissionId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_token_TokenId",
+                table: "user_token",
+                column: "TokenId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_token_UserId",
+                table: "user_token",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -293,7 +362,13 @@ namespace WebForum.Persistence.Migrations
                 name: "registration_request");
 
             migrationBuilder.DropTable(
+                name: "user_login");
+
+            migrationBuilder.DropTable(
                 name: "user_permission");
+
+            migrationBuilder.DropTable(
+                name: "user_token");
 
             migrationBuilder.DropTable(
                 name: "permission");

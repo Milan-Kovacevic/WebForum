@@ -1,5 +1,6 @@
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
+using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Utils;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
@@ -11,6 +12,7 @@ namespace WebForum.Application.Features.Auth.Register;
 
 public class RegisterCommandHandler(
     IUserRepository userRepository,
+    IUserAuthService userAuthService,
     IRegistrationRequestRepository registrationRequestRepository) : ICommandHandler<RegisterCommand>
 {
     public async Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -23,7 +25,7 @@ public class RegisterCommandHandler(
             DisplayName = request.DisplayName,
             Username = request.Username,
             Email = request.Email,
-            PasswordHash = Utility.ComputeHash(request.Password),
+            PasswordHash = userAuthService.ComputePasswordHash(request.Password),
             AccessFailedCount = Constants.DefaultLoginAccessFailCount,
             IsEnabled = false,
             RoleId = UserRole.Regular.RoleId

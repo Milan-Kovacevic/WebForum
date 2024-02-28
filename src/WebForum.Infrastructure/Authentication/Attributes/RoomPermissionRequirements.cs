@@ -2,7 +2,7 @@ using WebForum.Domain.Enums;
 
 namespace WebForum.Infrastructure.Authentication.Attributes;
 
-public class RoomPermissionRequirements
+public static class RoomPermissionRequirements
 {
     public static readonly RoomPermissionRequirement CreateComment =
         new RoomPermissionRequirement(RoomPermission.CreateComment);

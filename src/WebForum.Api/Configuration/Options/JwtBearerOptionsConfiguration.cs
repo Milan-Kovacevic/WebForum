@@ -14,12 +14,6 @@ public class JwtBearerOptionsConfiguration(IOptions<JwtOptions> options) : IConf
 
     public void Configure(JwtBearerOptions options)
     {
-        IEnumerable<SymmetricSecurityKey> signingKeys =
-        [
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.AccessTokenSigningKey)),
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.RefreshTokenSigningKey))
-        ];
-
         options.TokenValidationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,
@@ -28,7 +22,7 @@ public class JwtBearerOptionsConfiguration(IOptions<JwtOptions> options) : IConf
             ValidateIssuerSigningKey = true,
             ValidIssuer = _options.Issuer,
             ValidAudience = _options.Audience,
-            IssuerSigningKeys = signingKeys,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.AccessTokenSigningKey)),
             ClockSkew = TimeSpan.Zero
         };
     }

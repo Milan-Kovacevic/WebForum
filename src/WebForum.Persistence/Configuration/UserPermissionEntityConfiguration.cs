@@ -13,5 +13,9 @@ public class UserPermissionEntityConfiguration : IEntityTypeConfiguration<UserPe
         {
             x.UserId, x.RoomId, x.PermissionId
         });
+        builder.HasIndex(x => new
+        {
+            x.UserId, x.RoomId, x.PermissionId
+        }).IsUnique();
     }
 }

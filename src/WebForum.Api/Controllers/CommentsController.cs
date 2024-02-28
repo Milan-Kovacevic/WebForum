@@ -21,7 +21,7 @@ namespace WebForum.Api.Controllers;
 public class CommentsController(
     ISender sender,
     IAuthorizationService authorizationService,
-    IResourceService resourceService) : ApiController(sender)
+    IResourceResolverService resourceResolverService) : ApiController(sender)
 {
     [HttpGet("Rooms/{roomId:guid}/[controller]/Posted")]
     [HasRole(UserRole.RootAdmin, UserRole.Admin, UserRole.Moderator, UserRole.Regular)]
@@ -64,7 +64,7 @@ public class CommentsController(
     public async Task<IActionResult> EditComment([FromRoute] Guid commentId, [FromBody] EditCommentRequest request,
         CancellationToken cancellationToken)
     {
-        var roomId = await resourceService.FindRoomIdByCommentIdAsync(commentId, cancellationToken);
+        var roomId = await resourceResolverService.ResolveRoomIdByCommentIdAsync(commentId, cancellationToken);
         var authorizationResult =
             await authorizationService.AuthorizeAsync(User, roomId, RoomPermissionRequirements.EditComment);
         if (!authorizationResult.Succeeded)
@@ -78,10 +78,9 @@ public class CommentsController(
 
     [HttpDelete("[controller]/{commentId:guid}")]
     [HasRole(UserRole.RootAdmin, UserRole.Admin, UserRole.Moderator, UserRole.Regular)]
-    [HasRoomPermission(RoomPermission.RemoveComment)]
     public async Task<IActionResult> RemoveComment([FromRoute] Guid commentId, CancellationToken cancellationToken)
     {
-        var roomId = await resourceService.FindRoomIdByCommentIdAsync(commentId, cancellationToken);
+        var roomId = await resourceResolverService.ResolveRoomIdByCommentIdAsync(commentId, cancellationToken);
         var authorizationResult =
             await authorizationService.AuthorizeAsync(User, roomId, RoomPermissionRequirements.RemoveComment);
         if (!authorizationResult.Succeeded)
@@ -94,12 +93,11 @@ public class CommentsController(
     }
 
     [HttpPost("[controller]/{commentId:guid}/Post")]
-    [HasRoomPermission(RoomPermission.PostComment)]
     [HasRole(UserRole.RootAdmin, UserRole.Admin, UserRole.Moderator)]
     public async Task<IActionResult> PostComment([FromRoute] Guid commentId, [FromBody] PostCommentRequest request,
         CancellationToken cancellationToken)
     {
-        var roomId = await resourceService.FindRoomIdByCommentIdAsync(commentId, cancellationToken);
+        var roomId = await resourceResolverService.ResolveRoomIdByCommentIdAsync(commentId, cancellationToken);
         var authorizationResult =
             await authorizationService.AuthorizeAsync(User, roomId, RoomPermissionRequirements.PostComment);
         if (!authorizationResult.Succeeded)
@@ -112,11 +110,10 @@ public class CommentsController(
     }
 
     [HttpPost("[controller]/{commentId:guid}/Block")]
-    [HasRoomPermission(RoomPermission.BlockComment)]
     [HasRole(UserRole.RootAdmin, UserRole.Admin, UserRole.Moderator)]
     public async Task<IActionResult> BlockComment([FromRoute] Guid commentId, CancellationToken cancellationToken)
     {
-        var roomId = await resourceService.FindRoomIdByCommentIdAsync(commentId, cancellationToken);
+        var roomId = await resourceResolverService.ResolveRoomIdByCommentIdAsync(commentId, cancellationToken);
         var authorizationResult =
             await authorizationService.AuthorizeAsync(User, roomId, RoomPermissionRequirements.BlockComment);
         if (!authorizationResult.Succeeded)

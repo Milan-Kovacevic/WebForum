@@ -11,6 +11,7 @@ public static class Database
         public const string RegistrationRequest = "registration_request";
         public const string User = "user";
         public const string UserLogin = "user_login";
+        public const string UserToken = "user_token";
         public const string Room = "room";
         public const string Comment = "comment";
         public const string Role = "role";

@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using WebForum.Application.Abstractions.Services;
 using WebForum.Domain.Enums;
 using WebForum.Infrastructure.Authentication.Attributes;
 
