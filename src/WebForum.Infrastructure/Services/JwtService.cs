@@ -2,27 +2,29 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Models;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
 using WebForum.Infrastructure.Options;
+using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 
 namespace WebForum.Infrastructure.Services;
 
-public class JwtService(IOptions<JwtOptions> options) : IJwtService
+public class JwtService(IOptions<JwtOptions> options, IUserAuthService userAuthService) : IJwtService
 {
     private readonly JwtOptions _options = options.Value;
     private const string CustomTokenIdClaimName = "tokenId";
     private const string CustomTokenTypeClaimName = "type";
 
-    public async Task<AuthToken> GenerateUserToken(User user)
+    public async Task<AuthToken> GenerateUserToken(User user, CancellationToken cancellationToken = default)
     {
         var accessTokenId = Guid.NewGuid();
         var refreshTokenId = Guid.NewGuid();
         var accessToken = await GenerateToken(accessTokenId, user, TokenType.Access);
-        var refreshToken = await GenerateToken(accessTokenId, user, TokenType.Refresh);
+        var refreshToken = await GenerateToken(refreshTokenId, user, TokenType.Refresh);
 
         var authTokens = new AuthToken()
         {
@@ -34,6 +36,28 @@ public class JwtService(IOptions<JwtOptions> options) : IJwtService
             AccessTokenExpiration = _options.AccessTokenExpirationTime
         };
         return authTokens;
+    }
+
+    public async Task<TokenClaimValues?> ExtractClaimValuesFromJwt(JsonWebToken jwt,
+        CancellationToken cancellationToken = default)
+    {
+        var subClaim = jwt.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
+        var tokenClaim = jwt.Claims.FirstOrDefault(x => x.Type == CustomTokenIdClaimName);
+        var tokenTypeClaim = jwt.Claims.FirstOrDefault(x => x.Type == CustomTokenTypeClaimName);
+        if (subClaim is null || tokenClaim is null || tokenTypeClaim is null)
+            return null;
+
+        if (!Guid.TryParse(subClaim.Value, out var userId) || !Guid.TryParse(tokenClaim.Value, out var tokenId) ||
+            !Enum.TryParse<TokenType>(tokenTypeClaim.Value, out var tokenType))
+            return null;
+
+        var claimValues = new TokenClaimValues()
+        {
+            UserId = userId,
+            TokenId = tokenId,
+            Type = tokenType
+        };
+        return await Task.FromResult(claimValues);
     }
 
     private Task<string> GenerateToken(Guid tokenId, User user, TokenType tokenType)

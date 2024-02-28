@@ -13,11 +13,9 @@ public static class AuthenticationExtensions
     {
         services.AddRateLimiting();
         services.AddGlobalExceptionHandler();
-        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-        {
-            
-        });
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
         services.ConfigureOptions<JwtBearerOptionsConfiguration>();
+        services.AddAuthorization();
         return services;
     }
     

@@ -1,11 +1,13 @@
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Domain.Entities;
+using WebForum.Domain.Enums;
 using UserRole = WebForum.Domain.Entities.UserRole;
 
 namespace WebForum.Infrastructure.Services;
 
-public class UserAuthService(IUserRepository userRepository, IUnitOfWork unitOfWork) : IUserAuthService
+public class UserAuthService(IUserRepository userRepository, IUserTokenRepository userTokenRepository)
+    : IUserAuthService
 {
     public async Task<UserRole?> GetUserRole(Guid userId, CancellationToken cancellationToken = default)
     {
@@ -13,10 +15,17 @@ public class UserAuthService(IUserRepository userRepository, IUnitOfWork unitOfW
         return user?.Role;
     }
 
-    public async Task<IEnumerable<UserPermission>> GetUserPermissions(Guid userId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<UserPermission>> GetUserPermissions(Guid userId,
+        CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByIdWithPermissionsAsync(userId, cancellationToken);
         return user?.Permissions ?? [];
+    }
+
+    public async Task<UserToken?> GetUserToken(Guid userId, Guid tokenId, TokenType tokenType,
+        CancellationToken cancellationToken = default)
+    {
+        return await userTokenRepository.GetUserToken(userId, tokenId, tokenType, cancellationToken);
     }
 
     public string ComputePasswordHash(string text)

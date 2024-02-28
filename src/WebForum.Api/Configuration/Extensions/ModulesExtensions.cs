@@ -1,11 +1,11 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WebForum.Application.Utils;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.PipelineBehaviors;
-using WebForum.Infrastructure.Authentication;
 using WebForum.Infrastructure.Authentication.Handlers;
 using WebForum.Infrastructure.Authentication.Providers;
 using WebForum.Infrastructure.Options;
@@ -80,7 +80,9 @@ public static class ModulesExtensions
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, RoomPermissionAuthorizationHandler>();
         services.AddSingleton<IAuthorizationPolicyProvider, RoomPermissionAuthorizationPolicyProvider>();
+        services.AddSingleton<TokenHandler, AuthenticationJwtHandler>();
         services.AddHttpClient<IGithubService, GithubService>();
+        services.AddScoped<IRedisCacheService, RedisCacheService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<ITwoFactorCodeService, TwoFactorCodeService>();

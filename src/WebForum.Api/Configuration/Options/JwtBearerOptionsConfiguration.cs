@@ -6,7 +6,7 @@ using WebForum.Infrastructure.Options;
 
 namespace WebForum.Api.Configuration.Options;
 
-public class JwtBearerOptionsConfiguration(IOptions<JwtOptions> options) : IConfigureNamedOptions<JwtBearerOptions>
+public class JwtBearerOptionsConfiguration(IOptions<JwtOptions> options, IServiceProvider serviceProvider) : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly JwtOptions _options = options.Value;
 
@@ -14,6 +14,9 @@ public class JwtBearerOptionsConfiguration(IOptions<JwtOptions> options) : IConf
 
     public void Configure(JwtBearerOptions options)
     {
+        options.TokenHandlers.Clear();
+        options.TokenHandlers.Add(serviceProvider.GetRequiredService<TokenHandler>());
+        
         options.TokenValidationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,

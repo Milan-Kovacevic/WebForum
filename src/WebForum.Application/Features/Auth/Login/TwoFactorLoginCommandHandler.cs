@@ -3,6 +3,8 @@ using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Responses;
 using WebForum.Application.Utils;
+using WebForum.Domain.Entities;
+using WebForum.Domain.Enums;
 using WebForum.Domain.Shared.Errors;
 using WebForum.Domain.Shared.Results;
 
@@ -53,7 +55,25 @@ public class TwoFactorLoginCommandHandler(
         await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
 
         user.AccessFailedCount = 0;
-        var authTokens = await jwtService.GenerateUserToken(user);
+        var authTokens = await jwtService.GenerateUserToken(user, cancellationToken);
+
+        await userTokenRepository.PutUserToken(new UserToken()
+        {
+            Type = TokenType.Access,
+            TokenId = authTokens.AccessTokenId,
+            Value = authTokens.AccessToken,
+            UserId = user.UserId,
+            User = user
+        }, TimeSpan.FromSeconds(authTokens.AccessTokenExpiration), cancellationToken);
+        await userTokenRepository.PutUserToken(new UserToken()
+        {
+            Type = TokenType.Refresh,
+            TokenId = authTokens.RefreshTokenId,
+            Value = authTokens.RefreshToken,
+            UserId = user.UserId,
+            User = user
+        }, TimeSpan.FromSeconds(authTokens.RefreshTokenExpiration), cancellationToken);
+
         var response = new LoginResponse(authTokens.AccessToken, authTokens.RefreshToken,
             authTokens.AccessTokenExpiration);
         return Result.Success(response);
