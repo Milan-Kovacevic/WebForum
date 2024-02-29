@@ -70,7 +70,7 @@ public class AuthController(ISender sender, IJwtService jwtService) : ApiControl
     [HasRole(UserRole.RootAdmin, UserRole.Admin, UserRole.Moderator, UserRole.Regular)]
     public async Task<IActionResult> Logout(CancellationToken cancellationToken)
     {
-        var tokenClaims = await jwtService.ExtractClaimValues(User.Claims, cancellationToken);
+        var tokenClaims = await jwtService.ExtractClaimValues(User.Claims);
         return await Result
             .CreateFrom(new LogoutCommand(tokenClaims!.UserId))
             .Process(command => Sender.Send(command, cancellationToken))

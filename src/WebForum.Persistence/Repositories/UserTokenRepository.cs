@@ -64,6 +64,17 @@ public class UserTokenRepository(IDistributedCache distributedCache, IRedisCache
         return tokens.Where(x => x is not null).Select(x => x!);
     }
 
+    public async Task<UserToken?> RemoveUserToken(Guid userId, Guid tokenId, TokenType type,
+        CancellationToken cancellationToken)
+    {
+        var key = ResolveUserTokenCacheKey(userId, tokenId, type);
+        var userToken = await GetUserToken(userId, tokenId, type, cancellationToken);
+        if (userToken is null)
+            return null;
+        await distributedCache.RemoveAsync(key, cancellationToken);
+        return userToken;
+    }
+
     public async Task RemoveAllUserTokens(Guid userId, CancellationToken cancellationToken = default)
     {
         var keys = redisCacheService.GetCacheKeys(ResolveUserTokensPattern(userId));

@@ -32,6 +32,12 @@ public static class DomainErrors
 
         public static readonly Error InvalidLogin = new($"Auth.InvalidLogin", $"Username or password is invalid.",
             (int)HttpStatusCode.NotFound);
+
+        public static readonly Error TokenExpired = new($"Auth.TokenExpired", $"Specified token is expired.",
+            (int)HttpStatusCode.NotFound);
+
+        public static readonly Error InvalidToken = new($"Auth.InvalidToken", $"Specified token is invalid.",
+            (int)HttpStatusCode.NotFound);
     }
 
     public static class RegistrationRequest
@@ -75,7 +81,7 @@ public static class DomainErrors
         public static Error NotEditable(Guid id) => new($"Comment.NotEditable",
             $"The Comment with the Id {id} can not be edited.",
             (int)HttpStatusCode.NotFound);
-        
+
         public static Error InvalidState(Guid id) => new($"Comment.InvalidState",
             $"The Comment with the Id {id} in not in invalid state.",
             (int)HttpStatusCode.NotFound);

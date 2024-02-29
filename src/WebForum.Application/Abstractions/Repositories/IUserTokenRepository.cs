@@ -11,5 +11,6 @@ public interface IUserTokenRepository
     Task PutUserToken(UserToken userToken, TimeSpan duration, CancellationToken cancellationToken = default);
     Task<UserToken?> GetUserToken(Guid userId, Guid tokenId, TokenType type, CancellationToken cancellationToken = default);
     Task<IEnumerable<UserToken>> GetAllUserTokens(Guid userId, CancellationToken cancellationToken = default);
+    Task<UserToken?> RemoveUserToken(Guid userId, Guid tokenId, TokenType type, CancellationToken cancellationToken);
     Task RemoveAllUserTokens(Guid userId, CancellationToken cancellationToken = default);
 }

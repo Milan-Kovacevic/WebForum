@@ -1,7 +1,7 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.JsonWebTokens;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Domain.Enums;
 using WebForum.Infrastructure.Authentication.Attributes;
@@ -15,7 +15,7 @@ public class RoleAuthorizationHandler(
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
         HasRoleAttribute requirement)
     {
-        var subject = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+        var subject = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
         if (subject is null || !Guid.TryParse(subject, out var userId))
         {
             logger.LogDebug(

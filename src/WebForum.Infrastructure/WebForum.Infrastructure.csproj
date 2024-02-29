@@ -8,7 +8,9 @@
 
     <ItemGroup>
       <PackageReference Include="MailKit" Version="4.3.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.2" />
       <PackageReference Include="Microsoft.AspNetCore.Metadata" Version="8.0.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     </ItemGroup>
 
     <ItemGroup>

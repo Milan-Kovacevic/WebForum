@@ -55,7 +55,7 @@ public class TwoFactorLoginCommandHandler(
         await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
 
         user.AccessFailedCount = 0;
-        var authTokens = await jwtService.GenerateUserToken(user, cancellationToken);
+        var authTokens = await jwtService.GenerateUserToken(user.UserId);
 
         await userTokenRepository.PutUserToken(new UserToken()
         {
