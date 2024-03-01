@@ -22,9 +22,9 @@ public class RefreshTokenCommandHandler(IUserTokenRepository userTokenRepository
         if (!accessTokenValidationResult.IsValid || !refreshTokenValidationResult.IsValid)
             return Result.Failure<RefreshTokenResponse>(DomainErrors.Auth.TokenExpired);
 
-        var accessTokenClaims = await jwtService.ExtractClaimValues(accessTokenValidationResult.ClaimsIdentity.Claims);
+        var accessTokenClaims = await jwtService.ExtractTokenClaimValues(accessTokenValidationResult.ClaimsIdentity.Claims);
         var refreshTokenClaims =
-            await jwtService.ExtractClaimValues(refreshTokenValidationResult.ClaimsIdentity.Claims);
+            await jwtService.ExtractTokenClaimValues(refreshTokenValidationResult.ClaimsIdentity.Claims);
 
         if (accessTokenClaims is null || refreshTokenClaims is null ||
             accessTokenClaims.UserId != refreshTokenClaims.UserId)
@@ -37,7 +37,7 @@ public class RefreshTokenCommandHandler(IUserTokenRepository userTokenRepository
         if (removedRefreshToken is null)
             return Result.Failure<RefreshTokenResponse>(DomainErrors.Auth.InvalidToken);
 
-        var authTokens = await jwtService.GenerateUserToken(removedRefreshToken.UserId);
+        var authTokens = await jwtService.GenerateUserTokens(removedRefreshToken.UserId);
         await userTokenRepository.PutUserToken(new UserToken()
         {
             Type = TokenType.Access,

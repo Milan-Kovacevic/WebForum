@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Infrastructure.Authentication.Attributes;
 
@@ -25,10 +26,11 @@ public class RoomPermissionAuthorizationHandler(
         }
 
         using var scope = serviceScopeFactory.CreateScope();
-        var userAuthService = scope.ServiceProvider.GetRequiredService<IUserAuthService>();
-        var userPermissions = await userAuthService.GetUserPermissions(userId);
+        var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+        var userPermissions = (await userRepository.GetByIdWithPermissionsAsync(userId))?.Permissions;
 
-        if (userPermissions.Any(p => p.Permission.Name == requirement.Permission.ToString() && p.RoomId == resource))
+        if (userPermissions is not null && userPermissions
+                .Any(p => p.Permission.Name == requirement.Permission.ToString() && p.RoomId == resource))
             context.Succeed(requirement);
         else
             context.Fail();

@@ -7,7 +7,7 @@ namespace WebForum.Application.Abstractions.Services;
 
 public interface IJwtService
 {
-    Task<AuthToken> GenerateUserToken(Guid userId);
-    Task<TokenClaimValues?> ExtractClaimValues(IEnumerable<Claim> claims);
-    Task<TokenValidationResult> ValidateUserToken(string jwtToken,TokenType tokenType);
+    Task<JwtTokensResult> GenerateUserTokens(Guid userId);
+    Task<TokenValidationResult> ValidateUserToken(string jwtToken, TokenType tokenType);
+    Task<JwtClaimsResult?> ExtractTokenClaimValues(IEnumerable<Claim> claims);
 }

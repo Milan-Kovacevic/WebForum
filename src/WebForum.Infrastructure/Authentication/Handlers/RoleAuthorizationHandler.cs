@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.JsonWebTokens;
+using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Domain.Enums;
 using WebForum.Infrastructure.Authentication.Attributes;
@@ -27,8 +28,8 @@ public class RoleAuthorizationHandler(
 
         // Injecting scoped service inside singleton...
         using var scope = serviceScopeFactory.CreateScope();
-        var userAuthService = scope.ServiceProvider.GetRequiredService<IUserAuthService>();
-        var role = await userAuthService.GetUserRole(userId);
+        var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+        var role = (await userRepository.GetByIdAsync(userId))?.Role;
 
         if (role is null || !requirement.UserRoles.Contains((UserRole)Enum.ToObject(typeof(UserRole), role.RoleId)))
         {

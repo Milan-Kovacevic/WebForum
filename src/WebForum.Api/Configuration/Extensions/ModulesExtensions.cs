@@ -7,6 +7,8 @@ using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.PipelineBehaviors;
 using WebForum.Infrastructure.Authentication.Handlers;
+using WebForum.Infrastructure.Authentication.OAuth;
+using WebForum.Infrastructure.Authentication.OAuth.Handlers.GitHub;
 using WebForum.Infrastructure.Authentication.Providers;
 using WebForum.Infrastructure.Options;
 using WebForum.Infrastructure.Services;
@@ -60,6 +62,7 @@ public static class ModulesExtensions
         services.AddScoped<IRoomRepository, RoomRepository>();
         services.AddScoped<IUserTokenRepository, UserTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserLoginRepository, UserLoginRepository>();
         services.AddScoped<IRegistrationRequestRepository, RegistrationRequestRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
         services.AddScoped<IPermissionRepository, PermissionRepository>();
@@ -76,17 +79,17 @@ public static class ModulesExtensions
             .ValidateDataAnnotations().ValidateOnStart();
         services.AddOptions<JwtOptions>().BindConfiguration(Constants.Infrastructure.JwtConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
-
+        services.AddHttpClient();
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, RoomPermissionAuthorizationHandler>();
         services.AddSingleton<IAuthorizationPolicyProvider, RoomPermissionAuthorizationPolicyProvider>();
         services.AddSingleton<TokenHandler, AuthenticationJwtHandler>();
-        services.AddHttpClient<IGithubService, GithubService>();
+
+        services.AddScoped<IGitHubOAuthHandler, GitHubOAuthHandler>();
         services.AddScoped<IRedisCacheService, RedisCacheService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IJwtService, JwtService>();
-        services.AddScoped<ITwoFactorCodeService, TwoFactorCodeService>();
-        services.AddScoped<IUserAuthService, UserAuthService>();
+        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IResourceResolverService, ResourceResolverService>();
         return services;
     }

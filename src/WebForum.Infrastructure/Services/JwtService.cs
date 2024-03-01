@@ -17,14 +17,14 @@ public class JwtService(IOptions<JwtOptions> options) : IJwtService
     private const string CustomTokenIdClaimName = "tokenId";
     private const string CustomTokenTypeClaimName = "type";
 
-    public async Task<AuthToken> GenerateUserToken(Guid userId)
+    public async Task<JwtTokensResult> GenerateUserTokens(Guid userId)
     {
         var accessTokenId = Guid.NewGuid();
         var refreshTokenId = Guid.NewGuid();
         var accessToken = await GenerateToken(accessTokenId, userId, TokenType.Access);
         var refreshToken = await GenerateToken(refreshTokenId, userId, TokenType.Refresh);
 
-        var authTokens = new AuthToken()
+        var authTokens = new JwtTokensResult()
         {
             AccessToken = accessToken,
             AccessTokenId = accessTokenId,
@@ -36,7 +36,7 @@ public class JwtService(IOptions<JwtOptions> options) : IJwtService
         return authTokens;
     }
 
-    public async Task<TokenClaimValues?> ExtractClaimValues(IEnumerable<Claim> claims)
+    public async Task<JwtClaimsResult?> ExtractTokenClaimValues(IEnumerable<Claim> claims)
     {
         var claimList = claims.ToList();
         var subClaim = claimList.FirstOrDefault(x => x.Type is ClaimTypes.NameIdentifier or JwtRegisteredClaimNames.Sub);
@@ -49,7 +49,7 @@ public class JwtService(IOptions<JwtOptions> options) : IJwtService
             !Enum.TryParse<TokenType>(tokenTypeClaim.Value, out var tokenType))
             return null;
 
-        var claimValues = new TokenClaimValues()
+        var claimValues = new JwtClaimsResult()
         {
             UserId = userId,
             TokenId = tokenId,
@@ -67,6 +67,7 @@ public class JwtService(IOptions<JwtOptions> options) : IJwtService
 
         throw new InvalidOperationException();
     }
+    
     private async Task<TokenValidationResult> ValidateAccessToken(string jwtToken)
     {
         var tokenHandler = new JwtSecurityTokenHandler();

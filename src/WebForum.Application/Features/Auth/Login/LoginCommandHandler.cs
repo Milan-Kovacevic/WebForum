@@ -12,9 +12,8 @@ public class LoginCommandHandler(
     IUserRepository userRepository,
     IUnitOfWork unitOfWork,
     IUserTokenRepository userTokenRepository,
-    ITwoFactorCodeService twoFactorCodeService,
     IEmailService emailService,
-    IUserAuthService userAuthService)
+    IAuthService authService)
     : ICommandHandler<LoginCommand>
 {
     public async Task<Result> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -26,10 +25,8 @@ public class LoginCommandHandler(
         if (user.LockoutEnd > DateTime.UtcNow || !user.IsEnabled)
             return Result.Failure(DomainErrors.Auth.InvalidLogin);
 
-        // TODO: Check if user has social login...
-
         var isValidPassword =
-            user.PasswordHash is not null && userAuthService.ValidatePasswordHash(request.Password, user.PasswordHash);
+            user.PasswordHash is not null && authService.ValidatePasswordHash(request.Password, user.PasswordHash);
 
         if (!isValidPassword)
         {
@@ -49,7 +46,7 @@ public class LoginCommandHandler(
             return Result.Failure(DomainErrors.Auth.InvalidLogin);
 
         var authenticationCode =
-            await twoFactorCodeService.Generate2FaCode(Constants.UserAuthenticationCodeSize, cancellationToken);
+            await authService.Generate2FaCode(Constants.UserAuthenticationCodeSize, cancellationToken);
         var twoFactorCode = new TwoFactorCode()
         {
             UserId = user.UserId,

@@ -12,7 +12,7 @@ namespace WebForum.Application.Features.Auth.Login;
 
 public class TwoFactorLoginCommandHandler(
     IJwtService jwtService,
-    IUserAuthService userAuthService,
+    IAuthService authService,
     IUserRepository userRepository,
     IUserTokenRepository userTokenRepository,
     IUnitOfWork unitOfWork)
@@ -27,10 +27,8 @@ public class TwoFactorLoginCommandHandler(
         if (user.LockoutEnd > DateTime.UtcNow)
             return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
 
-        // TODO: Check if user has social login...
-
         var isValidPassword =
-            user.PasswordHash is not null && userAuthService.ValidatePasswordHash(request.Password, user.PasswordHash);
+            user.PasswordHash is not null && authService.ValidatePasswordHash(request.Password, user.PasswordHash);
         var twoFactorCode = await userTokenRepository.Get2FaCode(user.UserId, cancellationToken);
         var isValidCode = twoFactorCode is not null && twoFactorCode.Value == request.TwoFactorCode;
         if (!isValidPassword || !isValidCode)
@@ -53,7 +51,7 @@ public class TwoFactorLoginCommandHandler(
         await userTokenRepository.Remove2FaCode(twoFactorCode!, cancellationToken);
 
         user.AccessFailedCount = 0;
-        var authTokens = await jwtService.GenerateUserToken(user.UserId);
+        var authTokens = await jwtService.GenerateUserTokens(user.UserId);
 
         await userTokenRepository.PutUserToken(new UserToken()
         {

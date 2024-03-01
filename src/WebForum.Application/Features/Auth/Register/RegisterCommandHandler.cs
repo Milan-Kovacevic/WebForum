@@ -12,7 +12,7 @@ namespace WebForum.Application.Features.Auth.Register;
 
 public class RegisterCommandHandler(
     IUserRepository userRepository,
-    IUserAuthService userAuthService,
+    IAuthService authService,
     IRegistrationRequestRepository registrationRequestRepository) : ICommandHandler<RegisterCommand>
 {
     public async Task<Result> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -25,7 +25,7 @@ public class RegisterCommandHandler(
             DisplayName = request.DisplayName,
             Username = request.Username,
             Email = request.Email,
-            PasswordHash = userAuthService.ComputePasswordHash(request.Password),
+            PasswordHash = authService.ComputePasswordHash(request.Password),
             AccessFailedCount = Constants.DefaultLoginAccessFailCount,
             IsEnabled = false,
             RoleId = UserRole.Regular.RoleId

@@ -1,6 +1,6 @@
 namespace WebForum.Application.Models;
 
-public class AuthToken
+public class JwtTokensResult
 {
     public required string AccessToken { get; init; }
     public required Guid AccessTokenId { get; init; }

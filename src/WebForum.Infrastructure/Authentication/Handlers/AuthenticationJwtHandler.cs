@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 
 namespace WebForum.Infrastructure.Authentication.Handlers;
@@ -20,9 +21,9 @@ public class AuthenticationJwtHandler(
 
         using var scope = serviceScopeFactory.CreateScope();
         var jwtService = scope.ServiceProvider.GetRequiredService<IJwtService>();
-        var userAuthService = scope.ServiceProvider.GetRequiredService<IUserAuthService>();
+        var userTokenRepository = scope.ServiceProvider.GetRequiredService<IUserTokenRepository>();
 
-        var claimValues = await jwtService.ExtractClaimValues(jwt.Claims);
+        var claimValues = await jwtService.ExtractTokenClaimValues(jwt.Claims);
         if (claimValues is null)
         {
             logger.LogWarning(
@@ -40,8 +41,8 @@ public class AuthenticationJwtHandler(
             validationResult.IsValid = false;
             return validationResult;
         }
-
-        var userToken = await userAuthService.GetUserToken(claimValues.UserId, claimValues.TokenId, claimValues.Type);
+        
+        var userToken = await userTokenRepository.GetUserToken(claimValues.UserId, claimValues.TokenId, claimValues.Type);
         if (userToken is null)
         {
             logger.LogInformation("User token was not found in the database. Encoded token is {Token}",
