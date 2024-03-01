@@ -39,7 +39,7 @@ public class JwtService(IOptions<JwtOptions> options) : IJwtService
     public async Task<TokenClaimValues?> ExtractClaimValues(IEnumerable<Claim> claims)
     {
         var claimList = claims.ToList();
-        var subClaim = claimList.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub);
+        var subClaim = claimList.FirstOrDefault(x => x.Type is ClaimTypes.NameIdentifier or JwtRegisteredClaimNames.Sub);
         var tokenClaim = claimList.FirstOrDefault(x => x.Type == CustomTokenIdClaimName);
         var tokenTypeClaim = claimList.FirstOrDefault(x => x.Type == CustomTokenTypeClaimName);
         if (subClaim is null || tokenClaim is null || tokenTypeClaim is null)

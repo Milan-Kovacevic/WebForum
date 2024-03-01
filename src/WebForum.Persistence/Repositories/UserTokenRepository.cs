@@ -100,6 +100,6 @@ public class UserTokenRepository(IDistributedCache distributedCache, IRedisCache
 
     private static string ResolveUserTokensPattern(Guid userId)
     {
-        return $"token:{userId}";
+        return $"token:{userId}:*";
     }
 }

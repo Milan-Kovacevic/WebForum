@@ -31,8 +31,9 @@ public class TwoFactorLoginCommandHandler(
 
         var isValidPassword =
             user.PasswordHash is not null && userAuthService.ValidatePasswordHash(request.Password, user.PasswordHash);
-
-        if (!isValidPassword)
+        var twoFactorCode = await userTokenRepository.Get2FaCode(user.UserId, cancellationToken);
+        var isValidCode = twoFactorCode is not null && twoFactorCode.Value == request.TwoFactorCode;
+        if (!isValidPassword || !isValidCode)
         {
             user.AccessFailedCount++;
             if (user.AccessFailedCount >= Constants.MaximumLoginAccessFailCount)
@@ -48,11 +49,8 @@ public class TwoFactorLoginCommandHandler(
 
         if (user.Email is null)
             return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
-
-        var twoFactorCode = await userTokenRepository.Get2FaCode(user.UserId, cancellationToken);
-        if (twoFactorCode is null || twoFactorCode.Value != request.TwoFactorCode)
-            return Result.Failure<LoginResponse>(DomainErrors.Auth.InvalidLogin);
-        await userTokenRepository.Remove2FaCode(twoFactorCode, cancellationToken);
+        
+        await userTokenRepository.Remove2FaCode(twoFactorCode!, cancellationToken);
 
         user.AccessFailedCount = 0;
         var authTokens = await jwtService.GenerateUserToken(user.UserId);

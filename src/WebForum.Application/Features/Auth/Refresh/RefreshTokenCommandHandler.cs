@@ -1,7 +1,6 @@
 using WebForum.Application.Abstractions.MediatR.Base;
 using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
-using WebForum.Application.Models;
 using WebForum.Application.Responses;
 using WebForum.Domain.Entities;
 using WebForum.Domain.Enums;
@@ -19,7 +18,7 @@ public class RefreshTokenCommandHandler(IUserTokenRepository userTokenRepository
         var accessTokenValidationResult =
             await jwtService.ValidateUserToken(request.AccessToken, TokenType.Access);
         var refreshTokenValidationResult =
-            await jwtService.ValidateUserToken(request.AccessToken, TokenType.Refresh);
+            await jwtService.ValidateUserToken(request.RefreshToken, TokenType.Refresh);
         if (!accessTokenValidationResult.IsValid || !refreshTokenValidationResult.IsValid)
             return Result.Failure<RefreshTokenResponse>(DomainErrors.Auth.TokenExpired);
 
@@ -57,29 +56,5 @@ public class RefreshTokenCommandHandler(IUserTokenRepository userTokenRepository
         var response = new RefreshTokenResponse(authTokens.AccessToken, authTokens.RefreshToken,
             authTokens.AccessTokenExpiration);
         return Result.Success(response);
-    }
-
-    private static TokenValidationOptions GetAccessTokenValidationOptions()
-    {
-        return new TokenValidationOptions()
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateExpiration = false,
-            ValidateSignature = true,
-            IsAccessToken = true,
-        };
-    }
-
-    private static TokenValidationOptions GetRefreshTokenValidationOptions()
-    {
-        return new TokenValidationOptions()
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateExpiration = true,
-            ValidateSignature = true,
-            IsAccessToken = false,
-        };
     }
 }

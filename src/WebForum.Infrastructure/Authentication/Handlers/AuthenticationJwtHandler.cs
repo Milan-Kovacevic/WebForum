@@ -46,6 +46,8 @@ public class AuthenticationJwtHandler(
         {
             logger.LogInformation("User token was not found in the database. Encoded token is {Token}",
                 jwt.EncodedToken);
+            validationResult.IsValid = false;
+            return validationResult;
         }
 
         return validationResult;

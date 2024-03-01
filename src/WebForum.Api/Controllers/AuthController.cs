@@ -74,6 +74,6 @@ public class AuthController(ISender sender, IJwtService jwtService) : ApiControl
         return await Result
             .CreateFrom(new LogoutCommand(tokenClaims!.UserId))
             .Process(command => Sender.Send(command, cancellationToken))
-            .Respond(Ok, HandleFailure);
+            .Respond(NoContent, HandleFailure);
     }
 }
