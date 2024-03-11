@@ -7,5 +7,5 @@ public record TwoFactorLoginCommand(string Username, string Password, string Two
     : ICommand<LoginResponse>
 {
     public RequestFlag Type =>
-        RequestFlag.Command | RequestFlag.Transaction | RequestFlag.Validate | RequestFlag.Sensitive;
+        RequestFlag.Command | RequestFlag.Validate | RequestFlag.Sensitive;
 }

@@ -1,3 +1,4 @@
+using WebForum.Api.Configuration;
 using WebForum.Api.Configuration.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRateLimiter();
 app.UseExceptionHandler();
+app.UseCors(Constants.Cors.AllowAllPolicyName);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

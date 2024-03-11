@@ -7,7 +7,7 @@ public class UpdateRoomCommandValidator : AbstractValidator<UpdateRoomCommand>
     public UpdateRoomCommandValidator()
     {
         RuleFor(x => x.RoomId).NotEmpty();
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(32);
-        RuleFor(x => x.Description).MaximumLength(128);
+        RuleFor(x => x.Name).NotEmpty().MaximumLength(96);
+        RuleFor(x => x.Description).MaximumLength(512);
     }
 }

@@ -7,11 +7,11 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     public RegisterCommandValidator()
     {
         RuleFor(x => x.DisplayName).NotEmpty().WithMessage("Display name is required.")
-            .MaximumLength(128);
+            .MinimumLength(5).MaximumLength(128);
         RuleFor(x => x.Email).EmailAddress();
         RuleFor(x => x.Username).NotEmpty().WithMessage("Username is required.")
             .MinimumLength(6).WithMessage("Username must be at least 6 characters long.").MaximumLength(64)
-            .Matches(@$"^[\d\w_.]+$")
+            .Matches(@$"^[\w-.]+$")
             .WithMessage("Username can only contain letter, digits, underscores and dots.");
         RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required.")
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long.")

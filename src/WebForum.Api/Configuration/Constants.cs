@@ -21,4 +21,9 @@ public static class Constants
         public const string DatabaseConnectionString = "DefaultConnection";
         public const string RedisConnectionString = "Redis";
     }
+
+    public static class Cors
+    {
+        public const string AllowAllPolicyName = "AllowAll";
+    }
 }

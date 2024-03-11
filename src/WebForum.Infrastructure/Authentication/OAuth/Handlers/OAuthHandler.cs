@@ -9,7 +9,7 @@ public abstract class OAuthHandler<TOptions>(IOptions<TOptions> options, IHttpCl
     : IOAuthHandler where TOptions : OAuthOptions
 {
     private readonly TOptions _options = options.Value;
-    private const string ClientUserAgent = "PostmanRuntime/7.36.3";
+    private const string ClientUserAgent = "WebForum.Api";
 
     public async Task<OAuthResult> AuthenticateUserExternally(string providerCode)
     {
@@ -75,14 +75,14 @@ public abstract class OAuthHandler<TOptions>(IOptions<TOptions> options, IHttpCl
 
     protected abstract OAuthUser? ExtractOAuthUser(JsonElement userData);
 
-    private string ReportOAuthError(JsonElement element, string falloutMessage)
+    private static string ReportOAuthError(JsonElement element, string falloutMessage)
     {
         if (element.TryGetProperty("error_description", out var description))
             return description.GetString() ?? "Unexpected error.";
         return falloutMessage;
     }
 
-    private OAuthResult Fail(string reason)
+    private static OAuthResult Fail(string reason)
     {
         return new OAuthResult()
         {
@@ -91,7 +91,7 @@ public abstract class OAuthHandler<TOptions>(IOptions<TOptions> options, IHttpCl
         };
     }
 
-    private OAuthResult Succeed(OAuthUser user)
+    private static OAuthResult Succeed(OAuthUser user)
     {
         return new OAuthResult()
         {

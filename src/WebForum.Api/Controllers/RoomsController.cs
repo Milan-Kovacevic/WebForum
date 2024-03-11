@@ -18,6 +18,7 @@ namespace WebForum.Api.Controllers;
 public class RoomsController(ISender sender) : ApiController(sender)
 {
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllRooms(CancellationToken cancellationToken)
     {
         return await Result

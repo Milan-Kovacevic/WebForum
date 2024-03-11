@@ -11,20 +11,18 @@ public static class AuthenticationExtensions
         services.AddRateLimiting();
         services.AddGlobalExceptionHandler();
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
-            //.AddGitHub(options =>
-            //{
-            //    options.ClientId = "5060f298dec405ced7b8";
-            //    options.ClientSecret = "1c0b4df3c2762671599cea0b510c7b4e79474631";
-            //    options.Events.OnTicketReceived = async (ctx) =>
-            //    {
-            //        var userId = ctx.Principal?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            //        ctx.HandleResponse();
-            //        ctx.Response.Redirect($"api/Test?code={userId ?? "empty"}");
-            //        await Task.CompletedTask;
-            //    };
-            //});
         services.ConfigureOptions<JwtBearerOptionsConfiguration>();
         services.AddAuthorization();
+        services.AddCors(options =>
+        {
+            options.AddPolicy(Constants.Cors.AllowAllPolicyName ,policy =>
+            {
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+                policy.WithMethods("OPTIONS");
+                policy.WithOrigins("http://localhost:3000");
+            });
+        });
         return services;
     }
 }

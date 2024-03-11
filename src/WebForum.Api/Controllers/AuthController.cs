@@ -7,6 +7,7 @@ using WebForum.Application.Requests;
 using WebForum.Application.Features.Auth.ExternalLogin;
 using WebForum.Application.Features.Auth.Login;
 using WebForum.Application.Features.Auth.Logout;
+using WebForum.Application.Features.Auth.MyInfo;
 using WebForum.Application.Features.Auth.Refresh;
 using WebForum.Application.Features.Auth.Register;
 using WebForum.Domain.Enums;
@@ -77,9 +78,14 @@ public class AuthController(ISender sender, IJwtService jwtService) : ApiControl
             .Respond(NoContent, HandleFailure);
     }
     
-    [HttpGet("Test")]
-    public IActionResult Test([FromQuery] string? code)
+    [HttpGet("Me")]
+    [Authorize]
+    public async Task<IActionResult> GetMyInfo(CancellationToken cancellationToken)
     {
-        return Ok($"Hello {code}");
+         var tokenClaims = await jwtService.ExtractTokenClaimValues(User.Claims);
+         return await Result
+             .CreateFrom(new MyInfoQuery(tokenClaims!.UserId))
+             .Process(query => Sender.Send(query, cancellationToken))
+             .Respond(Ok, HandleFailure);
     }
 }
