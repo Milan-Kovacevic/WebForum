@@ -20,7 +20,7 @@ public class GetAllCreatedCommentsQueryHandler(ICommentRepository commentReposit
             await commentRepository.GetRoomCommentsByStatusAsync(request.RoomId, CommentStatus.Created,
                 cancellationToken);
         var result = createdComments.Select(x => new CommentResponse(x.CommentId, x.Content, x.DateCreated,
-            x.DateUpdated, x.DatePosted, x.User.DisplayName, x.User.Role!.Name));
+            x.DateUpdated, x.DatePosted, x.User.UserId, x.User.DisplayName, x.User.Role!.RoleId));
         return Result.Success(result);
     }
 }

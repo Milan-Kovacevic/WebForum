@@ -2,8 +2,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.JsonWebTokens;
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Application.Abstractions.Services;
 using WebForum.Infrastructure.Authentication.Attributes;
 
 namespace WebForum.Infrastructure.Authentication.Handlers;
@@ -15,7 +15,7 @@ public class RoomPermissionAuthorizationHandler(
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
         RoomPermissionRequirement requirement, Guid resource)
     {
-        var subject = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+        var subject = context.User.Claims.FirstOrDefault(x => x.Type is ClaimTypes.NameIdentifier or JwtRegisteredClaimNames.Sub)?.Value;
         if (subject is null || !Guid.TryParse(subject, out var userId))
         {
             logger.LogDebug(

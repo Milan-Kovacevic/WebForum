@@ -33,6 +33,6 @@ public class CreateCommentCommandHandler(
         };
         await commentRepository.InsertAsync(comment, cancellationToken);
         return Result.Success(new CommentResponse(comment.CommentId, comment.Content, comment.DateCreated,
-            comment.DateUpdated, comment.DatePosted, comment.User.DisplayName, comment.User.Role!.Name));
+            comment.DateUpdated, comment.DatePosted, comment.User.UserId, comment.User.DisplayName, comment.User.Role!.RoleId));
     }
 }

@@ -3,8 +3,9 @@ namespace WebForum.Application.Responses;
 public record CommentResponse(
     Guid CommentId,
     string Content,
-    DateTime DateCreate,
+    DateTime DateCreated,
     DateTime? DateUpdated,
     DateTime? DatePosted,
+    Guid UserId,
     string UserDisplayName,
-    string UserRoleName);
+    int RoleId);

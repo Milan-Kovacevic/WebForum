@@ -15,7 +15,7 @@ public class MyInfoQueryHandler(IUserRepository userRepository) : IQueryHandler<
         if (user is null)
             return Result.Failure<MyInfoResponse>(DomainErrors.User.NotFound(request.UserId));
 
-        var info = new MyInfoResponse(user.DisplayName, (UserRole)user.Role!.RoleId);
+        var info = new MyInfoResponse(user.UserId, user.DisplayName, (UserRole)user.Role!.RoleId);
         return Result.Success(info);
     }
 }

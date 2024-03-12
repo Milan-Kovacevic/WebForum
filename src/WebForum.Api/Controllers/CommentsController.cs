@@ -21,14 +21,19 @@ namespace WebForum.Api.Controllers;
 public class CommentsController(
     ISender sender,
     IAuthorizationService authorizationService,
-    IResourceResolverService resourceResolverService) : ApiController(sender)
+    IResourceResolverService resourceResolverService, 
+    IJwtService jwtService) : ApiController(sender)
 {
     [HttpGet("Rooms/{roomId:guid}/[controller]/Posted")]
     [HasRole(UserRole.RootAdmin, UserRole.Admin, UserRole.Moderator, UserRole.Regular)]
-    public async Task<IActionResult> GetPostedComments(Guid roomId, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetPostedCommentsForUser(Guid roomId, CancellationToken cancellationToken)
     {
+        var tokenClaims = await jwtService.ExtractTokenClaimValues(User.Claims);
+        if (tokenClaims is null)
+            return Forbid();
+        
         return await Result
-            .CreateFrom(new GetPostedCommentsQuery(roomId))
+            .CreateFrom(new GetPostedCommentsQuery(roomId, tokenClaims.UserId))
             .Process(query => Sender.Send(query, cancellationToken))
             .Respond(Ok, HandleFailure);
     }
@@ -52,9 +57,13 @@ public class CommentsController(
             await authorizationService.AuthorizeAsync(User, request.RoomId, RoomPermissionRequirements.CreateComment);
         if (!authorizationResult.Succeeded)
             return Forbid();
+        
+        var tokenClaims = await jwtService.ExtractTokenClaimValues(User.Claims);
+        if (tokenClaims is null)
+            return Forbid();
 
         return await Result
-            .CreateFrom(new CreateCommentCommand(request.RoomId, request.UserId, request.Content))
+            .CreateFrom(new CreateCommentCommand(request.RoomId, tokenClaims.UserId, request.Content))
             .Process(command => Sender.Send(command, cancellationToken))
             .Respond(Ok, HandleFailure);
     }

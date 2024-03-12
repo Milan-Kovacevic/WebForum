@@ -23,6 +23,6 @@ public class EditCommentCommandHandler(ICommentRepository commentRepository)
         commentRepository.Update(comment);
         
         return Result.Success(new CommentResponse(comment.CommentId, comment.Content, comment.DateCreated,
-            comment.DateUpdated, comment.DatePosted, comment.User.DisplayName, comment.User.Role!.Name));
+            comment.DateUpdated, comment.DatePosted, comment.User.UserId, comment.User.DisplayName, comment.User.Role!.RoleId));
     }
 }
