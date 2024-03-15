@@ -7,7 +7,7 @@ builder.Services.AddSwagger();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Host.AddLogging();
-builder.Services.AddSecurity();
+builder.Services.AddSecurity(builder.Configuration);
 builder.AddModules();
 
 var app = builder.Build();

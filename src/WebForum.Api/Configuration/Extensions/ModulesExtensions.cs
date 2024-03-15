@@ -82,6 +82,7 @@ public static class ModulesExtensions
         services.AddHttpClient();
         services.AddSingleton<IAuthorizationHandler, RoleAuthorizationHandler>();
         services.AddSingleton<IAuthorizationHandler, RoomPermissionAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationHandler, CommentOwnerAuthorizationHandler>();
         services.AddSingleton<IAuthorizationPolicyProvider, RoomPermissionAuthorizationPolicyProvider>();
         services.AddSingleton<TokenHandler, AuthenticationJwtHandler>();
 

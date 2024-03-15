@@ -16,7 +16,8 @@ public class RoomEntityConfiguration : IEntityTypeConfiguration<Room>
             .IsRequired()
             .HasMaxLength(Database.Constants.MaxNameLength);
         builder.HasIndex(x => x.Name).IsUnique();
-        
+
+        builder.Property(x => x.DateCreated).IsRequired();
         builder.Property(x => x.Description)
             .IsRequired(false)
             .HasMaxLength(Database.Constants.MaxLongTextLength);

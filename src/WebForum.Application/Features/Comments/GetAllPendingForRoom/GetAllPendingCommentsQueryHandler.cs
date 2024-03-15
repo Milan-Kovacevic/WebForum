@@ -5,12 +5,12 @@ using WebForum.Domain.Enums;
 using WebForum.Domain.Shared.Errors;
 using WebForum.Domain.Shared.Results;
 
-namespace WebForum.Application.Features.Comments.GetAllCreatedForRoom;
+namespace WebForum.Application.Features.Comments.GetAllPendingForRoom;
 
-public class GetAllCreatedCommentsQueryHandler(ICommentRepository commentRepository, IRoomRepository roomRepository)
-    : IQueryHandler<GetAllCreatedCommentsQuery, IEnumerable<CommentResponse>>
+public class GetAllPendingCommentsQueryHandler(ICommentRepository commentRepository, IRoomRepository roomRepository)
+    : IQueryHandler<GetAllPendingCommentsQuery, IEnumerable<CommentResponse>>
 {
-    public async Task<Result<IEnumerable<CommentResponse>>> Handle(GetAllCreatedCommentsQuery request,
+    public async Task<Result<IEnumerable<CommentResponse>>> Handle(GetAllPendingCommentsQuery request,
         CancellationToken cancellationToken)
     {
         if (!await roomRepository.ExistsByIdAsync(request.RoomId, cancellationToken))

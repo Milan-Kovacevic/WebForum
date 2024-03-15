@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.JsonWebTokens;
 using WebForum.Application.Abstractions.Repositories;
-using WebForum.Infrastructure.Authentication.Attributes;
+using WebForum.Infrastructure.Authentication.Requirements;
 
 namespace WebForum.Infrastructure.Authentication.Handlers;
 
@@ -18,7 +18,7 @@ public class RoomPermissionAuthorizationHandler(
         var subject = context.User.Claims.FirstOrDefault(x => x.Type is ClaimTypes.NameIdentifier or JwtRegisteredClaimNames.Sub)?.Value;
         if (subject is null || !Guid.TryParse(subject, out var userId))
         {
-            logger.LogDebug(
+            logger.LogWarning(
                 "User does not have an id in his claims {@Claims}.",
                 context.User.Claims);
             context.Fail();

@@ -24,4 +24,10 @@ public class UserRole
         RoleId = (int)Enums.UserRole.Admin,
         Name = Enums.UserRole.Admin.ToString()
     };
+    
+    public static readonly UserRole RootAdmin = new()
+    {
+        RoleId = (int)Enums.UserRole.RootAdmin,
+        Name = Enums.UserRole.RootAdmin.ToString()
+    };
 }

@@ -12,6 +12,6 @@ public class GetAllRoomsQueryHandler(IRoomRepository roomRepository)
         CancellationToken cancellationToken)
     {
         var rooms = await roomRepository.GetAllAsync(cancellationToken);
-        return Result.Success(rooms.Select(x => new RoomResponse(x.RoomId, x.Name, x.Description)));
+        return Result.Success(rooms.Select(x => new RoomResponse(x.RoomId, x.Name, x.DateCreated, x.Description)));
     }
 }

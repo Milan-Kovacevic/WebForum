@@ -19,7 +19,7 @@ public class RoleAuthorizationHandler(
         var subject = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
         if (subject is null || !Guid.TryParse(subject, out var userId))
         {
-            logger.LogDebug(
+            logger.LogWarning(
                 "User with claims {@Claims} does not have an id. Required user roles for authorized resource are {@Roles}",
                 context.User.Claims, requirement.Roles);
             context.Fail();
@@ -33,7 +33,7 @@ public class RoleAuthorizationHandler(
 
         if (role is null || !requirement.UserRoles.Contains((UserRole)Enum.ToObject(typeof(UserRole), role.RoleId)))
         {
-            logger.LogDebug(
+            logger.LogWarning(
                 "User with claims {@Claims} does not have required roles {@Roles} for accessing resource. Current role {Role}",
                 context.User.Claims, requirement.Roles, role);
             context.Fail();

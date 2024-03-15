@@ -18,6 +18,6 @@ public class UpdateRoomCommandHandler(IRoomRepository roomRepository)
         room.Name = request.Name;
         room.Description = request.Description;
         roomRepository.Update(room);
-        return Result.Success(new RoomResponse(room.RoomId, room.Name, room.Description));
+        return Result.Success(new RoomResponse(room.RoomId, room.Name, room.DateCreated, room.Description));
     }
 }

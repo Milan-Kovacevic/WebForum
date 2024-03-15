@@ -14,6 +14,6 @@ public class GetRoomByIdQueryHandler(IRoomRepository roomRepository)
         var room = await roomRepository.GetByIdAsync(request.RoomId, cancellationToken);
         return room is null
             ? Result.Failure<RoomResponse>(DomainErrors.Room.NotFound(request.RoomId))
-            : Result.Success(new RoomResponse(room.RoomId, room.Name, room.Description));
+            : Result.Success(new RoomResponse(room.RoomId, room.Name, room.DateCreated, room.Description));
     }
 }

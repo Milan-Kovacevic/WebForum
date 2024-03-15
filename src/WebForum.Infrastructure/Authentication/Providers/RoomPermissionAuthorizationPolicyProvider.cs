@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using WebForum.Domain.Enums;
-using WebForum.Infrastructure.Authentication.Attributes;
+using WebForum.Infrastructure.Authentication.Requirements;
 
 namespace WebForum.Infrastructure.Authentication.Providers;
 

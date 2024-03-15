@@ -35,7 +35,7 @@ public class UsersController(ISender sender) : ApiController(sender)
             .Respond(Ok, HandleFailure);
     }
     
-    [HttpPut("{userId:guid}/Group")]
+    [HttpPatch("{userId:guid}/Group")]
     [HasRole(UserRole.RootAdmin, UserRole.Admin)]
     public async Task<IActionResult> ChangeUserGroup([FromRoute] Guid userId, [FromBody] ChangeUserGroupRequest request,
         CancellationToken cancellationToken)

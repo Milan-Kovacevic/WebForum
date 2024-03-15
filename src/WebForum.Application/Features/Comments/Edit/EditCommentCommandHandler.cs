@@ -15,7 +15,7 @@ public class EditCommentCommandHandler(ICommentRepository commentRepository)
         var comment = await commentRepository.GetByIdAsync(request.CommentId, cancellationToken);
         if (comment is null)
             return Result.Failure<CommentResponse>(DomainErrors.Comment.NotFound(request.CommentId));
-        if (comment.Status != CommentStatus.Created)
+        if (comment.Status == CommentStatus.Banned)
             return Result.Failure<CommentResponse>(DomainErrors.Comment.NotEditable(request.CommentId));
 
         comment.Content = request.NewContent;

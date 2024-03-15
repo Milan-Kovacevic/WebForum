@@ -18,9 +18,10 @@ public class CreateRoomCommandHandler(IRoomRepository roomRepository)
         var room = new Room()
         {
             Name = request.Name,
-            Description = request.Description
+            Description = request.Description,
+            DateCreated = DateTime.UtcNow
         };
         await roomRepository.InsertAsync(room, cancellationToken);
-        return Result.Success(new RoomResponse(room.RoomId, room.Name, room.Description));
+        return Result.Success(new RoomResponse(room.RoomId, room.Name, room.DateCreated, room.Description));
     }
 }

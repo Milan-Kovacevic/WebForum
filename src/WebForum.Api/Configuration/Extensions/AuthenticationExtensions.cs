@@ -1,12 +1,13 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using WebForum.Api.Configuration.Options;
 
 namespace WebForum.Api.Configuration.Extensions;
 
 public static class AuthenticationExtensions
 {
-    public static IServiceCollection AddSecurity(this IServiceCollection services)
+    public static IServiceCollection AddSecurity(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddRateLimiting();
         services.AddGlobalExceptionHandler();
@@ -15,12 +16,12 @@ public static class AuthenticationExtensions
         services.AddAuthorization();
         services.AddCors(options =>
         {
-            options.AddPolicy(Constants.Cors.AllowAllPolicyName ,policy =>
+            options.AddPolicy(Constants.Cors.AllowAllPolicyName, policy =>
             {
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
-                policy.WithMethods("OPTIONS");
-                policy.WithOrigins("http://localhost:3000");
+                policy.WithOrigins(
+                    configuration.GetSection(Constants.Cors.ApplicationServerConfigurationSection).Value!);
             });
         });
         return services;

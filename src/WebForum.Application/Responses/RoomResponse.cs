@@ -1,3 +1,3 @@
 namespace WebForum.Application.Responses;
 
-public record RoomResponse(Guid RoomId, string Name, string? Description);
+public record RoomResponse(Guid RoomId, string Name, DateTime DateCreated, string? Description);

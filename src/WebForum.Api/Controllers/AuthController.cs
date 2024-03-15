@@ -19,7 +19,7 @@ namespace WebForum.Api.Controllers;
 [Route("/api")]
 public class AuthController(ISender sender, IJwtService jwtService) : ApiController(sender)
 {
-    [HttpPost, Route("Register")]
+    [HttpPost("Register")]
     [AllowAnonymous]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {

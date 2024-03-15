@@ -24,6 +24,7 @@ public static class Constants
 
     public static class Cors
     {
+        public const string ApplicationServerConfigurationSection = "ApplicationServer";
         public const string AllowAllPolicyName = "AllowAll";
     }
 }

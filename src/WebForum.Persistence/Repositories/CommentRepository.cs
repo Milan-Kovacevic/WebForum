@@ -12,7 +12,7 @@ public class CommentRepository(ApplicationDbContext context)
 {
     private readonly ApplicationDbContext _context = context;
 
-    public async Task<IEnumerable<Comment>> GetPostedRoomCommentsForUserAsync(Guid roomId, Guid userId, int limit, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Comment>> GetRoomCommentsForUserAsync(Guid roomId, Guid userId, int limit, CancellationToken cancellationToken = default)
     {
         return await _context.Set<Comment>()
             .AsNoTracking()
