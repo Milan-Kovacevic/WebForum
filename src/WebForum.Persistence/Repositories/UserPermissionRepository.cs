@@ -40,4 +40,9 @@ public class UserPermissionRepository(ApplicationDbContext context) : IUserPermi
     {
         context.Set<UserPermission>().Remove(entity);
     }
+
+    public void DeleteUserPermissions(UserPermission[] entities)
+    {
+        context.Set<UserPermission>().RemoveRange(entities);
+    }
 }

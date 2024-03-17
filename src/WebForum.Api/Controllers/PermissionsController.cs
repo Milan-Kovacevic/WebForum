@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Configuration.Extensions;
 using WebForum.Application.Abstractions.Services;
-using WebForum.Application.Features.Permissions.Add;
+using WebForum.Application.Features.Permissions.Change;
 using WebForum.Application.Features.Permissions.GetAll;
 using WebForum.Application.Features.Permissions.GetForRoom;
-using WebForum.Application.Features.Permissions.Remove;
 using WebForum.Application.Requests;
 using WebForum.Domain.Enums;
 using WebForum.Domain.Shared.Results;
@@ -51,26 +50,14 @@ public class PermissionsController(ISender sender, IAuthorizationService authori
             .Respond(Ok, HandleFailure);
     }
     
-    [HttpPost("Users/{userId:guid}/Rooms/{roomId:guid}/[controller]/Add")]
+    [HttpPost("Users/{userId:guid}/Rooms/{roomId:guid}/[controller]")]
     [HasRole(UserRole.RootAdmin, UserRole.Admin)]
-    public async Task<IActionResult> AddUserRoomPermissions([FromRoute] Guid userId, [FromRoute] Guid roomId,
+    public async Task<IActionResult> ChangeUserRoomPermissions([FromRoute] Guid userId, [FromRoute] Guid roomId,
         [FromBody] ChangeUserPermissionsRequest request,
         CancellationToken cancellationToken)
     {
         return await Result
-            .CreateFrom(new AddUserRoomPermissionCommand(userId, roomId, request.PermissionId))
-            .Process(command => Sender.Send(command, cancellationToken))
-            .Respond(NoContent, HandleFailure);
-    }
-    
-    [HttpPost("Users/{userId:guid}/Rooms/{roomId:guid}/[controller]/Remove")]
-    [HasRole(UserRole.RootAdmin, UserRole.Admin)]
-    public async Task<IActionResult> RemoveUserRoomPermissions([FromRoute] Guid userId, [FromRoute] Guid roomId,
-        [FromBody] ChangeUserPermissionsRequest request,
-        CancellationToken cancellationToken)
-    {
-        return await Result
-            .CreateFrom(new RemoveUserRoomPermissionCommand(userId, roomId, request.PermissionId))
+            .CreateFrom(new ChangeUserRoomPermissionsCommand(userId, roomId, request.Permissions))
             .Process(command => Sender.Send(command, cancellationToken))
             .Respond(NoContent, HandleFailure);
     }

@@ -1,8 +1,7 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebForum.Api.Configuration.Extensions;
-using WebForum.Application.Features.Users.ChangeRole;
+using WebForum.Application.Features.Users.ChangeAccount;
 using WebForum.Application.Features.Users.GetAll;
 using WebForum.Application.Features.Users.GetById;
 using WebForum.Application.Requests;
@@ -34,14 +33,14 @@ public class UsersController(ISender sender) : ApiController(sender)
             .Process(query => Sender.Send(query, cancellationToken))
             .Respond(Ok, HandleFailure);
     }
-    
-    [HttpPatch("{userId:guid}/Group")]
+
+    [HttpPost("{userId:guid}/Change")]
     [HasRole(UserRole.RootAdmin, UserRole.Admin)]
-    public async Task<IActionResult> ChangeUserGroup([FromRoute] Guid userId, [FromBody] ChangeUserGroupRequest request,
+    public async Task<IActionResult> ChangeUserAccount([FromRoute] Guid userId, [FromBody] ChangeUserAccountRequest request,
         CancellationToken cancellationToken)
     {
         return await Result
-            .CreateFrom(new ChangeUserRoleCommand(userId, request.Role))
+            .CreateFrom(new ChangeUserAccountCommand(userId, request.Role, request.IsEnabled))
             .Process(query => Sender.Send(query, cancellationToken))
             .Respond(NoContent, HandleFailure);
     }

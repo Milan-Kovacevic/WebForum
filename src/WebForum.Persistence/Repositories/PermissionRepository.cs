@@ -6,5 +6,4 @@ namespace WebForum.Persistence.Repositories;
 
 public class PermissionRepository(ApplicationDbContext context) : GenericRepository<Permission, int>(context), IPermissionRepository
 {
-    
 }

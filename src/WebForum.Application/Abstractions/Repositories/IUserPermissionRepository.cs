@@ -16,4 +16,6 @@ public interface IUserPermissionRepository
         CancellationToken cancellationToken = default);
     
     void Delete(UserPermission entity);
+    
+    void DeleteUserPermissions(UserPermission[] entities);
 }

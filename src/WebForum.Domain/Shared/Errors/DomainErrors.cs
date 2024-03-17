@@ -61,6 +61,10 @@ public static class DomainErrors
         public static Error NotFound(int id) => new("Permission.NotFound",
             $"The Permission with the Id {id} was not found.",
             (int)HttpStatusCode.NotFound);
+        
+        public static Error NotAvailable(int id) => new("Permission.NotAvailable",
+            $"The Permission with the Id {id} is not available.",
+            (int)HttpStatusCode.NotFound);
     }
 
     public static class UserPermission

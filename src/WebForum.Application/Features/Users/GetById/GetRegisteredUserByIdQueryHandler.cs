@@ -15,13 +15,12 @@ public class GetRegisteredUserByIdQueryHandler(IUserRepository userRepository)
         var registeredUser = await userRepository.GetByIdWithPermissionsAsync(request.UserId, cancellationToken);
         if (registeredUser is null)
             return Result.Failure<SingleRegisteredUserResponse>(DomainErrors.User.NotFound(request.UserId));
-
-        // TODO: Fix check for external authentication flag
+        
         var userPermissions =
             registeredUser.Permissions.Select(x =>
-                new UserPermissionResponse(x.Permission.PermissionId, x.Permission.Name, x.Room.RoomId, x.Room.Name));
+                new UserPermissionResponse(x.Permission.PermissionId, x.Permission.Name, x.Room.RoomId));
         var result = new SingleRegisteredUserResponse(registeredUser.UserId, registeredUser.DisplayName,
-            registeredUser.IsEnabled, registeredUser.Role!.RoleId, registeredUser.Role.Name,
+            registeredUser.IsEnabled, registeredUser.Role!.RoleId,
             registeredUser.Username is null, userPermissions);
         return Result.Success(result);
     }

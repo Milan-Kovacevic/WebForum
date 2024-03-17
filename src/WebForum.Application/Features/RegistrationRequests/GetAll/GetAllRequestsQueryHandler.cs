@@ -13,7 +13,7 @@ public class GetAllRequestsQueryHandler(IRegistrationRequestRepository registrat
     {
         var registrationRequests = await registrationRequestRepository.GetAllAsync(cancellationToken);
         var result = registrationRequests.Select(x =>
-            new RegistrationResponse(x.RequestId, x.SubmitDate, x.User.Username!, x.User.DisplayName));
+            new RegistrationResponse(x.RequestId, x.SubmitDate, x.User.Username!, x.User.DisplayName, x.User.Email));
         return Result.Success(result);
     }
 }
