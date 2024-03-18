@@ -42,8 +42,8 @@ public class ChangeUserRoomPermissionsCommandHandler(
             if (permission is null)
                 return Result.Failure(DomainErrors.Permission.NotFound(permissionId));
 
-            if (user.RoleId == UserRole.Regular.RoleId && permission.Name == RoomPermission.PostComment.ToString() ||
-                permission.Name == RoomPermission.BlockComment.ToString())
+            if (user.RoleId == UserRole.Regular.RoleId && (permission.Name == RoomPermission.PostComment.ToString() ||
+                permission.Name == RoomPermission.BlockComment.ToString()))
                 return Result.Failure(DomainErrors.Permission.NotAvailable(permissionId));
 
             var userPermission = new UserPermission
