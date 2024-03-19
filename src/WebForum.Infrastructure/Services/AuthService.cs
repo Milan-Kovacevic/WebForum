@@ -3,10 +3,11 @@ using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Models;
 using WebForum.Domain.Enums;
 using WebForum.Infrastructure.Authentication.OAuth.Handlers.GitHub;
+using WebForum.Infrastructure.Authentication.OAuth.Handlers.Google;
 
 namespace WebForum.Infrastructure.Services;
 
-public class AuthService(IGitHubOAuthHandler gitHubOAuthHandler)
+public class AuthService(IGitHubOAuthHandler gitHubOAuthHandler, IGoogleOAuthHandler googleOAuthHandler)
     : IAuthService
 {
     public Task<string> Generate2FaCode(int codeSize, CancellationToken cancellationToken = default)
@@ -22,6 +23,8 @@ public class AuthService(IGitHubOAuthHandler gitHubOAuthHandler)
     {
         if (loginProvider == LoginProvider.GitHub)
             return gitHubOAuthHandler.AuthenticateUserExternally(providerCode);
+        if (loginProvider == LoginProvider.Google)
+            return googleOAuthHandler.AuthenticateUserExternally(providerCode);
         throw new InvalidOperationException();
     }
 

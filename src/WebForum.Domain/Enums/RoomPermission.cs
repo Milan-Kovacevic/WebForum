@@ -2,5 +2,5 @@ namespace WebForum.Domain.Enums;
 
 public enum RoomPermission
 {
-    CreateComment, EditComment, RemoveComment, PostComment, BlockComment
+    CreateComment = 1, EditComment, RemoveComment, PostComment, BlockComment
 }

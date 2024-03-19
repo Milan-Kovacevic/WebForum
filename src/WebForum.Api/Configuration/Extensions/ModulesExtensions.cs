@@ -9,6 +9,7 @@ using WebForum.Application.PipelineBehaviors;
 using WebForum.Infrastructure.Authentication.Handlers;
 using WebForum.Infrastructure.Authentication.OAuth;
 using WebForum.Infrastructure.Authentication.OAuth.Handlers.GitHub;
+using WebForum.Infrastructure.Authentication.OAuth.Handlers.Google;
 using WebForum.Infrastructure.Authentication.Providers;
 using WebForum.Infrastructure.Options;
 using WebForum.Infrastructure.Services;
@@ -77,6 +78,8 @@ public static class ModulesExtensions
             .ValidateDataAnnotations().ValidateOnStart();
         services.AddOptions<GitHubOptions>().BindConfiguration(Constants.Infrastructure.OAuthGitHubConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
+        services.AddOptions<GoogleOptions>().BindConfiguration(Constants.Infrastructure.OAuthGoogleConfigurationSection)
+            .ValidateDataAnnotations().ValidateOnStart();
         services.AddOptions<JwtOptions>().BindConfiguration(Constants.Infrastructure.JwtConfigurationSection)
             .ValidateDataAnnotations().ValidateOnStart();
         services.AddHttpClient();
@@ -87,6 +90,7 @@ public static class ModulesExtensions
         services.AddSingleton<TokenHandler, AuthenticationJwtHandler>();
 
         services.AddScoped<IGitHubOAuthHandler, GitHubOAuthHandler>();
+        services.AddScoped<IGoogleOAuthHandler, GoogleOAuthHandler>();
         services.AddScoped<IRedisCacheService, RedisCacheService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IJwtService, JwtService>();

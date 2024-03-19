@@ -17,5 +17,5 @@ public interface IUserPermissionRepository
     
     void Delete(UserPermission entity);
     
-    void DeleteUserPermissions(UserPermission[] entities);
+    void DeleteAllUserPermissionsWithId(Guid userId, int permissionId);
 }

@@ -41,8 +41,9 @@ public class UserPermissionRepository(ApplicationDbContext context) : IUserPermi
         context.Set<UserPermission>().Remove(entity);
     }
 
-    public void DeleteUserPermissions(UserPermission[] entities)
+    public void DeleteAllUserPermissionsWithId(Guid userId, int permissionId)
     {
-        context.Set<UserPermission>().RemoveRange(entities);
+        var permissions = context.Set<UserPermission>().Where(p => p.PermissionId == permissionId && p.UserId == userId);
+        context.Set<UserPermission>().RemoveRange(permissions);
     }
 }

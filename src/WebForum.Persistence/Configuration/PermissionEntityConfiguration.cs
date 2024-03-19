@@ -19,7 +19,7 @@ public class PermissionEntityConfiguration : IEntityTypeConfiguration<Permission
         builder.HasIndex(x => x.Name).IsUnique();
 
         var permissions = Enum.GetValues<RoomPermission>()
-            .Select(permission => new Permission() { Name = permission.ToString(), PermissionId = (int)permission + 1 });
+            .Select(permission => new Permission() { Name = permission.ToString(), PermissionId = (int)permission});
         builder.HasData(permissions);
     }
 }
