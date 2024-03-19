@@ -2,12 +2,16 @@ using System.Security.Cryptography;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Models;
 using WebForum.Domain.Enums;
+using WebForum.Infrastructure.Authentication.OAuth.Handlers.Facebook;
 using WebForum.Infrastructure.Authentication.OAuth.Handlers.GitHub;
 using WebForum.Infrastructure.Authentication.OAuth.Handlers.Google;
 
 namespace WebForum.Infrastructure.Services;
 
-public class AuthService(IGitHubOAuthHandler gitHubOAuthHandler, IGoogleOAuthHandler googleOAuthHandler)
+public class AuthService(
+    IGitHubOAuthHandler gitHubOAuthHandler,
+    IGoogleOAuthHandler googleOAuthHandler,
+    IFacebookOAuthHandler facebookOAuthHandler)
     : IAuthService
 {
     public Task<string> Generate2FaCode(int codeSize, CancellationToken cancellationToken = default)
@@ -21,11 +25,13 @@ public class AuthService(IGitHubOAuthHandler gitHubOAuthHandler, IGoogleOAuthHan
 
     public Task<OAuthResult> ExternallyAuthenticateUser(LoginProvider loginProvider, string providerCode)
     {
-        if (loginProvider == LoginProvider.GitHub)
-            return gitHubOAuthHandler.AuthenticateUserExternally(providerCode);
-        if (loginProvider == LoginProvider.Google)
-            return googleOAuthHandler.AuthenticateUserExternally(providerCode);
-        throw new InvalidOperationException();
+        return loginProvider switch
+        {
+            LoginProvider.GitHub => gitHubOAuthHandler.AuthenticateUserExternally(providerCode),
+            LoginProvider.Google => googleOAuthHandler.AuthenticateUserExternally(providerCode),
+            LoginProvider.Facebook => facebookOAuthHandler.AuthenticateUserExternally(providerCode),
+            _ => throw new InvalidOperationException()
+        };
     }
 
     public string ComputePasswordHash(string text)

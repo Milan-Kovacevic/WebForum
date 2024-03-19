@@ -14,6 +14,7 @@ public static class Constants
         public const string EmailConfigurationSection = "Email";
         public const string OAuthGitHubConfigurationSection = "OAuth:GitHub";
         public const string OAuthGoogleConfigurationSection = "OAuth:Google"; 
+        public const string OAuthFacebookConfigurationSection = "OAuth:Facebook"; 
         public const string JwtConfigurationSection = "Jwt";
     }
 
