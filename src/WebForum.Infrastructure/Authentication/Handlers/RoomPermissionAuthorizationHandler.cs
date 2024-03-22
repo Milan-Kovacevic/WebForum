@@ -20,7 +20,7 @@ public class RoomPermissionAuthorizationHandler(
             .FirstOrDefault(x => x.Type is ClaimTypes.NameIdentifier or JwtRegisteredClaimNames.Sub)?.Value;
         if (subject is null || !Guid.TryParse(subject, out var userId))
         {
-            logger.LogWarning(
+            logger.LogDebug(
                 "User does not have an id in his claims {@Claims}.",
                 context.User.Claims);
             context.Fail();

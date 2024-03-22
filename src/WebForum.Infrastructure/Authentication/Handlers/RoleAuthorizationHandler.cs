@@ -19,7 +19,7 @@ public class RoleAuthorizationHandler(
         var subject = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sub)?.Value;
         if (subject is null || !Guid.TryParse(subject, out var userId))
         {
-            logger.LogWarning(
+            logger.LogDebug(
                 "User with claims {@Claims} does not have an id. Required user roles for authorized resource are {@Roles}",
                 context.User.Claims, requirement.Roles);
             context.Fail();

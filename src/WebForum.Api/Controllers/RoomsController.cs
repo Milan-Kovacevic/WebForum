@@ -18,7 +18,7 @@ namespace WebForum.Api.Controllers;
 public class RoomsController(ISender sender) : ApiController(sender)
 {
     [HttpGet]
-    [AllowAnonymous]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin, UserRole.Moderator, UserRole.Regular)]
     public async Task<IActionResult> GetAllRooms(CancellationToken cancellationToken)
     {
         return await Result
@@ -28,7 +28,7 @@ public class RoomsController(ISender sender) : ApiController(sender)
     }
 
     [HttpGet("{roomId:guid}")]
-    [AllowAnonymous]
+    [HasRole(UserRole.RootAdmin, UserRole.Admin, UserRole.Moderator, UserRole.Regular)]
     public async Task<IActionResult> GetRoomById(Guid roomId, CancellationToken cancellationToken)
     {
         return await Result

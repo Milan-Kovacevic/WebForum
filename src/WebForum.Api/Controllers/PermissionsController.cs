@@ -14,7 +14,7 @@ using WebForum.Infrastructure.Authentication.Attributes;
 namespace WebForum.Api.Controllers;
 
 [Route("/api")]
-public class PermissionsController(ISender sender, IAuthorizationService authorizationService, IJwtService jwtService) : ApiController(sender)
+public class PermissionsController(ISender sender, IJwtService jwtService) : ApiController(sender)
 {
     [HttpGet("[controller]")]
     public async Task<IActionResult> GetAllPermissions(CancellationToken cancellationToken)
