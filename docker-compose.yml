@@ -1,0 +1,86 @@
+﻿services:
+  # Web API 
+  webforum.api:
+    image: webforum.api
+    container_name: webforum.api
+    build:
+      context: .
+      dockerfile: src/WebForum.Api/Dockerfile
+    ports:
+      - '8443:443'
+    volumes:
+      - ./.docker/certificate:/https/
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443
+      - ASPNETCORE_HTTPS_PORT=443
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/webforum.pfx
+    depends_on: 
+      webforum.database:
+        condition: service_healthy
+      webforum.cache:
+        condition: service_healthy
+      webforum.siem:
+        condition: service_started
+    networks:
+      - private-network
+    
+  # MYSQL Database
+  webforum.database:
+    image: mysql
+    container_name: webforum.database
+    command: --default-authentication-plugin=caching_sha2_password
+    restart: always
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "${MYSQL_ROOT_USERNAME}", "--password=${MYSQL_ROOT_PASSWORD}"]
+      interval: 30s
+      start_period: 3s
+      timeout: 10s
+      retries: 3
+    ports:
+      - '5000:3306'
+    volumes:
+      - ./.docker/mysql-db:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=web-forum
+    networks:
+      - private-network
+  
+  # Redis Cache
+  webforum.cache:
+    image: redis:latest
+    container_name: webforum.cache
+    restart: always
+    ports: 
+      - '5010:6379'
+    volumes:
+      - ./.docker/redis-db:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    networks:
+      - private-network
+    
+  # Seq logging server
+  webforum.siem:
+    image: datalust/seq:latest
+    container_name: webforum.siem
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5020:80"
+    volumes:
+      - ./.docker/seq-db:/data
+    networks:
+      - private-network
+  
+networks:
+  private-network:
+    driver: bridge
