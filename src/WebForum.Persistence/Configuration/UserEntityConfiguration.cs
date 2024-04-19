@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WebForum.Application.Abstractions.Services;
 using WebForum.Domain.Entities;
 
 namespace WebForum.Persistence.Configuration;
 
-public class UserEntityConfiguration : IEntityTypeConfiguration<User>
+public class UserEntityConfiguration() : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {

@@ -6,7 +6,7 @@ using MimeKit.Text;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.Models;
 using WebForum.Domain.Entities;
-using WebForum.Infrastructure.Settings;
+using WebForum.Infrastructure.Options;
 
 namespace WebForum.Infrastructure.Services;
 

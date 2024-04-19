@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using WebForum.Domain.Entities;
 
 namespace WebForum.Persistence.DbContext;
 

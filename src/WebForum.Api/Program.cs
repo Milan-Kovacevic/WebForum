@@ -16,13 +16,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    app.ApplyMigrations();
+    app.ApplyMigrations()
+        .ApplyDataSeed();
 }
 
 app.UseHttpsRedirection();
 app.UseRateLimiter();
 app.UseExceptionHandler();
-app.UseCors(Constants.Cors.AllowAllPolicyName);
+app.UseCors(Constants.Cors.AllowWebClientPolicyName);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

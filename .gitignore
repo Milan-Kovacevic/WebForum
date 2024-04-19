@@ -276,3 +276,7 @@ __pycache__/
 *.iml
 out
 gen
+
+# Custom ignores
+.docker
+.env

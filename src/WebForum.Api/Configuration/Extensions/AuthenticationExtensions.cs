@@ -16,12 +16,11 @@ public static class AuthenticationExtensions
         services.AddAuthorization();
         services.AddCors(options =>
         {
-            options.AddPolicy(Constants.Cors.AllowAllPolicyName, policy =>
+            options.AddPolicy(Constants.Cors.AllowWebClientPolicyName, policy =>
             {
                 policy.AllowAnyHeader();
                 policy.AllowAnyMethod();
-                policy.WithOrigins(
-                    configuration.GetSection(Constants.Cors.ApplicationServerConfigurationSection).Value!);
+                policy.WithOrigins(configuration.GetSection(Constants.Cors.ClientConfigurationSection).Value!);
             });
         });
         return services;

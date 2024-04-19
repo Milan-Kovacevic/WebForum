@@ -4,7 +4,7 @@ using WebForum.Persistence.Configuration;
 
 namespace WebForum.Persistence.DbContext;
 
-public class ApplicationDesignDbContext : IDesignTimeDbContextFactory<ApplicationDbContext>
+public class ApplicationDesignDbContext() : IDesignTimeDbContextFactory<ApplicationDbContext>
 {
     private const string ConnectionString =
         "server=localhost;port=3306;database=web-forum;user=student;password=student";

@@ -22,11 +22,12 @@ public static class Constants
     {
         public const string DatabaseConnectionString = "DefaultConnection";
         public const string RedisConnectionString = "Redis";
+        public const string RootAdminDataSection = "RootAdminData";
     }
 
     public static class Cors
     {
-        public const string ApplicationServerConfigurationSection = "ApplicationServer";
-        public const string AllowAllPolicyName = "AllowAll";
+        public const string ClientConfigurationSection = "ApplicationServer";
+        public const string AllowWebClientPolicyName = "WebForumClientPolicy";
     }
 }

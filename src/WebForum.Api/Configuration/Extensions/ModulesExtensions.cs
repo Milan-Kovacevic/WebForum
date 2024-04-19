@@ -7,16 +7,15 @@ using WebForum.Application.Abstractions.Repositories;
 using WebForum.Application.Abstractions.Services;
 using WebForum.Application.PipelineBehaviors;
 using WebForum.Infrastructure.Authentication.Handlers;
-using WebForum.Infrastructure.Authentication.OAuth;
 using WebForum.Infrastructure.Authentication.OAuth.Handlers.Facebook;
 using WebForum.Infrastructure.Authentication.OAuth.Handlers.GitHub;
 using WebForum.Infrastructure.Authentication.OAuth.Handlers.Google;
 using WebForum.Infrastructure.Authentication.Providers;
 using WebForum.Infrastructure.Options;
 using WebForum.Infrastructure.Services;
-using WebForum.Infrastructure.Settings;
 using WebForum.Persistence.Configuration;
 using WebForum.Persistence.DbContext;
+using WebForum.Persistence.Options;
 using WebForum.Persistence.Repositories;
 
 namespace WebForum.Api.Configuration.Extensions;
@@ -49,6 +48,8 @@ public static class ModulesExtensions
     private static IServiceCollection AddPersistence(this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddOptions<RootAdminOptions>().BindConfiguration(Constants.Persistence.RootAdminDataSection)
+            .ValidateDataAnnotations().ValidateOnStart();
         services.AddDbContext<ApplicationDbContext>(
             options =>
             {
